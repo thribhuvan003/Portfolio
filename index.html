@@ -69,15 +69,94 @@
   .os-root { --dock-h: 76px; --safe-t: env(safe-area-inset-top, 0px); --safe-b: env(safe-area-inset-bottom, 0px); --safe-l: env(safe-area-inset-left, 0px); --safe-r: env(safe-area-inset-right, 0px); }
   .os-hero { padding: 56px clamp(24px, 12vw, 320px) 104px; }
   .os-hero-title { font-size: min(16cqw, 24vh, 214px); }
-  .os-chrome-theme { left: max(12px, var(--safe-l)); top: max(12px, var(--safe-t)); }
-  .os-chrome-spotify { right: max(12px, var(--safe-r)); top: max(12px, var(--safe-t)); width: 224px; }
-  .os-chrome-email { left: max(12px, var(--safe-l)); bottom: max(12px, calc(var(--dock-h) + 8px + var(--safe-b))); }
-  .os-chrome-stats { right: max(12px, var(--safe-r)); bottom: max(12px, calc(var(--dock-h) + 8px + var(--safe-b))); }
-  .os-dock-nav { bottom: max(6px, var(--safe-b)); padding: 0 max(8px, var(--safe-l)) 0 max(8px, var(--safe-r)); }
-  .os-dock-shell { max-width: min(100%, 920px); overflow-x: auto; overflow-y: visible; -webkit-overflow-scrolling: touch; scrollbar-width: none; overscroll-behavior-x: contain; }
-  .os-dock-shell::-webkit-scrollbar { display: none; }
-  .os-dock-btn { width: 56px; height: 56px; }
-  .os-dock-icon { width: 52px; height: 52px; }
+  /* Chrome sits UNDER windows so traffic lights stay clickable (was z:5000 — blocked close) */
+  .os-chrome-theme {
+    left: max(12px, var(--safe-l));
+    top: max(12px, var(--safe-t));
+    z-index: 40;
+    transition: opacity 160ms ease, transform 160ms ease;
+  }
+  .os-chrome-spotify {
+    right: max(12px, var(--safe-r));
+    top: max(12px, var(--safe-t));
+    width: 224px;
+    z-index: 40;
+    transition: opacity 160ms ease;
+  }
+  .os-chrome-email {
+    left: max(12px, var(--safe-l));
+    bottom: max(12px, calc(var(--dock-h) + 8px + var(--safe-b)));
+    z-index: 40;
+  }
+  .os-chrome-stats {
+    right: max(12px, var(--safe-r));
+    bottom: max(12px, calc(var(--dock-h) + 8px + var(--safe-b)));
+    z-index: 30;
+  }
+  /* When any app window is open: keep theme out of the traffic-light corner */
+  .os-root[data-has-win="1"] .os-chrome-theme {
+    left: auto;
+    right: max(12px, var(--safe-r));
+    top: max(12px, var(--safe-t));
+  }
+  .os-root[data-has-win="1"] .os-chrome-spotify {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .os-win-frame {
+    z-index: 200;
+  }
+  .os-win-titlebar {
+    position: relative;
+    z-index: 20;
+  }
+  .os-traffic-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    z-index: 30;
+    padding: 4px 2px;
+    margin: -4px -2px;
+  }
+  .os-dock-nav {
+    bottom: max(6px, var(--safe-b));
+    padding: 0 max(8px, var(--safe-l)) 0 max(8px, var(--safe-r));
+    overflow: visible;
+  }
+  /* overflow:visible is required — overflow-x:auto clips macOS dock magnification */
+  .os-dock-shell {
+    max-width: min(100%, 920px);
+    overflow: visible;
+    padding: 14px 12px 8px;
+    align-items: flex-end;
+  }
+  .os-dock-item {
+    display: inline-flex;
+    align-items: flex-end;
+    justify-content: center;
+    overflow: visible;
+    will-change: transform;
+  }
+  .os-dock-btn {
+    width: 56px;
+    height: 56px;
+    overflow: visible;
+    cursor: pointer;
+  }
+  .os-dock-icon {
+    width: 52px;
+    height: 52px;
+    flex: 0 0 auto;
+  }
+  .os-dock-icon svg {
+    display: block;
+    position: relative;
+    z-index: 2;
+  }
+  .os-dock-icon.is-spotify {
+    background: #1DB954 !important;
+  }
   .os-about-grid { display: grid; grid-template-columns: minmax(0,1fr) 236px; gap: 32px; height: 100%; align-items: center; }
   .os-about-photo { height: 336px; }
   .os-about-h { font-size: 40px; }
@@ -99,10 +178,30 @@
   .os-win-body-pad { padding: 26px; }
   .os-win-body-pad.is-launcher { padding: 0 !important; background: transparent !important; }
   .os-project-row { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 12px; }
-  .os-traffic { width: 14px; height: 14px; border: 0; border-radius: 999px; padding: 0; box-shadow: 0 0 0 0.5px rgba(0,0,0,0.14) inset; flex: 0 0 14px; cursor: default; }
+  /* Visible 12–14px dots, but large touch hit-area so mobile can close */
+  .os-traffic {
+    position: relative;
+    width: 12px;
+    height: 12px;
+    border: 0;
+    border-radius: 999px;
+    padding: 0;
+    box-shadow: 0 0 0 0.5px rgba(0,0,0,0.14) inset;
+    flex: 0 0 12px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  .os-traffic::before {
+    content: "";
+    position: absolute;
+    inset: -12px;
+    border-radius: 999px;
+  }
   .os-traffic.close { background: #ff5f57; }
   .os-traffic.min { background: #febc2e; }
   .os-traffic.max { background: #28c840; }
+  .os-traffic:active { filter: brightness(0.92); transform: scale(0.92); }
   .os-empty {
     display: grid; place-items: center; gap: 12px; min-height: 220px; padding: 36px 22px;
     border: 1px dashed var(--hair); border-radius: 16px; background: var(--pane); text-align: center;
@@ -138,10 +237,54 @@
     .os-hero-eyebrow { font-size: 10.5px !important; letter-spacing: 0.32em !important; }
     .os-chrome-spotify { display: none !important; }
     .os-chrome-stats { display: none !important; }
-    .os-chrome-theme { left: max(10px, var(--safe-l)); top: max(10px, var(--safe-t)); transform: scale(0.95); transform-origin: top left; }
+    .os-chrome-theme {
+      left: auto;
+      right: max(10px, var(--safe-r));
+      top: max(10px, var(--safe-t));
+      transform: scale(0.92);
+      transform-origin: top right;
+    }
+    .os-root[data-has-win="1"] .os-chrome-theme {
+      /* stay top-right, never over traffic lights (top-left) */
+      opacity: 0.95;
+    }
+    .os-root[data-has-win="1"] .os-chrome-email {
+      opacity: 0;
+      pointer-events: none;
+    }
     .os-chrome-email { left: 50%; right: auto; bottom: max(10px, calc(var(--dock-h) + 10px + var(--safe-b))); transform: translateX(-50%); min-height: 38px; padding: 0 14px; font-size: 12px; }
+    .os-traffic {
+      width: 13px;
+      height: 13px;
+      flex: 0 0 13px;
+    }
+    .os-traffic::before {
+      inset: -14px;
+    }
+    .os-traffic-row {
+      gap: 10px;
+      padding: 6px 4px;
+      margin: -6px -4px;
+    }
+    .os-win-titlebar:not(.is-launcher) {
+      min-height: 52px !important;
+      height: 52px !important;
+      flex: 0 0 52px !important;
+      padding-left: 12px !important;
+      padding-right: 12px !important;
+    }
     .os-dock-nav { bottom: max(4px, var(--safe-b)); }
-    .os-dock-shell { gap: 2px !important; padding: 4px !important; border-radius: 20px !important; max-width: calc(100vw - 16px); }
+    .os-dock-shell {
+      gap: 3px !important;
+      padding: 6px 8px !important;
+      border-radius: 20px !important;
+      max-width: calc(100vw - 16px);
+      overflow-x: auto;
+      overflow-y: visible;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .os-dock-shell::-webkit-scrollbar { display: none; }
     .os-dock-btn { width: 44px; height: 44px; }
     .os-dock-icon { width: 40px !important; height: 40px !important; border-radius: 11px !important; }
     .os-dock-icon svg { width: 22px !important; height: 22px !important; }
@@ -164,7 +307,6 @@
     .os-win-body-pad.is-launcher { padding: 0 !important; }
     .os-project-row { grid-template-columns: 1fr; gap: 8px; }
     .os-sidebar { display: none !important; }
-    .os-win-titlebar:not(.is-launcher) { height: 48px !important; flex: 0 0 48px !important; }
   }
 
   @media (max-width: 380px) {
@@ -174,13 +316,12 @@
   }
 
   @media (pointer: coarse) {
-    .os-dock-shell { overflow-x: auto; }
     button, a { -webkit-tap-highlight-color: transparent; }
   }
 </style>
 </helmet>
 
-<div class="os-root" data-os-theme="{{ theme }}" data-vp="{{ vpLabel }}" style="position:relative;width:100%;height:100dvh;min-height:100vh;min-height:420px;overflow:hidden;color:var(--ink);transition:color 300ms ease;touch-action:manipulation">
+<div class="os-root" data-os-theme="{{ theme }}" data-vp="{{ vpLabel }}" data-has-win="{{ hasWinFlag }}" style="position:relative;width:100%;height:100dvh;min-height:100vh;min-height:420px;overflow:hidden;color:var(--ink);transition:color 300ms ease;touch-action:manipulation">
 
   <div aria-hidden="true" style="{{ wallpaper }}"></div>
   <div aria-hidden="true" style="{{ wallpaperWave }}"></div>
@@ -195,16 +336,16 @@
     <span></span>
   </section>
 
-  <aside class="os-chrome-spotify" style="position:absolute;z-index:6;border:1px solid var(--glass-line);border-radius:20px;background:var(--glass);box-shadow:var(--shadow);-webkit-backdrop-filter:blur(30px) saturate(170%);backdrop-filter:blur(30px) saturate(170%);padding:14px">
+  <aside class="os-chrome-spotify" style="position:absolute;border:1px solid var(--glass-line);border-radius:20px;background:var(--glass);box-shadow:var(--shadow);-webkit-backdrop-filter:blur(30px) saturate(170%);backdrop-filter:blur(30px) saturate(170%);padding:14px">
     <p style="margin:0 0 11px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:0.17em;text-transform:uppercase">Last Played</p>
-    <div style="position:relative;display:grid;place-items:center;aspect-ratio:1;overflow:hidden;border:1px solid var(--hair);border-radius:13px;background:linear-gradient(150deg, rgba(30,215,96,0.26), rgba(30,215,96,0.04) 58%), var(--chip)">
-      <svg width="52" height="52" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#1ED760"></circle><g fill="none" stroke="#0b2016" stroke-linecap="round"><path d="M6.5 8.9c3.65-1.08 8.08-.75 11.15.82" stroke-width="1.85"></path><path d="M7.15 12.05c3.18-.82 6.92-.52 9.65.7" stroke-width="1.65"></path><path d="M7.85 15.05c2.58-.6 5.53-.36 7.82.57" stroke-width="1.48"></path></g></svg>
+    <div style="position:relative;display:grid;place-items:center;aspect-ratio:1;overflow:hidden;border:1px solid var(--hair);border-radius:13px;background:#1DB954">
+      <svg width="52" height="52" viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
     </div>
     <p style="margin:12px 0 0;color:var(--ink);font-size:13px;font-weight:620;line-height:1.3;letter-spacing:-0.01em">Nothing connected yet</p>
     <p style="margin:4px 0 0;color:var(--ink-faint);font-size:11.5px;line-height:1.4">Open Spotify from the dock</p>
   </aside>
 
-  <div class="os-chrome-theme" style="position:absolute;z-index:5000;display:flex;align-items:center;gap:2px;border:1px solid var(--glass-line);border-radius:999px;background:var(--glass);box-shadow:var(--shadow);-webkit-backdrop-filter:blur(28px) saturate(170%);backdrop-filter:blur(28px) saturate(170%);padding:4px">
+  <div class="os-chrome-theme" style="position:absolute;display:flex;align-items:center;gap:2px;border:1px solid var(--glass-line);border-radius:999px;background:var(--glass);box-shadow:var(--shadow);-webkit-backdrop-filter:blur(28px) saturate(170%);backdrop-filter:blur(28px) saturate(170%);padding:4px">
     <sc-for list="{{ modes }}" as="m" hint-placeholder-count="2">
       <button type="button" onClick="{{ m.select }}" aria-label="{{ m.aria }}" style="{{ m.style }}">
         <sc-if value="{{ m.isLight }}" hint-placeholder-val="{{ true }}">
@@ -217,7 +358,7 @@
     </sc-for>
   </div>
 
-  <a href="mailto:thribhuvan003@gmail.com" class="os-chrome-email" style="position:absolute;z-index:5000;display:inline-flex;align-items:center;gap:9px;min-height:42px;border:1px solid var(--glass-line);border-radius:999px;background:var(--glass);box-shadow:var(--shadow);-webkit-backdrop-filter:blur(28px) saturate(170%);backdrop-filter:blur(28px) saturate(170%);padding:0 18px;color:var(--ink);font-size:13px;font-weight:600;white-space:nowrap">
+  <a href="mailto:thribhuvan003@gmail.com" class="os-chrome-email" style="position:absolute;display:inline-flex;align-items:center;gap:9px;min-height:42px;border:1px solid var(--glass-line);border-radius:999px;background:var(--glass);box-shadow:var(--shadow);-webkit-backdrop-filter:blur(28px) saturate(170%);backdrop-filter:blur(28px) saturate(170%);padding:0 18px;color:var(--ink);font-size:13px;font-weight:600;white-space:nowrap">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
     Email me
   </a>
@@ -225,13 +366,13 @@
   <p class="os-chrome-stats" style="position:absolute;z-index:5;margin:0;text-align:right;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10.5px;font-weight:600;letter-spacing:0.11em;text-transform:uppercase;line-height:1.65">Four public projects<br>Ten merged upstream PRs</p>
 
   <sc-for list="{{ windows }}" as="win" hint-placeholder-count="0">
-  <div style="{{ win.frame }}">
+  <div class="os-win-frame" style="{{ win.frame }}">
     <section data-screen-label="{{ win.label }}" onMouseDown="{{ win.focus }}" style="{{ win.shellStyle }}">
       <div class="os-win-titlebar {{ win.barClass }}" onPointerDown="{{ win.dragStart }}" onDoubleClick="{{ win.zoom }}" style="{{ win.barStyle }}">
-        <div style="display:flex;align-items:center;gap:8px">
-          <button type="button" class="os-traffic close" aria-label="Close" onClick="{{ win.close }}"></button>
-          <button type="button" class="os-traffic min" aria-label="Minimize" onClick="{{ win.minimize }}"></button>
-          <button type="button" class="os-traffic max" aria-label="Maximize" onClick="{{ win.zoom }}"></button>
+        <div class="os-traffic-row" onPointerDown="{{ win.stopDrag }}">
+          <button type="button" class="os-traffic close" aria-label="Close" onClick="{{ win.close }}" onPointerDown="{{ win.stopDrag }}"></button>
+          <button type="button" class="os-traffic min" aria-label="Minimize" onClick="{{ win.minimize }}" onPointerDown="{{ win.stopDrag }}"></button>
+          <button type="button" class="os-traffic max" aria-label="Maximize" onClick="{{ win.zoom }}" onPointerDown="{{ win.stopDrag }}"></button>
         </div>
         <div style="{{ win.titleStyle }}">{{ win.label }}</div>
         <span style="{{ win.barPadStyle }}"></span>
@@ -604,8 +745,8 @@
 
         <sc-if value="{{ win.isSpotify }}" hint-placeholder-val="{{ false }}">
           <div style="display:flex;flex-direction:column;gap:16px;min-height:100%">
-            <div style="position:relative;display:grid;place-items:center;aspect-ratio:1;overflow:hidden;border:1px solid var(--hair);border-radius:16px;background:linear-gradient(150deg,#4bef8e 0%,#1ed760 44%,#0f7f3c 100%);box-shadow:0 20px 44px rgba(14,110,56,0.28), 0 1px 0 rgba(255,255,255,0.4) inset">
-              <svg width="118" height="118" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="#0a2416" stroke-linecap="round"><path d="M6.5 8.9c3.65-1.08 8.08-.75 11.15.82" stroke-width="1.9"></path><path d="M7.15 12.05c3.18-.82 6.92-.52 9.65.7" stroke-width="1.7"></path><path d="M7.85 15.05c2.58-.6 5.53-.36 7.82.57" stroke-width="1.5"></path></g></svg>
+            <div style="position:relative;display:grid;place-items:center;aspect-ratio:1;overflow:hidden;border:1px solid var(--hair);border-radius:16px;background:#1DB954;box-shadow:0 20px 44px rgba(14,110,56,0.28), 0 1px 0 rgba(255,255,255,0.4) inset">
+              <svg width="96" height="96" viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
             </div>
             <div>
               <p style="margin:0 0 8px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">Music</p>
@@ -646,30 +787,30 @@
   </sc-for>
 
   <nav class="os-dock-nav" aria-label="Dock" style="position:fixed;z-index:6000;left:0;right:0;display:flex;justify-content:center;pointer-events:none">
-    <div class="os-dock-shell" style="position:relative;display:flex;align-items:flex-end;gap:6px;padding:6px;border:1px solid var(--dock-line);border-radius:24px;background:var(--dock);box-shadow:0 24px 60px rgba(6,20,40,0.30), 0 6px 18px rgba(6,20,40,0.14), 0 1px 0 rgba(255,255,255,0.55) inset, 0 -1px 0 rgba(0,0,0,0.06) inset;-webkit-backdrop-filter:blur(34px) saturate(190%);backdrop-filter:blur(34px) saturate(190%);pointer-events:auto">
+    <div class="os-dock-shell" onMouseLeave="{{ dockLeave }}" style="position:relative;display:flex;align-items:flex-end;gap:6px;border:1px solid var(--dock-line);border-radius:24px;background:var(--dock);box-shadow:0 24px 60px rgba(6,20,40,0.30), 0 6px 18px rgba(6,20,40,0.14), 0 1px 0 rgba(255,255,255,0.55) inset, 0 -1px 0 rgba(0,0,0,0.06) inset;-webkit-backdrop-filter:blur(34px) saturate(190%);backdrop-filter:blur(34px) saturate(190%);pointer-events:auto">
       <sc-for list="{{ dock }}" as="item" hint-placeholder-count="8">
-        <span style="{{ item.wrapStyle }}">
-          <button type="button" class="os-dock-btn" aria-label="{{ item.aria }}" onClick="{{ item.activate }}" onMouseEnter="{{ item.enter }}" onMouseLeave="{{ item.leave }}" style="position:relative;display:grid;place-items:end center;border:0;background:transparent;padding:0">
+        <span class="os-dock-item" style="{{ item.wrapStyle }}">
+          <button type="button" class="os-dock-btn" aria-label="{{ item.aria }}" onClick="{{ item.activate }}" onMouseEnter="{{ item.enter }}" style="position:relative;display:grid;place-items:end center;border:0;background:transparent;padding:0">
             <span style="{{ item.tooltipStyle }}">{{ item.label }}</span>
-            <span class="os-dock-icon" style="{{ item.iconStyle }}">
+            <span class="os-dock-icon {{ item.iconClass }}" style="{{ item.iconStyle }}">
               <sc-if value="{{ item.artwork }}" hint-placeholder-val="{{ true }}">
                 <img src="{{ item.artwork }}" alt="" aria-hidden="true" style="{{ item.artStyle }}">
               </sc-if>
               <sc-if value="{{ item.isGithub }}" hint-placeholder-val="{{ false }}">
-                <svg width="34" height="34" viewBox="0 0 24 24" fill="#f4f7fb" style="position:relative;z-index:2"><path d="M12 .8a11.2 11.2 0 0 0-3.54 21.82c.56.1.76-.24.76-.54v-2.1c-3.1.68-3.75-1.32-3.75-1.32-.5-1.28-1.24-1.62-1.24-1.62-1.02-.7.08-.69.08-.69 1.12.08 1.7 1.16 1.7 1.16 1 .1.55 2.62 3.16 1.86.1-.73.39-1.23.71-1.51-2.47-.28-5.06-1.24-5.06-5.5 0-1.22.43-2.21 1.15-2.99-.12-.28-.5-1.42.1-2.95 0 0 .95-.3 3.08 1.14a10.6 10.6 0 0 1 5.6 0c2.13-1.44 3.07-1.14 3.07-1.14.6 1.53.22 2.67.11 2.95.72.78 1.15 1.77 1.15 2.99 0 4.27-2.6 5.21-5.08 5.49.4.34.76 1.02.76 2.06v3.06c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"></path></svg>
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="#f4f7fb" aria-hidden="true"><path d="M12 .8a11.2 11.2 0 0 0-3.54 21.82c.56.1.76-.24.76-.54v-2.1c-3.1.68-3.75-1.32-3.75-1.32-.5-1.28-1.24-1.62-1.24-1.62-1.02-.7.08-.69.08-.69 1.12.08 1.7 1.16 1.7 1.16 1 .1.55 2.62 3.16 1.86.1-.73.39-1.23.71-1.51-2.47-.28-5.06-1.24-5.06-5.5 0-1.22.43-2.21 1.15-2.99-.12-.28-.5-1.42.1-2.95 0 0 .95-.3 3.08 1.14a10.6 10.6 0 0 1 5.6 0c2.13-1.44 3.07-1.14 3.07-1.14.6 1.53.22 2.67.11 2.95.72.78 1.15 1.77 1.15 2.99 0 4.27-2.6 5.21-5.08 5.49.4.34.76 1.02.76 2.06v3.06c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"></path></svg>
               </sc-if>
               <sc-if value="{{ item.isLinkedin }}" hint-placeholder-val="{{ false }}">
-                <svg width="46" height="46" viewBox="0 0 24 24" style="position:relative;z-index:2"><path fill="#fff" d="M7.1 9.2H4.05V19H7.1V9.2ZM5.58 4.32a1.77 1.77 0 1 0 0 3.54 1.77 1.77 0 0 0 0-3.54ZM19.95 13.38c0-2.96-1.58-4.34-3.69-4.34-1.7 0-2.46.94-2.88 1.59V9.2h-3.05V19h3.05v-4.86c0-1.28.24-2.52 1.83-2.52 1.57 0 1.59 1.47 1.59 2.6V19h3.05l.1-5.62Z"></path></svg>
+                <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M7.1 9.2H4.05V19H7.1V9.2ZM5.58 4.32a1.77 1.77 0 1 0 0 3.54 1.77 1.77 0 0 0 0-3.54ZM19.95 13.38c0-2.96-1.58-4.34-3.69-4.34-1.7 0-2.46.94-2.88 1.59V9.2h-3.05V19h3.05v-4.86c0-1.28.24-2.52 1.83-2.52 1.57 0 1.59 1.47 1.59 2.6V19h3.05l.1-5.62Z"></path></svg>
               </sc-if>
               <sc-if value="{{ item.isSpotify }}" hint-placeholder-val="{{ false }}">
-                <svg width="46" height="46" viewBox="0 0 24 24" style="position:relative;z-index:2"><g fill="none" stroke="#0b2016" stroke-linecap="round"><path d="M6.5 8.9c3.65-1.08 8.08-.75 11.15.82" stroke-width="1.9"></path><path d="M7.15 12.05c3.18-.82 6.92-.52 9.65.7" stroke-width="1.7"></path><path d="M7.85 15.05c2.58-.6 5.53-.36 7.82.57" stroke-width="1.5"></path></g></svg>
+                <svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
               </sc-if>
               <sc-if value="{{ item.glyph }}" hint-placeholder-val="{{ false }}">
-                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="{{ item.glyphStroke }}" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="position:relative;z-index:2;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.18))"><path d="{{ item.glyph }}"></path><path d="{{ item.glyph2 }}"></path></svg>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="{{ item.glyphStroke }}" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="filter:drop-shadow(0 1px 2px rgba(0,0,0,0.18))"><path d="{{ item.glyph }}"></path><path d="{{ item.glyph2 }}"></path></svg>
               </sc-if>
             </span>
             <sc-if value="{{ item.active }}" hint-placeholder-val="{{ false }}">
-              <span aria-hidden="true" style="position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:999px;background:var(--ink-soft)"></span>
+              <span aria-hidden="true" style="position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:999px;background:var(--ink-soft);box-shadow:0 0 0 1px rgba(255,255,255,0.25)"></span>
             </sc-if>
           </button>
         </span>
@@ -710,7 +851,7 @@ const APPS = [
   { id: "github", label: "GitHub", plate: "linear-gradient(160deg,#4c545e 0%,#24292f 52%,#0d1117 100%)" },
   { id: "linkedin", label: "LinkedIn", plate: "linear-gradient(160deg,#3d9ae0 0%,#0a66c2 54%,#054a92 100%)", external: L.linkedin },
   { id: "resumepdf", label: "Résumé", plate: "linear-gradient(160deg,#fdfdfd 0%,#e8ebef 52%,#c8cfd8 100%)", glyph: "M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z", glyph2: "M14 2v5h6M8 13h8M8 17h5", stroke: "#4a5560" },
-  { id: "spotify", label: "Spotify", plate: "linear-gradient(160deg,#4bef8e 0%,#1ed760 46%,#12a147 100%)" },
+  { id: "spotify", label: "Spotify", plate: "#1DB954" },
 ];
 
 const GEOM = {
@@ -794,9 +935,9 @@ class Component extends DCLogic {
   constructor(props) {
     super(props);
     const w = {};
-    Object.keys(GEOM).forEach((id, i) => { w[id] = { ...GEOM[id], open: false, minimized: false, maximized: false, z: 10 + i }; });
+    Object.keys(GEOM).forEach((id, i) => { w[id] = { ...GEOM[id], open: false, minimized: false, maximized: false, z: 200 + i }; });
     const vp = this.viewport();
-    this.state = { theme: (props && props.theme) || "light", windows: w, hovered: null, folder: null, zTop: 30, typed: "", vp };
+    this.state = { theme: (props && props.theme) || "light", windows: w, hovered: null, folder: null, zTop: 220, typed: "", vp };
     this._phrase = 0;
     this._char = 0;
     this._erasing = false;
@@ -908,8 +1049,13 @@ class Component extends DCLogic {
 
   patch(id, next) { this.setState((s) => ({ windows: { ...s.windows, [id]: { ...s.windows[id], ...next } } })); }
 
+  stopDrag(e) {
+    if (e && e.stopPropagation) e.stopPropagation();
+    if (e && e.preventDefault) e.preventDefault();
+  }
+
   drag(id, event, mode) {
-    if (mode === "move" && event.target.closest("button, a")) return;
+    if (mode === "move" && event.target.closest("button, a, .os-traffic, .os-traffic-row")) return;
     const w = this.state.windows[id];
     if (w.maximized) return;
     const vp = this.viewport();
@@ -980,11 +1126,14 @@ class Component extends DCLogic {
         barClass: launcher ? "is-launcher" : "",
         bodyClass: launcher ? "is-launcher" : "",
         frame: {
-          position: "absolute", zIndex: w.z,
+          position: "absolute",
+          // Always above desktop chrome (theme/spotify z:40) so red/yellow/green stay clickable
+          zIndex: Math.max(200, w.z),
           left: sheet ? (phone ? 8 : 8) : (launcher ? Math.round((vw - lw) / 2) : w.x),
-          top: sheet ? (phone ? 10 : 28) : (launcher ? Math.round((vh - lh) / 2) - 18 : w.y),
+          // Leave room under top chrome on desktop; on phone top-left is free (theme moved to right)
+          top: sheet ? (phone ? 8 : 36) : (launcher ? Math.round((vh - lh) / 2) - 18 : Math.max(w.y, phone ? 8 : 48)),
           width: sheet ? (phone ? "calc(100% - 16px)" : "calc(100% - 16px)") : (launcher ? lw : w.w),
-          height: sheet ? (phone ? "calc(100% - 88px)" : "calc(100% - 112px)") : (launcher ? lh : w.h),
+          height: sheet ? (phone ? "calc(100% - 86px)" : "calc(100% - 120px)") : (launcher ? lh : w.h),
           maxWidth: launcher && !sheet ? 380 : undefined,
           opacity: w.minimized ? 0 : 1,
           transform: w.minimized ? "translateY(280px) scale(0.8)" : "none",
@@ -1039,56 +1188,86 @@ class Component extends DCLogic {
         isOss: w.id === "oss", isImages: w.id === "images", isSpotify: w.id === "spotify",
         isContact: w.id === "contact" || w.id === "resumepdf",
         focus: () => this.focus(w.id),
-        close: () => { this.patch(w.id, { open: false, minimized: false, maximized: false }); if (w.id === "work") this.setState({ folder: null }); },
-        minimize: () => this.patch(w.id, { minimized: !w.minimized }),
-        zoom: () => { this.focus(w.id); this.patch(w.id, { maximized: !w.maximized }); },
+        stopDrag: (e) => this.stopDrag(e),
+        close: (e) => {
+          this.stopDrag(e);
+          this.patch(w.id, { open: false, minimized: false, maximized: false });
+          if (w.id === "work") this.setState({ folder: null });
+        },
+        minimize: (e) => {
+          this.stopDrag(e);
+          this.patch(w.id, { minimized: !w.minimized });
+        },
+        zoom: (e) => {
+          this.stopDrag(e);
+          this.focus(w.id);
+          this.patch(w.id, { maximized: !w.maximized });
+        },
         dragStart: (e) => this.drag(w.id, e, "move"),
         resizeStart: (e) => this.drag(w.id, e, "resize"),
       };
       });
 
+    // macOS dock magnification: neighbors lift with the hovered icon
     const dock = APPS.map((app, i) => {
       const st = s.windows[app.id];
-      const d = (!phone && s.hovered !== null) ? Math.abs(s.hovered - i) : 4;
-      const lift = phone ? 0 : (d === 0 ? -16 : d === 1 ? -7 : d === 2 ? -2 : 0);
-      const scale = phone ? 1 : (d === 0 ? 1.42 : d === 1 ? 1.2 : d === 2 ? 1.06 : 1);
+      let scale = 1;
+      let lift = 0;
+      if (!phone && s.hovered !== null) {
+        const d = Math.abs(s.hovered - i);
+        if (d === 0) { scale = 1.55; lift = -18; }
+        else if (d === 1) { scale = 1.28; lift = -10; }
+        else if (d === 2) { scale = 1.12; lift = -4; }
+        else if (d === 3) { scale = 1.04; lift = -1; }
+      }
       const hovering = !phone && s.hovered === i;
+      const isSpotify = app.id === "spotify";
+      const iconBg = isSpotify
+        ? "#1DB954"
+        : (app.artwork ? (app.plate || "#f7f9fc") : app.plate);
       return {
         label: app.label,
         aria: app.external ? "Open " + app.label + " in a new tab" : (st && st.minimized ? "Restore " : st && st.open ? "Focus " : "Open ") + app.label,
         active: !!(st && st.open && !app.external),
         artwork: app.artwork || null,
         glyph: app.glyph || null, glyph2: app.glyph2 || "", glyphStroke: app.stroke || "#ffffff",
-        isGithub: app.id === "github", isLinkedin: app.id === "linkedin", isSpotify: app.id === "spotify",
+        isGithub: app.id === "github", isLinkedin: app.id === "linkedin", isSpotify,
+        iconClass: isSpotify ? "is-spotify" : "",
         wrapStyle: {
-          display: "inline-block", transformOrigin: "50% 100%",
-          transform: "translateY(" + lift + "px) scale(" + scale + ")",
-          marginInline: phone ? "0px" : ((scale - 1) * 26).toFixed(2) + "px",
-          transition: "transform 260ms cubic-bezier(0.22,1,0.36,1), margin-inline 260ms cubic-bezier(0.22,1,0.36,1)",
+          display: "inline-flex",
+          alignItems: "flex-end",
+          justifyContent: "center",
+          transformOrigin: "50% 100%",
+          transform: "translate3d(0," + lift + "px,0) scale(" + scale + ")",
+          marginInline: phone ? "0px" : ((scale - 1) * 22).toFixed(2) + "px",
+          transition: "transform 180ms cubic-bezier(0.22,1,0.36,1), margin-inline 180ms cubic-bezier(0.22,1,0.36,1)",
+          zIndex: hovering ? 5 : 1,
         },
         iconStyle: {
           position: "relative", display: "grid", placeItems: "center", isolation: "isolate",
-          width: phone ? 40 : 52, height: phone ? 40 : 52, overflow: "hidden", borderRadius: phone ? 11 : SQUIRCLE,
-          background: app.artwork ? (app.plate || "#f7f9fc") : app.plate,
+          width: phone ? 40 : 52, height: phone ? 40 : 52,
+          overflow: "hidden",
+          borderRadius: phone ? 11 : SQUIRCLE,
+          background: iconBg,
           boxShadow: "0 8px 16px rgba(6,20,40,0.22), 0 1px 3px rgba(6,20,40,0.14), 0 1px 0 rgba(255,255,255,0.45) inset, 0 -1px 0 rgba(0,0,0,0.18) inset",
         },
         artStyle: { position: "absolute", inset: 0, zIndex: 2, width: "100%", height: "100%", objectFit: "cover", objectPosition: app.id === "about" ? "50% 28%" : "center", transform: app.id === "work" ? "scale(1)" : "scale(1.18)", pointerEvents: "none" },
         tooltipStyle: {
-          position: "absolute", bottom: "calc(100% + 14px)", left: "50%", zIndex: 3,
-          transform: "translateX(-50%) scale(" + (hovering ? 1 : 0.9) + ")", transformOrigin: "bottom",
+          position: "absolute", bottom: "calc(100% + 16px)", left: "50%", zIndex: 6,
+          transform: "translateX(-50%) translateY(" + (hovering ? "0" : "4px") + ") scale(" + (hovering ? 1 : 0.92) + ")",
+          transformOrigin: "bottom center",
           opacity: hovering ? 1 : 0, pointerEvents: "none", whiteSpace: "nowrap",
           border: "1px solid var(--glass-line)", borderRadius: 8, background: "var(--glass-2)",
           boxShadow: "0 10px 26px rgba(6,20,40,0.24)", color: "var(--ink)", padding: "5px 10px",
           fontSize: 11.5, fontWeight: 600, letterSpacing: "-0.005em",
           WebkitBackdropFilter: "blur(24px) saturate(180%)", backdropFilter: "blur(24px) saturate(180%)",
-          transition: "opacity 160ms ease, transform 160ms ease",
+          transition: "opacity 140ms ease, transform 140ms ease",
         },
         activate: () => {
           if (st && st.open && !st.minimized && !app.external) this.focus(app.id);
           else this.open(app);
         },
         enter: () => { if (!phone) this.setState({ hovered: i }); },
-        leave: () => { if (!phone) this.setState({ hovered: null }); },
       };
     });
 
@@ -1134,9 +1313,12 @@ class Component extends DCLogic {
       },
     }));
 
+    const hasOpenWin = Object.keys(s.windows).some((id) => s.windows[id].open && !s.windows[id].minimized);
     return {
       theme: s.theme, isDark: dark, isLight: !dark, wallpaper, wallpaperWave, modes, typed: s.typed,
       vpLabel: vp.label || "desktop",
+      hasWinFlag: hasOpenWin ? "1" : "0",
+      dockLeave: () => { if (!phone) this.setState({ hovered: null }); },
       windows, dock, folders, finderViews, atRoot, notRoot: !atRoot,
       splitStyle: {
         display: "grid",
