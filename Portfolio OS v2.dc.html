@@ -26,20 +26,20 @@
   a:hover { color:var(--accent); }
   [data-os-theme="light"] {
     --ink:#10233d; --ink-soft:rgba(16,35,61,0.60); --ink-faint:rgba(16,35,61,0.38); --wordmark:#5b544c; --wm-glow:rgba(140,128,110,0.55);
-    --hair:rgba(16,35,61,0.10); --glass:rgba(255,255,255,0.50); --glass-2:rgba(255,255,255,0.34);
-    --glass-line:rgba(255,255,255,0.72); --titlebar:rgba(244,246,249,0.86); --pane:rgba(255,255,255,0.30);
-    --sheet:rgba(255,255,255,0.26); --chip:rgba(255,255,255,0.58); --accent:#0a68c9; --accent-soft:rgba(10,104,201,0.12);
+    --hair:rgba(16,35,61,0.10); --glass:rgba(255,255,255,0.50); --glass-2:rgba(255,255,255,0.30);
+    --glass-line:rgba(255,255,255,0.72); --titlebar:rgba(246,246,244,0.68); --pane:rgba(255,255,255,0.20);
+    --sheet:rgba(252,252,251,0.90); --chip:rgba(255,255,255,0.58); --accent:#0a68c9; --accent-soft:rgba(10,104,201,0.12);
     --shadow:0 34px 88px rgba(18,45,80,0.18), 0 12px 30px rgba(18,45,80,0.10), 0 1px 0 rgba(255,255,255,0.95) inset, 0 0 0 1px rgba(18,45,80,0.05) inset;
     --dock:rgba(255,255,255,0.42); --dock-line:rgba(255,255,255,0.75);
     --menubar:rgba(255,255,255,0.34); --menubar-ink:rgba(14,30,52,0.86);
-    --chrome:linear-gradient(177deg,#ffffff 3%,#eaf3fc 22%,#9dbcda 46%,#ffffff 60%,#c6dbee 76%,#7c9dc0 100%);
-    --chrome-glow:drop-shadow(0 20px 34px rgba(26,58,98,0.22)) drop-shadow(0 1px 0 rgba(255,255,255,0.95));
+    --chrome:linear-gradient(177deg,#9a9083 2%,#6b6155 18%,#332d26 42%,#7d7264 56%,#413a31 76%,#241f1a 100%);
+    --chrome-glow:drop-shadow(0 18px 30px rgba(58,44,26,0.20)) drop-shadow(0 1px 0 rgba(255,255,255,0.75));
   }
   [data-os-theme="dark"] {
     --ink:#eaf2fd; --ink-soft:rgba(226,238,252,0.62); --ink-faint:rgba(226,238,252,0.38); --wordmark:#dbe6f4; --wm-glow:rgba(150,200,250,0.6);
-    --hair:rgba(175,210,246,0.16); --glass:rgba(34,64,104,0.46); --glass-2:rgba(20,42,72,0.40);
-    --glass-line:rgba(190,220,250,0.20); --titlebar:rgba(33,58,92,0.88); --pane:rgba(14,32,56,0.42);
-    --sheet:rgba(8,22,42,0.26); --chip:rgba(170,208,248,0.16); --accent:#6fb7f5; --accent-soft:rgba(111,183,245,0.16);
+    --hair:rgba(175,210,246,0.16); --glass:rgba(34,64,104,0.46); --glass-2:rgba(20,42,72,0.34);
+    --glass-line:rgba(190,220,250,0.20); --titlebar:rgba(33,58,92,0.70); --pane:rgba(14,32,56,0.30);
+    --sheet:rgba(16,32,54,0.90); --chip:rgba(170,208,248,0.16); --accent:#6fb7f5; --accent-soft:rgba(111,183,245,0.16);
     --shadow:0 34px 88px rgba(1,6,14,0.60), 0 12px 30px rgba(1,6,14,0.38), 0 1px 0 rgba(190,220,250,0.14) inset, 0 0 0 1px rgba(0,0,0,0.30) inset;
     --dock:rgba(22,45,76,0.46); --dock-line:rgba(190,220,250,0.18);
     --menubar:rgba(8,20,38,0.40); --menubar-ink:rgba(233,242,253,0.88);
@@ -67,8 +67,44 @@
 
   /* —— Responsive OS shell (Miller-style) —— */
   .os-root { --dock-h: 76px; --safe-t: env(safe-area-inset-top, 0px); --safe-b: env(safe-area-inset-bottom, 0px); --safe-l: env(safe-area-inset-left, 0px); --safe-r: env(safe-area-inset-right, 0px); }
-  .os-hero { padding: 56px clamp(24px, 12vw, 320px) 104px; }
-  .os-hero-title { font-size: min(16cqw, 24vh, 214px); }
+  .os-hero { padding: clamp(30px, 5vh, 60px) clamp(20px, 5vw, 132px) clamp(300px, 46vh, 470px); }
+  .os-hero-title { font-size: min(19cqw, 30vh, 258px); }
+  /* Subtle dot grid over the wallpaper */
+  .os-dotgrid {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background-image: radial-gradient(currentColor 1px, transparent 1px);
+    background-size: 22px 22px;
+    background-position: -1px -1px;
+  }
+  [data-os-theme="light"] .os-dotgrid { color: rgba(74, 62, 46, 0.13); }
+  [data-os-theme="dark"]  .os-dotgrid { color: rgba(180, 214, 250, 0.09); }
+  /* Hero subject: cutout bleeds off the bottom edge, in front of the wordmark (Miller composition) */
+  .os-hero-subject {
+    position: absolute;
+    /* Right of centre so app windows, which open centred, never cover the face */
+    left: 66%;
+    bottom: 0;
+    z-index: 3;
+    height: min(52vh, 500px);
+    max-width: 78vw;
+    transform: translateX(-50%);
+    object-fit: contain;
+    object-position: bottom center;
+    pointer-events: none;
+    filter: drop-shadow(0 26px 46px rgba(40, 30, 18, 0.22));
+    animation: subject-rise 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both;
+  }
+  @keyframes subject-rise {
+    from { opacity: 0; transform: translateX(-50%) translateY(38px); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
+  @media (max-width: 1023px) { .os-hero-subject { left: 50%; height: min(44vh, 400px); } }
+  @media (prefers-reduced-motion: reduce) {
+    .os-hero-subject { animation: none; opacity: 1; transform: translateX(-50%); }
+  }
   /* Chrome sits UNDER windows so traffic lights stay clickable (was z:5000 — blocked close) */
   .os-chrome-theme {
     left: max(12px, var(--safe-l));
@@ -105,6 +141,14 @@
   }
   .os-win-frame {
     z-index: 200;
+    animation: win-open 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  @keyframes win-open {
+    from { opacity: 0; transform: translateY(10px) scale(0.965); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .os-win-frame { animation: none; }
   }
   .os-win-titlebar {
     position: relative;
@@ -157,6 +201,16 @@
   .os-dock-icon.is-spotify {
     background: #1DB954 !important;
   }
+  /* Hairline between apps and social links, as in the macOS dock */
+  .os-dock-sep {
+    flex: 0 0 auto;
+    align-self: center;
+    width: 1px;
+    height: 40px;
+    margin: 0 5px;
+    background: currentColor;
+    opacity: 0.16;
+  }
   .os-about-grid { display: grid; grid-template-columns: minmax(0,1fr) 236px; gap: 32px; height: 100%; align-items: center; }
   .os-about-photo { height: 336px; }
   .os-about-h { font-size: 40px; }
@@ -166,13 +220,30 @@
   .os-oss-finder-row { display: grid; grid-template-columns: 30px minmax(0,0.9fr) minmax(0,1.1fr) 14px; align-items: center; gap: 14px; }
   .os-gallery-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; }
   .os-resume-split { display: grid; grid-template-columns: minmax(0,1.3fr) minmax(228px,0.9fr); gap: 14px; }
-  .os-folder-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); justify-items: center; align-items: center; gap: 24px; padding: 8px 4px; width: 100%; }
-  .os-folder-tile { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; border: 0; background: transparent; padding: 6px 4px; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
-  .os-folder-icon { position: relative; display: flex; align-items: center; justify-content: center; width: 84px; height: 84px; filter: drop-shadow(0 6px 14px rgba(0,0,0,0.22)); transition: transform 160ms cubic-bezier(0.22,1,0.36,1); }
+  .os-folder-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); justify-items: center; align-items: start; column-gap: 12px; row-gap: 18px; padding: 4px; width: 100%; }
+  .os-folder-tile { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 6px; border: 0; border-radius: 10px; background: transparent; padding: 6px 4px; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; transition: background 140ms ease; }
+  .os-folder-tile:hover { background: rgba(125,145,175,0.10); }
+  .os-folder-icon { position: relative; display: flex; align-items: center; justify-content: center; width: 76px; height: 76px; filter: drop-shadow(0 6px 14px rgba(0,0,0,0.22)); transition: transform 160ms cubic-bezier(0.22,1,0.36,1); }
   .os-folder-tile:hover .os-folder-icon { transform: translateY(-2px) scale(1.03); }
-  .os-folder-label { margin-top: 2px; max-width: 132px; text-align: center; font-size: 13px; font-weight: 600; letter-spacing: 0.01em; line-height: 1.25; transition: color 150ms ease; }
+  .os-folder-label { margin-top: 0; max-width: 136px; text-align: center; font-size: 12.5px; font-weight: 600; letter-spacing: -0.005em; line-height: 1.3; transition: color 150ms ease; }
   .os-folder-tile:hover .os-folder-label { filter: brightness(1.08); }
   .os-folder-tile:active .os-folder-icon { transform: scale(0.96); }
+  /* Education & Experience (Skills & Exp window) */
+  .os-skills-split { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px; align-items: start; }
+  .os-card { border: 1px solid var(--hair); border-radius: 14px; background: var(--glass); padding: 16px; }
+  .os-card-head { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--hair); color: var(--accent); }
+  .os-card-head h3 { margin: 0; color: var(--ink); font-size: 12.5px; font-weight: 700; letter-spacing: -0.01em; }
+  .os-card-empty { margin: 0; color: var(--ink-soft); font-size: 12.5px; line-height: 1.55; }
+  .os-entry { border: 1px solid var(--hair); border-radius: 10px; background: var(--chip); padding: 12px; }
+  .os-entry-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+  .os-entry-top strong { color: var(--ink); font-size: 13px; font-weight: 660; line-height: 1.3; letter-spacing: -0.01em; }
+  .os-entry-when { flex: 0 0 auto; color: var(--ink-faint); font-family: 'Geist Mono', monospace; font-size: 10px; font-weight: 600; white-space: nowrap; }
+  .os-entry-org { margin: 3px 0 0; color: var(--ink-soft); font-size: 12px; font-weight: 500; }
+  .os-entry-list { margin: 9px 0 0; padding-left: 15px; display: grid; gap: 5px; }
+  .os-entry-list li { color: var(--ink-soft); font-size: 12px; line-height: 1.5; }
+  .os-pdf { flex: 1; min-height: 320px; width: 100%; border: 1px solid var(--hair); border-radius: 12px; background: var(--chip); }
+  .os-chip-btn { display: inline-flex; align-items: center; gap: 9px; min-height: 42px; border: 1px solid var(--glass-line); border-radius: 999px; background: var(--glass); box-shadow: var(--shadow); -webkit-backdrop-filter: blur(28px) saturate(170%); backdrop-filter: blur(28px) saturate(170%); padding: 0 18px; color: var(--ink); font-size: 13px; font-weight: 600; white-space: nowrap; transition: transform 150ms ease; }
+  .os-chip-btn:hover { transform: translateY(-1px); color: inherit; }
   .os-finder-search { width: 132px; }
   .os-resize-grip { display: block; }
   .os-win-body-pad { padding: 26px; }
@@ -231,7 +302,7 @@
 
   @media (max-width: 699px) {
     .os-root { --dock-h: 64px; }
-    .os-hero { padding: 88px 18px 132px; }
+    .os-hero { padding: 48px 18px clamp(300px, 44vh, 400px); }
     .os-hero-title { font-size: min(18vw, 16vh, 92px) !important; }
     .os-hero-sub { font-size: 13.5px !important; max-width: 34ch !important; }
     .os-hero-eyebrow { font-size: 10.5px !important; letter-spacing: 0.32em !important; }
@@ -252,7 +323,8 @@
       opacity: 0;
       pointer-events: none;
     }
-    .os-chrome-email { left: 50%; right: auto; bottom: max(10px, calc(var(--dock-h) + 10px + var(--safe-b))); transform: translateX(-50%); min-height: 38px; padding: 0 14px; font-size: 12px; }
+    .os-chrome-email { left: 50%; right: auto; bottom: max(10px, calc(var(--dock-h) + 10px + var(--safe-b))); transform: translateX(-50%); flex-wrap: nowrap; gap: 6px; }
+    .os-chip-btn { min-height: 38px; padding: 0 14px; font-size: 12px; }
     .os-traffic {
       width: 13px;
       height: 13px;
@@ -326,20 +398,23 @@
   <div aria-hidden="true" style="{{ wallpaper }}"></div>
   <div aria-hidden="true" style="{{ wallpaperWave }}"></div>
   <div aria-hidden="true" style="position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0.035;mix-blend-mode:overlay;background-image:url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;);background-size:180px 180px"></div>
+  <div aria-hidden="true" class="os-dotgrid"></div>
 
   <section data-screen-label="Desktop hero" class="os-hero" style="position:absolute;z-index:2;inset:0;display:grid;align-content:center;justify-content:stretch;justify-items:stretch;pointer-events:none">
     <div style="display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;container-type:inline-size">
       <p data-wm-eyebrow="true" class="os-hero-eyebrow" style="margin:0;color:var(--ink-soft);font-family:'Geist Mono',monospace;font-size:12px;font-weight:600;letter-spacing:0.5em;text-transform:uppercase;text-indent:0.5em;animation:wm-rise 1.2s cubic-bezier(0.16,1,0.3,1) 0.15s both">Hi, I'm</p>
-      <h1 data-wm="true" class="os-hero-title" style="display:block;width:100%;margin:0;font-family:'Grand Hotel',cursive;text-align:center;font-weight:400;letter-spacing:0.006em;line-height:1;color:var(--wordmark);-webkit-mask-image:linear-gradient(90deg,#000 0%,#000 28%,rgba(0,0,0,0.55) 36%,rgba(0,0,0,0.18) 43%,transparent 50%);mask-image:linear-gradient(90deg,#000 0%,#000 28%,rgba(0,0,0,0.55) 36%,rgba(0,0,0,0.18) 43%,transparent 50%);-webkit-mask-size:300% 100%;mask-size:300% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;animation:wm-draw 4.6s cubic-bezier(0.36,0.03,0.16,1) 0.5s both, wm-glow 7s ease-out 0.5s both">Thribhuvan</h1>
+      <h1 data-wm="true" class="os-hero-title" style="display:block;width:100%;margin:0;font-family:'Grand Hotel',cursive;text-align:center;font-weight:400;letter-spacing:0.006em;line-height:1;color:transparent;background-image:var(--chrome);-webkit-background-clip:text;background-clip:text;filter:var(--chrome-glow);-webkit-mask-image:linear-gradient(90deg,#000 0%,#000 28%,rgba(0,0,0,0.55) 36%,rgba(0,0,0,0.18) 43%,transparent 50%);mask-image:linear-gradient(90deg,#000 0%,#000 28%,rgba(0,0,0,0.55) 36%,rgba(0,0,0,0.18) 43%,transparent 50%);-webkit-mask-size:300% 100%;mask-size:300% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;animation:wm-draw 4.6s cubic-bezier(0.36,0.03,0.16,1) 0.5s both, wm-glow 7s ease-out 0.5s both">Thribhuvan</h1>
       <p data-wm-sub="true" class="os-hero-sub" style="display:flex;align-items:center;justify-content:center;gap:1px;min-height:24px;margin:0;max-width:56ch;text-align:center;color:var(--ink-soft);font-size:15.5px;font-weight:500;line-height:1.5;letter-spacing:-0.008em;animation:wm-rise 1.1s cubic-bezier(0.16,1,0.3,1) 5.1s both"><span>{{ typed }}</span><span aria-hidden="true" style="display:inline-block;width:1.5px;height:17px;margin-left:2px;background:var(--ink-faint);animation:caret-blink 1.06s step-end infinite"></span></p>
     </div>
     <span></span>
   </section>
 
+  <img class="os-hero-subject" src="assets/profile/thribhuvan-cutout.png" alt="" aria-hidden="true" decoding="async" fetchpriority="high">
+
   <aside class="os-chrome-spotify" style="position:absolute;border:1px solid var(--glass-line);border-radius:20px;background:var(--glass);box-shadow:var(--shadow);-webkit-backdrop-filter:blur(30px) saturate(170%);backdrop-filter:blur(30px) saturate(170%);padding:14px">
     <p style="margin:0 0 11px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:0.17em;text-transform:uppercase">Last Played</p>
-    <div style="position:relative;display:grid;place-items:center;aspect-ratio:1;overflow:hidden;border:1px solid var(--hair);border-radius:13px;background:#1DB954">
-      <svg width="52" height="52" viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+    <div style="position:relative;display:grid;place-items:center;aspect-ratio:1;overflow:hidden;border:1px solid var(--hair);border-radius:13px;background:var(--chip)">
+      <svg width="44" height="44" viewBox="0 0 24 24" aria-hidden="true" style="opacity:0.22"><path fill="currentColor" d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
     </div>
     <p style="margin:12px 0 0;color:var(--ink);font-size:13px;font-weight:620;line-height:1.3;letter-spacing:-0.01em">Nothing connected yet</p>
     <p style="margin:4px 0 0;color:var(--ink-faint);font-size:11.5px;line-height:1.4">Open Spotify from the dock</p>
@@ -358,12 +433,18 @@
     </sc-for>
   </div>
 
-  <a href="mailto:thribhuvan003@gmail.com" class="os-chrome-email" style="position:absolute;display:inline-flex;align-items:center;gap:9px;min-height:42px;border:1px solid var(--glass-line);border-radius:999px;background:var(--glass);box-shadow:var(--shadow);-webkit-backdrop-filter:blur(28px) saturate(170%);backdrop-filter:blur(28px) saturate(170%);padding:0 18px;color:var(--ink);font-size:13px;font-weight:600;white-space:nowrap">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
-    Email me
-  </a>
+  <div class="os-chrome-email" style="position:absolute;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+    <a href="{{ resumePdf }}" target="_blank" rel="noreferrer" class="os-chip-btn" style="border-color:transparent;background:var(--accent);color:#fff">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v6h6"></path></svg>
+      Résumé
+    </a>
+    <a href="mailto:thribhuvan003@gmail.com" class="os-chip-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+      Email me
+    </a>
+  </div>
 
-  <p class="os-chrome-stats" style="position:absolute;z-index:5;margin:0;text-align:right;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10.5px;font-weight:600;letter-spacing:0.11em;text-transform:uppercase;line-height:1.65">Four public projects<br>Full-stack products</p>
+  <p class="os-chrome-stats" style="position:absolute;z-index:5;margin:0;text-align:right;color:var(--ink-soft);font-family:'Geist Mono',monospace;font-size:10.5px;font-weight:600;letter-spacing:0.11em;text-transform:uppercase;line-height:1.65">{{ ossCount }} merged upstream PRs<br>Svelte · Prisma · Supabase</p>
 
   <sc-for list="{{ windows }}" as="win" hint-placeholder-count="0">
   <div class="os-win-frame" style="{{ win.frame }}">
@@ -387,7 +468,7 @@
               <p style="max-width:52ch;margin:12px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.65">I also contribute focused patches to tools I use daily — Svelte, Prisma, Supabase, SolidJS, Nitro, and more. Small diffs. Real production bugs. Merged upstream.</p>
               <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:22px">
                 <span style="display:inline-flex;align-items:center;gap:8px;border:1px solid var(--hair);border-radius:999px;background:var(--chip);padding:9px 14px;color:var(--ink-soft);font-size:12px;font-weight:560">4 public products</span>
-                <span style="display:inline-flex;align-items:center;gap:8px;border:1px solid var(--hair);border-radius:999px;background:var(--chip);padding:9px 14px;color:var(--ink-soft);font-size:12px;font-weight:560">10 merged OSS PRs</span>
+                <span style="display:inline-flex;align-items:center;gap:8px;border:1px solid var(--hair);border-radius:999px;background:var(--chip);padding:9px 14px;color:var(--ink-soft);font-size:12px;font-weight:560">{{ ossCount }} merged OSS PRs</span>
                 <span style="display:inline-flex;align-items:center;gap:8px;border:1px solid var(--hair);border-radius:999px;background:var(--chip);padding:9px 14px;color:var(--ink-soft);font-size:12px;font-weight:560">TypeScript · Postgres · React</span>
               </div>
             </div>
@@ -409,19 +490,7 @@
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
                 <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ folderTitle }}</span>
               </div>
-              <div style="display:flex;align-items:center;gap:8px">
-                <sc-if value="{{ notRoot }}" hint-placeholder-val="{{ false }}">
-                <div style="display:flex;align-items:center;gap:1px;border:1px solid var(--hair);border-radius:7px;background:var(--chip);padding:2px">
-                  <sc-for list="{{ finderViews }}" as="v" hint-placeholder-count="4">
-                    <span style="{{ v.style }}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="{{ v.d1 }}"></path><path d="{{ v.d2 }}"></path></svg></span>
-                  </sc-for>
-                </div>
-                <div style="display:flex;align-items:center;gap:6px;width:132px;border:1px solid var(--hair);border-radius:7px;background:var(--chip);padding:4px 8px;color:var(--ink-faint);font-size:12px">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.35-4.35"></path></svg>
-                  Search
-                </div>
-                </sc-if>
-              </div>
+              <span></span>
             </div>
             </sc-if>
 
@@ -483,7 +552,7 @@
                     <p style="margin:0 0 10px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">About Me</p>
                     <h3 style="margin:0;max-width:28ch;color:var(--ink);font-size:clamp(22px,3.2vw,30px);font-weight:700;line-height:1.1;letter-spacing:-0.03em;text-wrap:pretty">I build practical web products — and I read the code before I trust it.</h3>
                     <p style="max-width:58ch;margin:16px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.65">Full-stack engineer shipping multi-tenant SaaS, AI-assisted workflows, browser tools, and vision systems. Contact: <a href="mailto:thribhuvan003@gmail.com" style="color:var(--accent);font-weight:600">thribhuvan003@gmail.com</a> · GitHub <a href="https://github.com/thribhuvan003" target="_blank" rel="noreferrer" style="color:var(--accent);font-weight:600">@thribhuvan003</a>.</p>
-                    <p style="max-width:58ch;margin:12px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.65">Ten merged upstream PRs (Svelte, Prisma, SolidJS, SvelteKit, Nitro, Supabase, …). Small, specific diffs from bugs I hit in production — not drive-by commits.</p>
+                    <p style="max-width:58ch;margin:12px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.65">{{ ossCount }} merged upstream PRs across {{ ossRepoCount }} repositories — Svelte, SvelteKit, Prisma, SolidJS, Nitro, Supabase, WXT and more. Small, specific diffs from bugs I hit in my own work.</p>
                   </div>
                   <div style="display:flex;flex-wrap:wrap;gap:8px">
                     <span class="os-skill-chip">TypeScript</span>
@@ -509,81 +578,65 @@
                 </div>
               </sc-if>
 
-              <sc-if value="{{ folderIsExperience }}" hint-placeholder-val="{{ false }}">
-                <div style="display:grid;gap:14px">
+              <sc-if value="{{ folderIsOss }}" hint-placeholder-val="{{ false }}">
+                <div style="display:grid;gap:16px">
                   <div>
-                    <p style="margin:0 0 10px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">Work &amp; Skills</p>
-                    <h3 style="margin:0;max-width:26ch;color:var(--ink);font-size:29px;font-weight:700;line-height:1.1;letter-spacing:-0.03em">Products I'm building, tools I use, and what I'm working through.</h3>
+                    <p style="margin:0 0 10px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">Open Source</p>
+                    <h3 style="margin:0;max-width:26ch;color:var(--ink);font-size:clamp(22px,3.2vw,29px);font-weight:700;line-height:1.1;letter-spacing:-0.03em;text-wrap:pretty">Fixes I sent back to the tools I build on.</h3>
+                    <p style="max-width:58ch;margin:14px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.65">Every one started as a bug that cost me an afternoon in my own work. I read the source, found the cause, and sent the smallest diff that fixed it. No drive-by commits.</p>
                   </div>
-
+                  <div style="display:flex;flex-wrap:wrap;gap:8px">
+                    <span class="os-skill-chip">{{ ossCount }} merged</span>
+                    <span class="os-skill-chip">{{ ossRepoCount }} repositories</span>
+                    <span class="os-skill-chip">Compilers · runtimes · client libraries</span>
+                  </div>
                   <section style="border:1px solid var(--hair);border-radius:14px;background:var(--glass);padding:17px">
-                    <div style="display:flex;align-items:center;gap:8px;color:var(--accent)">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12h.01"></path><path d="M16 6V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path><path d="M22 13a18.15 18.15 0 0 1-20 0"></path><rect width="20" height="14" x="2" y="6" rx="2"></rect></svg>
-                      <h4 style="margin:0;color:var(--ink);font-size:11.5px;font-weight:720">Projects</h4>
-                    </div>
                     <div style="display:grid">
-                      <sc-for list="{{ projects }}" as="p" hint-placeholder-count="4">
-                        <article style="{{ p.rowStyle }}">
-                          <div style="min-width:0">
-                            <strong style="display:block;margin-bottom:3px;color:var(--ink);font-size:12.5px;font-weight:680">{{ p.name }}</strong>
-                            <p style="margin:0;color:var(--ink-soft);font-size:11.5px;line-height:1.45">{{ p.summary }}</p>
-                          </div>
-                          <div style="display:flex;align-items:center;gap:6px">
-                            <sc-if value="{{ p.live }}" hint-placeholder-val="{{ true }}">
-                              <a href="{{ p.live }}" target="_blank" rel="noreferrer" style="display:inline-flex;min-height:29px;align-items:center;border:1px solid var(--hair);border-radius:999px;background:var(--chip);color:var(--ink-soft);padding:6px 11px;font-size:10.5px;font-weight:640">Live</a>
-                            </sc-if>
-                            <a href="{{ p.repo }}" target="_blank" rel="noreferrer" style="display:inline-flex;min-height:29px;align-items:center;border:1px solid var(--hair);border-radius:999px;background:var(--chip);color:var(--ink-soft);padding:6px 11px;font-size:10.5px;font-weight:640">Code</a>
-                          </div>
-                        </article>
-                      </sc-for>
-                    </div>
-                  </section>
-
-                  <section style="border:1px solid var(--hair);border-radius:14px;background:var(--glass);padding:17px">
-                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;color:var(--accent)">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"></path><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path></svg>
-                      <h4 style="margin:0;color:var(--ink);font-size:11.5px;font-weight:720">Learning</h4>
-                    </div>
-                    <div style="display:grid;gap:11px">
-                      <sc-for list="{{ learning }}" as="l" hint-placeholder-count="3">
-                        <div style="display:grid;grid-template-columns:28px minmax(0,1fr);align-items:start;gap:12px">
-                          <span style="display:grid;place-items:center;width:28px;height:28px;border:1px solid var(--hair);border-radius:8px;background:var(--chip)">
-                            <sc-if value="{{ l.icon }}" hint-placeholder-val="{{ true }}">
-                              <img src="{{ l.icon }}" alt="" aria-hidden="true" style="width:15px;height:15px;object-fit:contain">
-                            </sc-if>
+                      <sc-for list="{{ oss }}" as="o" hint-placeholder-count="13">
+                        <a href="{{ o.url }}" target="_blank" rel="noreferrer" style="{{ o.rowStyle }}">
+                          <span style="display:flex;align-items:baseline;gap:7px;min-width:0">
+                            <strong style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink);font-size:12.5px;font-weight:660;letter-spacing:-0.01em">{{ o.repo }}</strong>
+                            <span style="flex:0 0 auto;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10.5px;font-weight:600">{{ o.num }}</span>
                           </span>
-                          <div style="min-width:0">
-                            <strong style="display:block;margin-bottom:2px;color:var(--ink);font-size:12.5px;font-weight:660;letter-spacing:-0.01em">{{ l.title }}</strong>
-                            <p style="margin:0;color:var(--ink-soft);font-size:11.5px;line-height:1.5">{{ l.note }}</p>
-                          </div>
-                        </div>
+                          <span style="min-width:0;color:var(--ink-soft);font-size:12px;line-height:1.5">{{ o.title }}</span>
+                          <span style="flex:0 0 auto;justify-self:start;border:1px solid var(--hair);border-radius:999px;background:var(--chip);padding:2px 8px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:9.5px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase">{{ o.area }}</span>
+                        </a>
                       </sc-for>
                     </div>
                   </section>
+                </div>
+              </sc-if>
 
-                  <section style="border:1px solid var(--hair);border-radius:14px;background:var(--glass);padding:17px">
-                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;color:var(--accent)">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"></path><path d="m6 8-4 4 4 4"></path><path d="m14.5 4-5 16"></path></svg>
-                      <h4 style="margin:0;color:var(--ink);font-size:11.5px;font-weight:720">Tools I Use</h4>
+              <sc-if value="{{ folderIsResume }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;flex-direction:column;gap:14px;height:100%;min-height:0">
+                  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap">
+                    <div>
+                      <p style="margin:0 0 8px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">Résumé</p>
+                      <h3 style="margin:0;color:var(--ink);font-size:clamp(21px,3vw,27px);font-weight:700;line-height:1.12;letter-spacing:-0.03em">Thribhuvan P — Software Engineer</h3>
+                      <p style="margin:8px 0 0;color:var(--ink-soft);font-size:13px;line-height:1.55">One page. Open source, projects, skills, education.</p>
                     </div>
-                    <div style="display:grid;gap:13px">
-                      <sc-for list="{{ toolGroups }}" as="g" hint-placeholder-count="7">
-                        <section aria-label="{{ g.label }}">
-                          <h5 style="margin:0;color:var(--ink-soft);font-size:10.5px;font-weight:700;letter-spacing:0.04em">{{ g.label }}</h5>
-                          <ul style="display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0;padding:0;list-style:none">
-                            <sc-for list="{{ g.tools }}" as="t" hint-placeholder-count="6">
-                              <li class="os-skill-chip">
-                                <sc-if value="{{ t.icon }}" hint-placeholder-val="{{ true }}">
-                                  <img src="{{ t.icon }}" alt="" aria-hidden="true">
-                                </sc-if>
-                                {{ t.name }}
-                              </li>
-                            </sc-for>
-                          </ul>
-                        </section>
-                      </sc-for>
+                    <div style="display:flex;gap:8px">
+                      <a href="{{ resumePdf }}" target="_blank" rel="noreferrer" style="display:inline-flex;align-items:center;gap:7px;min-height:34px;border:1px solid var(--hair);border-radius:999px;background:var(--chip);padding:8px 14px;color:var(--ink);font-size:12px;font-weight:640">
+                        Open
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+                      </a>
+                      <a href="{{ resumePdf }}" download="Thribhuvan-P-Resume.pdf" style="display:inline-flex;align-items:center;gap:7px;min-height:34px;border:1px solid transparent;border-radius:999px;background:var(--accent);padding:8px 14px;color:#fff;font-size:12px;font-weight:640">
+                        Download
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"></path><path d="m7 12 5 5 5-5"></path><path d="M5 21h14"></path></svg>
+                      </a>
                     </div>
-                  </section>
+                  </div>
+                  <object data="{{ resumeEmbed }}" type="application/pdf" class="os-pdf">
+                    <div class="os-empty">
+                      <div class="os-empty-icon" aria-hidden="true">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v6h6"></path></svg>
+                      </div>
+                      <div>
+                        <p style="margin:0;color:var(--ink);font-size:15px;font-weight:650;letter-spacing:-0.01em">Preview unavailable here</p>
+                        <p style="margin:6px 0 0;max-width:36ch;color:var(--ink-soft);font-size:13px;line-height:1.5">Your browser can't display the PDF inline. Use Open or Download above.</p>
+                      </div>
+                    </div>
+                  </object>
                 </div>
               </sc-if>
             </section>
@@ -601,19 +654,137 @@
             </sc-if>
           </div>
         </sc-if>
+        <sc-if value="{{ win.isSkills }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid;gap:18px;align-content:start">
+            <div>
+              <p style="margin:0 0 8px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">Education &amp; Experience</p>
+              <h2 style="margin:0;color:var(--ink);font-size:clamp(22px,3.4vw,30px);font-weight:700;line-height:1.1;letter-spacing:-0.03em">Where I've studied, what I've shipped, and what I build with.</h2>
+            </div>
+
+            <div class="os-skills-split">
+              <section class="os-card">
+                <div class="os-card-head">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6"></path><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"></path><path d="m2 10 10-5 10 5-10 5z"></path></svg>
+                  <h3>Education</h3>
+                </div>
+                <sc-if value="{{ hasEducation }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:grid;gap:10px">
+                    <sc-for list="{{ education }}" as="e" hint-placeholder-count="1">
+                      <article class="os-entry">
+                        <div class="os-entry-top">
+                          <strong>{{ e.title }}</strong>
+                          <span class="os-entry-when">{{ e.when }}</span>
+                        </div>
+                        <p class="os-entry-org">{{ e.org }}</p>
+                        <sc-if value="{{ e.hasNotes }}" hint-placeholder-val="{{ true }}">
+                          <ul class="os-entry-list">
+                            <sc-for list="{{ e.notes }}" as="n" hint-placeholder-count="2"><li>{{ n.text }}</li></sc-for>
+                          </ul>
+                        </sc-if>
+                      </article>
+                    </sc-for>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ noEducation }}" hint-placeholder-val="{{ true }}">
+                  <p class="os-card-empty">Education details not added yet.</p>
+                </sc-if>
+              </section>
+
+              <section class="os-card">
+                <div class="os-card-head">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2"></rect><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path></svg>
+                  <h3>Experience</h3>
+                </div>
+                <sc-if value="{{ hasExperience }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:grid;gap:10px">
+                    <sc-for list="{{ experience }}" as="x" hint-placeholder-count="1">
+                      <article class="os-entry">
+                        <div class="os-entry-top">
+                          <strong>{{ x.title }}</strong>
+                          <span class="os-entry-when">{{ x.when }}</span>
+                        </div>
+                        <p class="os-entry-org">{{ x.org }}</p>
+                        <sc-if value="{{ x.hasNotes }}" hint-placeholder-val="{{ true }}">
+                          <ul class="os-entry-list">
+                            <sc-for list="{{ x.notes }}" as="n" hint-placeholder-count="3"><li>{{ n.text }}</li></sc-for>
+                          </ul>
+                        </sc-if>
+                      </article>
+                    </sc-for>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ noExperience }}" hint-placeholder-val="{{ true }}">
+                  <p class="os-card-empty">Work history not added yet. In the meantime, <strong style="color:var(--ink);font-weight:640">{{ ossCount }} merged pull requests</strong> across {{ ossRepoCount }} open-source repositories are in Workspace → Open Source.</p>
+                </sc-if>
+              </section>
+            </div>
+
+            <section class="os-card">
+              <div class="os-card-head">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"></path><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path></svg>
+                <h3>What I'm working through</h3>
+              </div>
+              <div style="display:grid;gap:11px">
+                <sc-for list="{{ learning }}" as="l" hint-placeholder-count="6">
+                  <div style="display:grid;grid-template-columns:28px minmax(0,1fr);align-items:start;gap:12px">
+                    <span style="display:grid;place-items:center;width:28px;height:28px;border:1px solid var(--hair);border-radius:8px;background:var(--chip)">
+                      <sc-if value="{{ l.icon }}" hint-placeholder-val="{{ true }}">
+                        <img src="{{ l.icon }}" alt="" aria-hidden="true" style="width:15px;height:15px;object-fit:contain">
+                      </sc-if>
+                    </span>
+                    <div style="min-width:0">
+                      <strong style="display:block;margin-bottom:2px;color:var(--ink);font-size:12.5px;font-weight:660;letter-spacing:-0.01em">{{ l.title }}</strong>
+                      <p style="margin:0;color:var(--ink-soft);font-size:11.5px;line-height:1.5">{{ l.note }}</p>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </section>
+
+            <section class="os-card">
+              <div class="os-card-head">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"></path><path d="m6 8-4 4 4 4"></path><path d="m14.5 4-5 16"></path></svg>
+                <h3>Tools &amp; Tech</h3>
+              </div>
+              <div style="display:grid;gap:13px">
+                <sc-for list="{{ toolGroups }}" as="g" hint-placeholder-count="7">
+                  <section aria-label="{{ g.label }}">
+                    <h5 style="margin:0;color:var(--ink-soft);font-size:10.5px;font-weight:700;letter-spacing:0.04em">{{ g.label }}</h5>
+                    <ul style="display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0;padding:0;list-style:none">
+                      <sc-for list="{{ g.tools }}" as="t" hint-placeholder-count="6">
+                        <li class="os-skill-chip">
+                          <sc-if value="{{ t.icon }}" hint-placeholder-val="{{ true }}">
+                            <img src="{{ t.icon }}" alt="" aria-hidden="true">
+                          </sc-if>
+                          {{ t.name }}
+                        </li>
+                      </sc-for>
+                    </ul>
+                  </section>
+                </sc-for>
+              </div>
+            </section>
+          </div>
+        </sc-if>
+
         <sc-if value="{{ win.isImages }}" hint-placeholder-val="{{ false }}">
           <div style="display:grid;gap:18px;height:100%;align-content:start">
             <div>
               <p style="margin:0 0 8px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">Photos</p>
               <h2 style="margin:0;color:var(--ink);font-size:clamp(22px,4vw,26px);font-weight:700;line-height:1.1;letter-spacing:-0.028em">Gallery</h2>
-              <p style="margin:8px 0 0;color:var(--ink-soft);font-size:13.5px;line-height:1.55">Visual archive for product shots and personal photos.</p>
+              <p style="margin:8px 0 0;color:var(--ink-soft);font-size:13.5px;line-height:1.55">Temples, hills, and things I've saved. Shot on a phone, mostly around South India.</p>
             </div>
             <sc-if value="{{ hasGallery }}" hint-placeholder-val="{{ false }}">
               <div class="os-gallery-grid">
                 <sc-for list="{{ gallery }}" as="g" hint-placeholder-count="0">
                   <figure style="{{ g.style }}">
-                    <img src="{{ g.src }}" alt="{{ g.title }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
-                    <figcaption style="position:absolute;left:10px;right:10px;bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid rgba(255,255,255,0.22);border-radius:10px;background:rgba(10,22,40,0.56);color:#fff;padding:7px 10px;-webkit-backdrop-filter:blur(16px) saturate(160%);backdrop-filter:blur(16px) saturate(160%);font-size:11.5px">
+                    <sc-if value="{{ g.video }}" hint-placeholder-val="{{ false }}">
+                      <video src="{{ g.src }}" poster="{{ g.poster }}" controls playsinline preload="none" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000"></video>
+                    </sc-if>
+                    <sc-if value="{{ g.isPhoto }}" hint-placeholder-val="{{ true }}">
+                      <img src="{{ g.src }}" alt="{{ g.title }}" loading="lazy" decoding="async" style="{{ g.imgStyle }}">
+                    </sc-if>
+                    <figcaption style="{{ g.captionStyle }}">
                       <span style="color:rgba(255,255,255,0.68);font-family:'Geist Mono',monospace;font-size:9.5px;letter-spacing:0.12em;text-transform:uppercase">{{ g.kind }}</span>
                       <strong style="font-weight:620">{{ g.title }}</strong>
                     </figcaption>
@@ -679,10 +850,13 @@
   </sc-for>
 
   <nav class="os-dock-nav" aria-label="Dock" style="position:fixed;z-index:6000;left:0;right:0;display:flex;justify-content:center;pointer-events:none">
-    <div class="os-dock-shell" onMouseLeave="{{ dockLeave }}" style="position:relative;display:flex;align-items:flex-end;gap:6px;border:1px solid var(--dock-line);border-radius:24px;background:var(--dock);box-shadow:0 24px 60px rgba(6,20,40,0.30), 0 6px 18px rgba(6,20,40,0.14), 0 1px 0 rgba(255,255,255,0.55) inset, 0 -1px 0 rgba(0,0,0,0.06) inset;-webkit-backdrop-filter:blur(34px) saturate(190%);backdrop-filter:blur(34px) saturate(190%);pointer-events:auto">
+    <div class="os-dock-shell" onPointerMove="{{ dockMove }}" onMouseLeave="{{ dockLeave }}" style="position:relative;display:flex;align-items:flex-end;gap:6px;border:1px solid var(--dock-line);border-radius:24px;background:var(--dock);box-shadow:0 24px 60px rgba(6,20,40,0.30), 0 6px 18px rgba(6,20,40,0.14), 0 1px 0 rgba(255,255,255,0.55) inset, 0 -1px 0 rgba(0,0,0,0.06) inset;-webkit-backdrop-filter:blur(34px) saturate(190%);backdrop-filter:blur(34px) saturate(190%);pointer-events:auto">
       <sc-for list="{{ dock }}" as="item" hint-placeholder-count="8">
+        <sc-if value="{{ item.groupStart }}" hint-placeholder-val="{{ false }}">
+          <span class="os-dock-sep" aria-hidden="true"></span>
+        </sc-if>
         <span class="os-dock-item" style="{{ item.wrapStyle }}">
-          <button type="button" class="os-dock-btn" aria-label="{{ item.aria }}" onClick="{{ item.activate }}" onMouseEnter="{{ item.enter }}" style="position:relative;display:grid;place-items:end center;border:0;background:transparent;padding:0">
+          <button type="button" class="os-dock-btn" aria-label="{{ item.aria }}" onClick="{{ item.activate }}" style="position:relative;display:grid;place-items:end center;border:0;background:transparent;padding:0">
             <span style="{{ item.tooltipStyle }}">{{ item.label }}</span>
             <span class="os-dock-icon {{ item.iconClass }}" style="{{ item.iconStyle }}">
               <sc-if value="{{ item.artwork }}" hint-placeholder-val="{{ true }}">
@@ -735,15 +909,17 @@ const PHRASES = [
 
 const APPS = [
   { id: "about", label: "About Me", artwork: "assets/profile/thribhuvan.png", plate: "#e9dfd2" },
+  { id: "skills", label: "Skills & Exp", artwork: "assets/icons/work-skills.png" },
   { id: "work", label: "Workspace", artwork: "assets/icons/workspace.png" },
   { id: "images", label: "Photos", artwork: "assets/icons/photos.png" },
-  { id: "github", label: "GitHub", plate: "linear-gradient(160deg,#4c545e 0%,#24292f 52%,#0d1117 100%)" },
+  { id: "github", label: "GitHub", plate: "linear-gradient(160deg,#4c545e 0%,#24292f 52%,#0d1117 100%)", groupStart: true },
   { id: "linkedin", label: "LinkedIn", plate: "linear-gradient(160deg,#3d9ae0 0%,#0a66c2 54%,#054a92 100%)", external: L.linkedin },
   { id: "spotify", label: "Spotify", plate: "#1DB954" },
 ];
 
 const GEOM = {
   about:   { w: 800, h: 520, x: 150, y: 110, label: "About Me" },
+  skills:  { w: 900, h: 600, x: 160, y: 96,  label: "Education & Experience" },
   work:    { w: 980, h: 640, x: 130, y: 84,  label: "Workspace" },
   images:  { w: 960, h: 620, x: 180, y: 92,  label: "Photos" },
   spotify: { w: 460, h: 580, x: 900, y: 110, label: "Spotify" },
@@ -751,35 +927,48 @@ const GEOM = {
 };
 
 const PROJECTS = [
-  { name: "Tray", summary: "Multi-tenant food-ordering SaaS for stalls, tiffin centres, and campus messes.", detail: "Postgres RLS, Razorpay UPI, token-counter workflows, and realtime kitchen boards.", image: "assets/shots/tray-1.png", live: L.trayLive, repo: L.trayRepo },
-  { name: "Unhold", summary: "AI-assisted workspace for Indian bank-account and UPI freeze cases.", detail: "Document drafting and OCR verification within a review-first workflow.", image: "assets/shots/unhold-1.png", live: L.unholdLive, repo: L.unholdRepo },
-  { name: "TabMind", summary: "Local-first Chrome extension that turns browsing sessions into summaries and tasks.", detail: "Built around local storage, session recovery, and a calmer way to resume research.", image: null, live: null, repo: L.tabmindRepo },
-  { name: "AquaVision", summary: "CPU-only underwater image restoration with reproducible comparisons.", detail: "Combines classical computer vision with lightweight model routing.", image: "assets/shots/aqua-grid.png", live: L.aquaLive, repo: L.aquaRepo },
+  { name: "Tray", summary: "Zero-commission UPI ordering for street stalls, tiffin centres, and campus messes.", detail: "Three portals on one multi-tenant Postgres: customer ordering, a live kitchen ticket board, and an operator dashboard. Tenants isolated by row-level security, Razorpay verified server-side, realtime with a polling fallback.", image: "assets/shots/tray-1.png", live: L.trayLive, repo: L.trayRepo },
+  { name: "Unhold", summary: "A case workspace for people whose bank account or UPI has been frozen.", detail: "Records what the bank actually said, keeps documents in private storage, and drafts a case-aware letter the user reviews and sends themselves. It never contacts a bank and never promises an unfreeze — escalation is gated on proof the previous letter went out.", image: "assets/shots/unhold-1.png", live: L.unholdLive, repo: L.unholdRepo },
+  { name: "TabMind", summary: "Local-first Chrome extension that turns a browsing session into summaries and tasks.", detail: "Everything stays in local storage — no account, no sync, no server. Built for picking research back up after a day away.", image: null, live: null, repo: L.tabmindRepo },
+  { name: "AquaVision", summary: "Underwater image restoration that runs on CPU alone.", detail: "Classical computer vision with lightweight model routing, evaluated on before/after pairs rather than cherry-picked demos. Hosted on a free Space, so the first request may take a moment to wake.", image: "assets/shots/aqua-grid.png", live: L.aquaLive, repo: L.aquaRepo },
 ];
 
 const ICON = (slug) => "https://cdn.simpleicons.org/" + slug;
 
+// Résumé skills, plus frameworks with merged or open upstream PRs from thribhuvan003
+// (Svelte, SvelteKit, Solid, Prisma, Nitro, shadcn/ui, Payload, TanStack, WXT).
+// Slugs verified against cdn.simpleicons.org — null renders the chip without an icon.
 const TOOL_GROUPS = [
   { label: "Languages", tools: [
-    ["TypeScript", "typescript"], ["JavaScript", "javascript"], ["Python", "python"], ["SQL", "postgresql"],
+    ["TypeScript", "typescript"], ["JavaScript", "javascript"], ["Python", "python"], ["Java", null],
+    ["C++", "cplusplus"], ["SQL", "postgresql"], ["HTML", "html5"], ["CSS", "css"],
   ] },
   { label: "Frontend", tools: [
-    ["React", "react"], ["Next.js", "nextdotjs"], ["Tailwind CSS", "tailwindcss"], ["HTML5", "html5"], ["CSS3", "css"],
+    ["React", "react"], ["Next.js", "nextdotjs"], ["Svelte", "svelte"], ["SvelteKit", "svelte"],
+    ["SolidJS", "solid"], ["Tailwind CSS", "tailwindcss"], ["shadcn/ui", "shadcnui"],
+    ["TanStack", "reactquery"], ["Zustand", null], ["Motion", "framer"],
   ] },
-  { label: "Backend & data", tools: [
-    ["Node.js", "nodedotjs"], ["Postgres", "postgresql"], ["Supabase", "supabase"], ["Redis", "redis"], ["Prisma", "prisma"], ["Zod", "zod"],
+  { label: "Backend & APIs", tools: [
+    ["Node.js", "nodedotjs"], ["Express", "express"], ["NestJS", "nestjs"], ["Nitro", null],
+    ["Flask", "flask"], ["REST APIs", null], ["Zod", "zod"],
+  ] },
+  { label: "Data", tools: [
+    ["PostgreSQL", "postgresql"], ["Supabase", "supabase"], ["Prisma", "prisma"], ["MongoDB", "mongodb"],
+    ["Redis", "redis"], ["SQLite", "sqlite"],
+  ] },
+  { label: "AI / ML", tools: [
+    ["PyTorch", "pytorch"], ["OpenCV", "opencv"], ["Hugging Face", "huggingface"],
+    ["LangChain", "langchain"], ["Gemini", "googlegemini"],
+  ] },
+  { label: "Build & tooling", tools: [
+    ["Vite", "vite"], ["Bun", "bun"], ["pnpm", "pnpm"], ["Git", "git"], ["ESLint", "eslint"], ["Prettier", "prettier"],
   ] },
   { label: "Cloud & delivery", tools: [
-    ["Vercel", "vercel"], ["GitHub", "github"], ["Docker", "docker"], ["Sentry", "sentry"],
+    ["Docker", "docker"], ["Vercel", "vercel"], ["Cloudflare", "cloudflare"],
+    ["GitHub Actions", "githubactions"], ["CI/CD", null], ["Sentry", "sentry"], ["Razorpay", "razorpay"],
   ] },
-  { label: "Payments & comms", tools: [
-    ["Razorpay", "razorpay"], ["Resend", "resend"],
-  ] },
-  { label: "AI & platform", tools: [
-    ["Gemini", "googlegemini"], ["Chrome Extensions", "googlechrome"], ["PyTorch", "pytorch"], ["OpenCV", "opencv"],
-  ] },
-  { label: "Quality", tools: [
-    ["Vitest", "vitest"], ["Playwright", "playwright"], ["Git", "git"],
+  { label: "Testing", tools: [
+    ["Vitest", "vitest"], ["Playwright", null], ["Pytest", "pytest"],
   ] },
 ];
 
@@ -793,13 +982,57 @@ const LEARNING = [
   { title: "Practical ML systems (CPU-first)", note: "AquaVision: classical CV + lightweight routing without GPU dependency. Evaluation over demos.", slug: "pytorch" },
 ];
 
-// Empty on purpose — add photos later
-const GALLERY = [];
+// From the résumé in assets/docs. An empty array renders an empty state rather than a
+// placeholder, so nothing unverified ever ships.
+const EDUCATION = [
+  {
+    title: "B.Tech, Computer Science and Engineering",
+    org: "Jawaharlal Nehru Technological University Anantapur (JNTUA)",
+    when: "Aug 2022 – 2026",
+    notes: ["CGPA 8.0 / 10.0.", "Final year — based in Bengaluru, India."],
+  },
+];
+// No salaried roles yet; the open-source record stands in its place rather than padding.
+const EXPERIENCE = [];
+
+const GALLERY = [
+  { src: "assets/photos/clip.mp4", poster: "assets/photos/clip-poster.jpg", title: "A clip", kind: "Video", video: true, featured: true },
+  // `pos` sets object-position so the subject survives the cover-crop
+  { src: "assets/photos/athirappilly.jpg", title: "Athirappilly", kind: "Kerala", pos: "50% 72%" },
+  { src: "assets/photos/gopuram.jpg", title: "Gopuram", kind: "Tamil Nadu", pos: "50% 35%" },
+  { src: "assets/photos/nandi.jpg", title: "Periya Nandhi", kind: "Tamil Nadu", pos: "50% 40%" },
+  { src: "assets/photos/pine-sunset.jpg", title: "Pines at dusk", kind: "Hills" },
+  { src: "assets/photos/western-ghats.jpg", title: "Western Ghats", kind: "Hills" },
+  { src: "assets/photos/hanuman.jpg", title: "Hanuman", kind: "Saved", pos: "50% 60%" },
+  { src: "assets/photos/aviyukta.jpg", title: "Be kind to your own timing", kind: "Saved", pos: "50% 62%" },
+  { src: "assets/photos/one-piece.jpg", title: "One Piece", kind: "Saved" },
+];
 
 const FOLDERS = [
   { id: "about", label: "About Me", note: "Profile and current focus" },
   { id: "projects", label: "Projects", note: "Tray, Unhold, TabMind & AquaVision" },
-  { id: "experience", label: "Work & Skills", note: "Projects, tools & learning" },
+  { id: "oss", label: "Open Source", note: "Merged fixes to tools I use daily" },
+  { id: "resume", label: "Résumé", note: "One page, PDF" },
+];
+
+const RESUME_PDF = "assets/docs/Thribhuvan-P-Resume.pdf";
+
+// Merged upstream PRs, verified against the GitHub API on 2026-08-11.
+// Newest first. Update this list rather than hardcoding a count anywhere in the copy.
+const OSS = [
+  { repo: "wxt-dev/wxt", num: 2486, title: "Don't treat mustache-style {{tokens}} as named substitutions", area: "i18n" },
+  { repo: "supabase/supabase-js", num: 2537, title: "Expose service error code on StorageApiError", area: "storage" },
+  { repo: "wxt-dev/wxt", num: 2485, title: "Use consola's fancy reporter in the init demo", area: "docs" },
+  { repo: "prisma/prisma", num: 29701, title: "Copy Bytes values out of Node's shared Buffer pool on deserialization", area: "client" },
+  { repo: "supabase/ssr", num: 258, title: "Keep domain-scoped deletion in name-keyed cookie stores", area: "cookies" },
+  { repo: "solidjs/solid", num: 2875, title: "Emit @solidjs/web/storage types at the advertised path", area: "web" },
+  { repo: "sveltejs/kit", num: 16329, title: "Detect destructured route exports during type generation", area: "types" },
+  { repo: "nitrojs/nitro", num: 4422, title: "Use SameSite=Lax for the skew protection cookie", area: "vercel" },
+  { repo: "sveltejs/svelte", num: 18521, title: "Transform computed keys in keyed each-block destructuring patterns", area: "compiler" },
+  { repo: "rjsf-team/react-jsonschema-form", num: 5150, title: "Preserve empty string titles in oneOf/anyOf option lists", area: "forms" },
+  { repo: "refined-github/refined-github", num: 9777, title: "Support capitalized conventional-commit types", area: "commits" },
+  { repo: "sugarlabs/musicblocks", num: 7731, title: "Preserve numeric action names when importing Turtle Blocks projects", area: "import" },
+  { repo: "sugarlabs/musicblocks", num: 7727, title: "Skip trailing Turtle Blocks metadata entries when loading .tb projects", area: "import" },
 ];
 
 class Component extends DCLogic {
@@ -808,7 +1041,8 @@ class Component extends DCLogic {
     const w = {};
     Object.keys(GEOM).forEach((id, i) => { w[id] = { ...GEOM[id], open: false, minimized: false, maximized: false, z: 200 + i }; });
     const vp = this.viewport();
-    this.state = { theme: (props && props.theme) || "light", windows: w, hovered: null, folder: null, zTop: 220, typed: "", vp };
+    this.state = { theme: (props && props.theme) || "light", windows: w, folder: null, zTop: 220, typed: "", vp, dockX: null, dockCenters: null };
+    this._dockRaf = 0;
     this._phrase = 0;
     this._char = 0;
     this._erasing = false;
@@ -840,7 +1074,8 @@ class Component extends DCLogic {
             y: Math.max(28, Math.min(win.y, vp.h - Math.min(win.h, maxH) - 84)),
           };
         });
-        return { vp, windows };
+        // Dock geometry changes with the viewport, so drop the cached resting centres
+        return { vp, windows, dockCenters: null, dockX: null };
       });
     };
     window.addEventListener("resize", this._onResize);
@@ -1014,13 +1249,13 @@ class Component extends DCLogic {
         shellStyle: launcher ? {
           position: "relative", display: "flex", flexDirection: "column", gap: 24,
           width: "100%", height: "100%", minWidth: 0, overflow: "hidden", isolation: "isolate",
-          borderRadius: 32, padding: 24,
-          border: "1px solid " + (dark ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.55)"),
-          background: dark ? "rgba(44,44,46,0.85)" : "rgba(250,250,252,0.86)",
+          borderRadius: 32, padding: "20px 20px 24px",
+          border: "1px solid " + (dark ? "rgba(255,255,255,0.14)" : "rgba(255,255,255,0.62)"),
+          background: dark ? "rgba(38,40,44,0.58)" : "rgba(252,251,249,0.52)",
           boxShadow: dark
             ? "rgba(0,0,0,0.6) 0px 25px 60px, rgba(255,255,255,0.08) 0px 1px 0px inset"
             : "rgba(24,40,64,0.24) 0px 25px 60px, rgba(255,255,255,0.55) 0px 1px 0px inset",
-          WebkitBackdropFilter: "blur(40px) saturate(1.8)", backdropFilter: "blur(40px) saturate(1.8)",
+          WebkitBackdropFilter: "blur(44px) saturate(180%)", backdropFilter: "blur(44px) saturate(180%)",
         } : {
           position: "relative", display: "flex", flexDirection: "column",
           width: "100%", height: "100%", minWidth: 0, overflow: "hidden", isolation: "isolate",
@@ -1057,7 +1292,7 @@ class Component extends DCLogic {
         },
         isAbout: w.id === "about", isWorkspace: w.id === "work",
         isImages: w.id === "images", isSpotify: w.id === "spotify",
-        isContact: w.id === "contact",
+        isContact: w.id === "contact", isSkills: w.id === "skills",
         focus: () => this.focus(w.id),
         stopDrag: (e) => this.stopDrag(e),
         close: (e) => {
@@ -1079,25 +1314,30 @@ class Component extends DCLogic {
       };
       });
 
-    // macOS dock magnification: neighbors lift with the hovered icon
+    // macOS dock magnification. Scale falls off continuously with the cursor's distance
+    // from each icon's resting centre (Gaussian), rather than in fixed per-neighbour steps —
+    // this is what makes the real dock feel fluid instead of notched.
+    const AMP = 0.58;   // peak scale is 1 + AMP
+    const SIGMA = 68;   // px; how far the bulge spreads
+    const centers = s.dockCenters;
     const dock = APPS.map((app, i) => {
       const st = s.windows[app.id];
       let scale = 1;
       let lift = 0;
-      if (!phone && s.hovered !== null) {
-        const d = Math.abs(s.hovered - i);
-        if (d === 0) { scale = 1.55; lift = -18; }
-        else if (d === 1) { scale = 1.28; lift = -10; }
-        else if (d === 2) { scale = 1.12; lift = -4; }
-        else if (d === 3) { scale = 1.04; lift = -1; }
+      if (!phone && s.dockX !== null && centers && centers[i] !== undefined) {
+        const dx = (s.dockX - centers[i]) / SIGMA;
+        scale = 1 + AMP * Math.exp(-dx * dx);
+        lift = -(scale - 1) * 30;
       }
-      const hovering = !phone && s.hovered === i;
+      // Label shows for the icon nearest the cursor, and only once it is actually magnified
+      const hovering = !phone && scale > 1 + AMP * 0.55;
       const isSpotify = app.id === "spotify";
       const iconBg = isSpotify
         ? "#1DB954"
         : (app.artwork ? (app.plate || "#f7f9fc") : app.plate);
       return {
         label: app.label,
+        groupStart: !!app.groupStart,
         aria: app.external ? "Open " + app.label + " in a new tab" : (st && st.minimized ? "Restore " : st && st.open ? "Focus " : "Open ") + app.label,
         active: !!(st && st.open && !app.external),
         artwork: app.artwork || null,
@@ -1109,9 +1349,13 @@ class Component extends DCLogic {
           alignItems: "flex-end",
           justifyContent: "center",
           transformOrigin: "50% 100%",
-          transform: "translate3d(0," + lift + "px,0) scale(" + scale + ")",
+          transform: "translate3d(0," + lift.toFixed(2) + "px,0) scale(" + scale.toFixed(4) + ")",
           marginInline: phone ? "0px" : ((scale - 1) * 22).toFixed(2) + "px",
-          transition: "transform 180ms cubic-bezier(0.22,1,0.36,1), margin-inline 180ms cubic-bezier(0.22,1,0.36,1)",
+          // Short transition: long enough to smooth the settle, short enough to track the cursor
+          transition: s.dockX === null
+            ? "transform 240ms cubic-bezier(0.22,1,0.36,1), margin-inline 240ms cubic-bezier(0.22,1,0.36,1)"
+            : "transform 70ms linear, margin-inline 70ms linear",
+          willChange: "transform",
           zIndex: hovering ? 5 : 1,
         },
         iconStyle: {
@@ -1122,23 +1366,27 @@ class Component extends DCLogic {
           background: iconBg,
           boxShadow: "0 8px 16px rgba(6,20,40,0.22), 0 1px 3px rgba(6,20,40,0.14), 0 1px 0 rgba(255,255,255,0.45) inset, 0 -1px 0 rgba(0,0,0,0.18) inset",
         },
-        artStyle: { position: "absolute", inset: 0, zIndex: 2, width: "100%", height: "100%", objectFit: "cover", objectPosition: app.id === "about" ? "50% 28%" : "center", transform: app.id === "work" ? "scale(1)" : "scale(1.18)", pointerEvents: "none" },
+        // Uniform artwork across every icon — no per-app zoom, so all plates read the same size
+        artStyle: { position: "absolute", inset: 0, zIndex: 2, width: "100%", height: "100%", objectFit: "cover", objectPosition: app.id === "about" ? "50% 24%" : "center", pointerEvents: "none" },
+        // The wrapper is scaled up to 1.55x on hover; counter-scale so the chip keeps a constant
+        // on-screen size and sits a fixed distance above the icon (macOS behaviour).
         tooltipStyle: {
-          position: "absolute", bottom: "calc(100% + 16px)", left: "50%", zIndex: 6,
-          transform: "translateX(-50%) translateY(" + (hovering ? "0" : "4px") + ") scale(" + (hovering ? 1 : 0.92) + ")",
+          position: "absolute", bottom: "calc(100% + " + (7 / scale).toFixed(2) + "px)", left: "50%", zIndex: 6,
+          transform: "translateX(-50%) scale(" + ((hovering ? 1 : 0.94) / scale).toFixed(3) + ")",
           transformOrigin: "bottom center",
           opacity: hovering ? 1 : 0, pointerEvents: "none", whiteSpace: "nowrap",
-          border: "1px solid var(--glass-line)", borderRadius: 8, background: "var(--glass-2)",
-          boxShadow: "0 10px 26px rgba(6,20,40,0.24)", color: "var(--ink)", padding: "5px 10px",
-          fontSize: 11.5, fontWeight: 600, letterSpacing: "-0.005em",
-          WebkitBackdropFilter: "blur(24px) saturate(180%)", backdropFilter: "blur(24px) saturate(180%)",
-          transition: "opacity 140ms ease, transform 140ms ease",
+          border: 0, borderRadius: 6,
+          background: dark ? "rgba(236,241,248,0.94)" : "rgba(22,24,28,0.92)",
+          boxShadow: "0 6px 18px rgba(6,20,40,0.28)",
+          color: dark ? "#12161c" : "#f4f6fa", padding: "4px 8px",
+          fontFamily: "'Geist Mono',ui-monospace,monospace",
+          fontSize: 10, fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase",
+          transition: "opacity 130ms ease, transform 130ms ease",
         },
         activate: () => {
           if (st && st.open && !st.minimized && !app.external) this.focus(app.id);
           else this.open(app);
         },
-        enter: () => { if (!phone) this.setState({ hovered: i }); },
       };
     });
 
@@ -1163,33 +1411,43 @@ class Component extends DCLogic {
     const FOLDER_META = {
       about: { title: "About Me", count: "1 item" },
       projects: { title: "Projects", count: PROJECTS.length + " items" },
-      experience: { title: "Work & Skills", count: "1 item" },
+      oss: { title: "Open Source", count: OSS.length + " items" },
+      resume: { title: "Résumé", count: "1 item" },
     };
     const atRoot = s.folder === null;
     const meta = atRoot ? { title: "Workspace", count: FOLDERS.length + " items" } : (FOLDER_META[s.folder] || FOLDER_META.projects);
-
-    const finderViews = [
-      { d1: "M3 4h7v7H3z", d2: "M14 4h7v7h-7zM3 15h7v5H3zM14 15h7v5h-7z" },
-      { d1: "M8 6h13M8 12h13M8 18h13", d2: "M3 6h.01M3 12h.01M3 18h.01" },
-      { d1: "M4 4v16M12 4v16", d2: "M20 4v16" },
-      { d1: "M6 8h12v9H6z", d2: "M3 19h18" },
-    ].map((v, i) => ({
-      ...v,
-      style: {
-        display: "grid", placeItems: "center", width: 26, height: 21, borderRadius: 5,
-        background: i === 0 ? (dark ? "rgba(190,220,250,0.16)" : "rgba(255,255,255,0.85)") : "transparent",
-        boxShadow: i === 0 ? "0 1px 2px rgba(10,30,56,0.14)" : "none",
-        color: i === 0 ? "var(--ink)" : "var(--ink-faint)",
-      },
-    }));
 
     const hasOpenWin = Object.keys(s.windows).some((id) => s.windows[id].open && !s.windows[id].minimized);
     return {
       theme: s.theme, isDark: dark, isLight: !dark, wallpaper, wallpaperWave, modes, typed: s.typed,
       vpLabel: vp.label || "desktop",
       hasWinFlag: hasOpenWin ? "1" : "0",
-      dockLeave: () => { if (!phone) this.setState({ hovered: null }); },
-      windows, dock, folders, finderViews, atRoot, notRoot: !atRoot,
+      dockMove: (e) => {
+        if (phone) return;
+        const shell = e.currentTarget;
+        const rect = shell.getBoundingClientRect();
+        // Measure resting centres once, while every icon is still at scale 1
+        if (!this.state.dockCenters) {
+          const items = shell.querySelectorAll(".os-dock-item");
+          const rest = Array.prototype.map.call(items, (el) => {
+            const b = el.getBoundingClientRect();
+            return b.left + b.width / 2 - rect.left;
+          });
+          if (rest.length) this.setState({ dockCenters: rest });
+        }
+        const x = e.clientX - rect.left;
+        if (this._dockRaf) return;
+        this._dockRaf = requestAnimationFrame(() => {
+          this._dockRaf = 0;
+          this.setState({ dockX: x });
+        });
+      },
+      dockLeave: () => {
+        if (phone) return;
+        if (this._dockRaf) { cancelAnimationFrame(this._dockRaf); this._dockRaf = 0; }
+        this.setState({ dockX: null });
+      },
+      windows, dock, folders, atRoot, notRoot: !atRoot,
       splitStyle: {
         display: "grid",
         gridTemplateColumns: (atRoot || phone) ? "minmax(0,1fr)" : "194px minmax(0,1fr)",
@@ -1213,9 +1471,35 @@ class Component extends DCLogic {
       toggleTheme: () => this.setState({ theme: dark ? "light" : "dark" }),
       folderIsProjects: s.folder === "projects",
       folderIsAbout: s.folder === "about",
-      folderIsExperience: s.folder === "experience",
+      folderIsResume: s.folder === "resume",
+      resumePdf: RESUME_PDF,
+      // Hide the built-in PDF toolbar/sidebar so the embed reads as part of the window
+      resumeEmbed: RESUME_PDF + "#toolbar=0&navpanes=0&scrollbar=0&view=FitH",
+      folderIsOss: s.folder === "oss",
+      ossCount: OSS.length,
+      ossRepoCount: new Set(OSS.map((o) => o.repo)).size,
+      oss: OSS.map((o, i) => ({
+        ...o,
+        url: "https://github.com/" + o.repo + "/pull/" + o.num,
+        num: "#" + o.num,
+        rowStyle: {
+          display: "grid",
+          gridTemplateColumns: phone ? "minmax(0,1fr)" : "minmax(0,190px) minmax(0,1fr) auto",
+          alignItems: phone ? "start" : "baseline",
+          gap: phone ? 4 : 14,
+          borderTop: i === 0 ? "0" : "1px solid var(--hair)",
+          padding: i === 0 ? "0 0 10px" : "10px 0",
+          color: "var(--ink)",
+        },
+      })),
       hasGallery: GALLERY.length > 0,
       galleryEmpty: GALLERY.length === 0,
+      hasEducation: EDUCATION.length > 0,
+      noEducation: EDUCATION.length === 0,
+      hasExperience: EXPERIENCE.length > 0,
+      noExperience: EXPERIENCE.length === 0,
+      education: EDUCATION.map((e) => ({ ...e, hasNotes: !!(e.notes && e.notes.length), notes: (e.notes || []).map((text) => ({ text })) })),
+      experience: EXPERIENCE.map((e) => ({ ...e, hasNotes: !!(e.notes && e.notes.length), notes: (e.notes || []).map((text) => ({ text })) })),
       learning: LEARNING.map((l) => ({ ...l, icon: l.slug ? ICON(l.slug) : null })),
       toolGroups: TOOL_GROUPS.map((g) => ({
         label: g.label,
@@ -1234,6 +1518,21 @@ class Component extends DCLogic {
       })),
       gallery: GALLERY.map((g) => ({
         ...g,
+        isPhoto: !g.video,
+        imgStyle: {
+          position: "absolute", inset: 0, width: "100%", height: "100%",
+          objectFit: "cover", objectPosition: g.pos || "center",
+        },
+        // Videos keep the caption at the top so it never covers the playback controls.
+        captionStyle: {
+          position: "absolute", left: 10, right: 10,
+          top: g.video ? 10 : "auto", bottom: g.video ? "auto" : 10,
+          display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8,
+          border: "1px solid rgba(255,255,255,0.22)", borderRadius: 10,
+          background: "rgba(10,22,40,0.56)", color: "#fff", padding: "7px 10px",
+          WebkitBackdropFilter: "blur(16px) saturate(160%)", backdropFilter: "blur(16px) saturate(160%)",
+          fontSize: 11.5, pointerEvents: "none",
+        },
         style: {
           position: "relative",
           minHeight: phone ? (g.featured ? 200 : 120) : (g.featured ? 330 : 160),
