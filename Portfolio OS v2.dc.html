@@ -2,7 +2,12 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ece7de">
+<meta name="description" content="Thribhuvan (thribhuvan003) — full-stack engineer. Products, open source, TypeScript, Postgres, React.">
+<meta name="author" content="Thribhuvan">
+<title>Thribhuvan · Portfolio OS</title>
+<link rel="icon" href="assets/profile/thribhuvan.png">
 <script src="./support.js"></script>
 </head>
 <body>
@@ -59,25 +64,138 @@
   .os-scroll::-webkit-scrollbar { width:9px; height:9px; }
   .os-scroll::-webkit-scrollbar-thumb { background:var(--hair); border-radius:9px; border:2px solid transparent; background-clip:padding-box; }
   .os-scroll::-webkit-scrollbar-track { background:transparent; }
+
+  /* —— Responsive OS shell (Miller-style) —— */
+  .os-root { --dock-h: 76px; --safe-t: env(safe-area-inset-top, 0px); --safe-b: env(safe-area-inset-bottom, 0px); --safe-l: env(safe-area-inset-left, 0px); --safe-r: env(safe-area-inset-right, 0px); }
+  .os-hero { padding: 56px clamp(24px, 12vw, 320px) 104px; }
+  .os-hero-title { font-size: min(16cqw, 24vh, 214px); }
+  .os-chrome-theme { left: max(12px, var(--safe-l)); top: max(12px, var(--safe-t)); }
+  .os-chrome-spotify { right: max(12px, var(--safe-r)); top: max(12px, var(--safe-t)); width: 224px; }
+  .os-chrome-email { left: max(12px, var(--safe-l)); bottom: max(12px, calc(var(--dock-h) + 8px + var(--safe-b))); }
+  .os-chrome-stats { right: max(12px, var(--safe-r)); bottom: max(12px, calc(var(--dock-h) + 8px + var(--safe-b))); }
+  .os-dock-nav { bottom: max(6px, var(--safe-b)); padding: 0 max(8px, var(--safe-l)) 0 max(8px, var(--safe-r)); }
+  .os-dock-shell { max-width: min(100%, 920px); overflow-x: auto; overflow-y: visible; -webkit-overflow-scrolling: touch; scrollbar-width: none; overscroll-behavior-x: contain; }
+  .os-dock-shell::-webkit-scrollbar { display: none; }
+  .os-dock-btn { width: 56px; height: 56px; }
+  .os-dock-icon { width: 52px; height: 52px; }
+  .os-about-grid { display: grid; grid-template-columns: minmax(0,1fr) 236px; gap: 32px; height: 100%; align-items: center; }
+  .os-about-photo { height: 336px; }
+  .os-about-h { font-size: 40px; }
+  .os-projects-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 16px; }
+  .os-oss-layout { display: grid; grid-template-columns: 250px 1fr; gap: 24px; }
+  .os-oss-row { display: grid; grid-template-columns: 150px 1fr 16px; align-items: center; gap: 12px; }
+  .os-oss-finder-row { display: grid; grid-template-columns: 30px minmax(0,0.9fr) minmax(0,1.1fr) 14px; align-items: center; gap: 14px; }
+  .os-gallery-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; }
+  .os-resume-split { display: grid; grid-template-columns: minmax(0,1.3fr) minmax(228px,0.9fr); gap: 14px; }
+  .os-folder-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); justify-items: center; align-items: center; gap: 24px; padding: 8px 4px; width: 100%; }
+  .os-folder-tile { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; border: 0; background: transparent; padding: 6px 4px; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
+  .os-folder-icon { position: relative; display: flex; align-items: center; justify-content: center; width: 84px; height: 84px; filter: drop-shadow(0 6px 14px rgba(0,0,0,0.22)); transition: transform 160ms cubic-bezier(0.22,1,0.36,1); }
+  .os-folder-tile:hover .os-folder-icon { transform: translateY(-2px) scale(1.03); }
+  .os-folder-label { margin-top: 2px; max-width: 132px; text-align: center; font-size: 13px; font-weight: 600; letter-spacing: 0.01em; line-height: 1.25; transition: color 150ms ease; }
+  .os-folder-tile:hover .os-folder-label { filter: brightness(1.08); }
+  .os-folder-tile:active .os-folder-icon { transform: scale(0.96); }
+  .os-finder-search { width: 132px; }
+  .os-resize-grip { display: block; }
+  .os-win-body-pad { padding: 26px; }
+  .os-win-body-pad.is-launcher { padding: 0 !important; background: transparent !important; }
+  .os-project-row { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 12px; }
+  .os-traffic { width: 14px; height: 14px; border: 0; border-radius: 999px; padding: 0; box-shadow: 0 0 0 0.5px rgba(0,0,0,0.14) inset; flex: 0 0 14px; cursor: default; }
+  .os-traffic.close { background: #ff5f57; }
+  .os-traffic.min { background: #febc2e; }
+  .os-traffic.max { background: #28c840; }
+  .os-empty {
+    display: grid; place-items: center; gap: 12px; min-height: 220px; padding: 36px 22px;
+    border: 1px dashed var(--hair); border-radius: 16px; background: var(--pane); text-align: center;
+  }
+  .os-empty-icon {
+    display: grid; place-items: center; width: 56px; height: 56px; border-radius: 14px;
+    border: 1px solid var(--hair); background: var(--chip); color: var(--ink-faint);
+  }
+  .os-skill-chip {
+    display: inline-flex; min-height: 30px; align-items: center; gap: 6px;
+    border: 1px solid var(--hair); border-radius: 999px; background: var(--chip);
+    color: var(--ink-soft); padding: 5px 12px 5px 8px; font-size: 10.5px; font-weight: 620;
+  }
+  .os-skill-chip img { width: 14px; height: 14px; object-fit: contain; flex: 0 0 14px; }
+
+  @media (max-width: 1023px) {
+    .os-root { --dock-h: 70px; }
+    .os-hero { padding: 64px 28px 120px; }
+    .os-chrome-spotify { width: 188px; padding: 12px !important; }
+    .os-about-grid { grid-template-columns: minmax(0,1fr) 200px; gap: 22px; }
+    .os-about-photo { height: 280px; }
+    .os-about-h { font-size: 32px; }
+    .os-oss-layout { grid-template-columns: 1fr; gap: 16px; }
+    .os-resume-split { grid-template-columns: 1fr; }
+    .os-gallery-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  }
+
+  @media (max-width: 699px) {
+    .os-root { --dock-h: 64px; }
+    .os-hero { padding: 88px 18px 132px; }
+    .os-hero-title { font-size: min(18vw, 16vh, 92px) !important; }
+    .os-hero-sub { font-size: 13.5px !important; max-width: 34ch !important; }
+    .os-hero-eyebrow { font-size: 10.5px !important; letter-spacing: 0.32em !important; }
+    .os-chrome-spotify { display: none !important; }
+    .os-chrome-stats { display: none !important; }
+    .os-chrome-theme { left: max(10px, var(--safe-l)); top: max(10px, var(--safe-t)); transform: scale(0.95); transform-origin: top left; }
+    .os-chrome-email { left: 50%; right: auto; bottom: max(10px, calc(var(--dock-h) + 10px + var(--safe-b))); transform: translateX(-50%); min-height: 38px; padding: 0 14px; font-size: 12px; }
+    .os-dock-nav { bottom: max(4px, var(--safe-b)); }
+    .os-dock-shell { gap: 2px !important; padding: 4px !important; border-radius: 20px !important; max-width: calc(100vw - 16px); }
+    .os-dock-btn { width: 44px; height: 44px; }
+    .os-dock-icon { width: 40px !important; height: 40px !important; border-radius: 11px !important; }
+    .os-dock-icon svg { width: 22px !important; height: 22px !important; }
+    .os-about-grid { grid-template-columns: 1fr; gap: 18px; align-items: start; height: auto; }
+    .os-about-photo { height: 220px; order: -1; }
+    .os-about-h { font-size: 26px; max-width: none !important; }
+    .os-projects-grid { grid-template-columns: 1fr; gap: 12px; }
+    .os-oss-row { grid-template-columns: 1fr 16px; gap: 10px; }
+    .os-oss-row > span:first-child { grid-column: 1 / -1; }
+    .os-oss-finder-row { grid-template-columns: 30px minmax(0,1fr) 14px; gap: 10px; }
+    .os-oss-finder-row > p { grid-column: 2 / 3; }
+    .os-gallery-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .os-folder-grid { gap: 16px 12px; padding: 4px 0; }
+    .os-folder-icon { width: 72px; height: 72px; }
+    .os-folder-label { font-size: 12px; }
+    .os-finder-search { display: none !important; }
+    .os-finder-views { display: none !important; }
+    .os-resize-grip { display: none !important; }
+    .os-win-body-pad { padding: 16px !important; }
+    .os-win-body-pad.is-launcher { padding: 0 !important; }
+    .os-project-row { grid-template-columns: 1fr; gap: 8px; }
+    .os-sidebar { display: none !important; }
+    .os-win-titlebar:not(.is-launcher) { height: 48px !important; flex: 0 0 48px !important; }
+  }
+
+  @media (max-width: 380px) {
+    .os-dock-btn { width: 40px; height: 40px; }
+    .os-dock-icon { width: 36px !important; height: 36px !important; }
+    .os-hero-title { font-size: min(17vw, 78px) !important; }
+  }
+
+  @media (pointer: coarse) {
+    .os-dock-shell { overflow-x: auto; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+  }
 </style>
 </helmet>
 
-<div data-os-theme="{{ theme }}" style="position:relative;width:100%;height:100vh;min-height:420px;overflow:hidden;color:var(--ink);transition:color 300ms ease">
+<div class="os-root" data-os-theme="{{ theme }}" data-vp="{{ vpLabel }}" style="position:relative;width:100%;height:100dvh;min-height:100vh;min-height:420px;overflow:hidden;color:var(--ink);transition:color 300ms ease;touch-action:manipulation">
 
   <div aria-hidden="true" style="{{ wallpaper }}"></div>
   <div aria-hidden="true" style="{{ wallpaperWave }}"></div>
   <div aria-hidden="true" style="position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0.035;mix-blend-mode:overlay;background-image:url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;);background-size:180px 180px"></div>
 
-  <section data-screen-label="Desktop hero" style="position:absolute;z-index:2;inset:0;display:grid;align-content:center;justify-content:stretch;justify-items:stretch;padding:56px clamp(56px,22vw,320px) 104px;pointer-events:none">
+  <section data-screen-label="Desktop hero" class="os-hero" style="position:absolute;z-index:2;inset:0;display:grid;align-content:center;justify-content:stretch;justify-items:stretch;pointer-events:none">
     <div style="display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;container-type:inline-size">
-      <p data-wm-eyebrow="true" style="margin:0;color:var(--ink-soft);font-family:'Geist Mono',monospace;font-size:12px;font-weight:600;letter-spacing:0.5em;text-transform:uppercase;text-indent:0.5em;animation:wm-rise 1.2s cubic-bezier(0.16,1,0.3,1) 0.15s both">Hi, I'm</p>
-      <h1 data-wm="true" style="display:block;width:100%;margin:0;font-family:'Grand Hotel',cursive;text-align:center;font-size:min(16cqw,24vh,214px);font-weight:400;letter-spacing:0.006em;line-height:1;color:var(--wordmark);-webkit-mask-image:linear-gradient(90deg,#000 0%,#000 28%,rgba(0,0,0,0.55) 36%,rgba(0,0,0,0.18) 43%,transparent 50%);mask-image:linear-gradient(90deg,#000 0%,#000 28%,rgba(0,0,0,0.55) 36%,rgba(0,0,0,0.18) 43%,transparent 50%);-webkit-mask-size:300% 100%;mask-size:300% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;animation:wm-draw 4.6s cubic-bezier(0.36,0.03,0.16,1) 0.5s both, wm-glow 7s ease-out 0.5s both">Thribhuvan</h1>
-      <p data-wm-sub="true" style="display:flex;align-items:center;justify-content:center;gap:1px;min-height:24px;margin:0;max-width:56ch;text-align:center;color:var(--ink-soft);font-size:15.5px;font-weight:500;line-height:1.5;letter-spacing:-0.008em;animation:wm-rise 1.1s cubic-bezier(0.16,1,0.3,1) 5.1s both"><span>{{ typed }}</span><span aria-hidden="true" style="display:inline-block;width:1.5px;height:17px;margin-left:2px;background:var(--ink-faint);animation:caret-blink 1.06s step-end infinite"></span></p>
+      <p data-wm-eyebrow="true" class="os-hero-eyebrow" style="margin:0;color:var(--ink-soft);font-family:'Geist Mono',monospace;font-size:12px;font-weight:600;letter-spacing:0.5em;text-transform:uppercase;text-indent:0.5em;animation:wm-rise 1.2s cubic-bezier(0.16,1,0.3,1) 0.15s both">Hi, I'm</p>
+      <h1 data-wm="true" class="os-hero-title" style="display:block;width:100%;margin:0;font-family:'Grand Hotel',cursive;text-align:center;font-weight:400;letter-spacing:0.006em;line-height:1;color:var(--wordmark);-webkit-mask-image:linear-gradient(90deg,#000 0%,#000 28%,rgba(0,0,0,0.55) 36%,rgba(0,0,0,0.18) 43%,transparent 50%);mask-image:linear-gradient(90deg,#000 0%,#000 28%,rgba(0,0,0,0.55) 36%,rgba(0,0,0,0.18) 43%,transparent 50%);-webkit-mask-size:300% 100%;mask-size:300% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;animation:wm-draw 4.6s cubic-bezier(0.36,0.03,0.16,1) 0.5s both, wm-glow 7s ease-out 0.5s both">Thribhuvan</h1>
+      <p data-wm-sub="true" class="os-hero-sub" style="display:flex;align-items:center;justify-content:center;gap:1px;min-height:24px;margin:0;max-width:56ch;text-align:center;color:var(--ink-soft);font-size:15.5px;font-weight:500;line-height:1.5;letter-spacing:-0.008em;animation:wm-rise 1.1s cubic-bezier(0.16,1,0.3,1) 5.1s both"><span>{{ typed }}</span><span aria-hidden="true" style="display:inline-block;width:1.5px;height:17px;margin-left:2px;background:var(--ink-faint);animation:caret-blink 1.06s step-end infinite"></span></p>
     </div>
     <span></span>
   </section>
 
-  <aside style="position:absolute;z-index:6;right:22px;top:22px;width:224px;border:1px solid var(--glass-line);border-radius:20px;background:var(--glass);box-shadow:var(--shadow);-webkit-backdrop-filter:blur(30px) saturate(170%);backdrop-filter:blur(30px) saturate(170%);padding:14px">
+  <aside class="os-chrome-spotify" style="position:absolute;z-index:6;border:1px solid var(--glass-line);border-radius:20px;background:var(--glass);box-shadow:var(--shadow);-webkit-backdrop-filter:blur(30px) saturate(170%);backdrop-filter:blur(30px) saturate(170%);padding:14px">
     <p style="margin:0 0 11px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:0.17em;text-transform:uppercase">Last Played</p>
     <div style="position:relative;display:grid;place-items:center;aspect-ratio:1;overflow:hidden;border:1px solid var(--hair);border-radius:13px;background:linear-gradient(150deg, rgba(30,215,96,0.26), rgba(30,215,96,0.04) 58%), var(--chip)">
       <svg width="52" height="52" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#1ED760"></circle><g fill="none" stroke="#0b2016" stroke-linecap="round"><path d="M6.5 8.9c3.65-1.08 8.08-.75 11.15.82" stroke-width="1.85"></path><path d="M7.15 12.05c3.18-.82 6.92-.52 9.65.7" stroke-width="1.65"></path><path d="M7.85 15.05c2.58-.6 5.53-.36 7.82.57" stroke-width="1.48"></path></g></svg>
@@ -86,7 +204,7 @@
     <p style="margin:4px 0 0;color:var(--ink-faint);font-size:11.5px;line-height:1.4">Open Spotify from the dock</p>
   </aside>
 
-  <div style="position:absolute;z-index:5000;left:22px;top:22px;display:flex;align-items:center;gap:2px;border:1px solid var(--glass-line);border-radius:999px;background:var(--glass);box-shadow:var(--shadow);-webkit-backdrop-filter:blur(28px) saturate(170%);backdrop-filter:blur(28px) saturate(170%);padding:4px">
+  <div class="os-chrome-theme" style="position:absolute;z-index:5000;display:flex;align-items:center;gap:2px;border:1px solid var(--glass-line);border-radius:999px;background:var(--glass);box-shadow:var(--shadow);-webkit-backdrop-filter:blur(28px) saturate(170%);backdrop-filter:blur(28px) saturate(170%);padding:4px">
     <sc-for list="{{ modes }}" as="m" hint-placeholder-count="2">
       <button type="button" onClick="{{ m.select }}" aria-label="{{ m.aria }}" style="{{ m.style }}">
         <sc-if value="{{ m.isLight }}" hint-placeholder-val="{{ true }}">
@@ -99,45 +217,41 @@
     </sc-for>
   </div>
 
-  <a href="mailto:thribhuvan003@gmail.com" style="position:absolute;z-index:5000;left:22px;bottom:22px;display:inline-flex;align-items:center;gap:9px;min-height:42px;border:1px solid var(--glass-line);border-radius:999px;background:var(--glass);box-shadow:var(--shadow);-webkit-backdrop-filter:blur(28px) saturate(170%);backdrop-filter:blur(28px) saturate(170%);padding:0 18px;color:var(--ink);font-size:13px;font-weight:600;white-space:nowrap">
+  <a href="mailto:thribhuvan003@gmail.com" class="os-chrome-email" style="position:absolute;z-index:5000;display:inline-flex;align-items:center;gap:9px;min-height:42px;border:1px solid var(--glass-line);border-radius:999px;background:var(--glass);box-shadow:var(--shadow);-webkit-backdrop-filter:blur(28px) saturate(170%);backdrop-filter:blur(28px) saturate(170%);padding:0 18px;color:var(--ink);font-size:13px;font-weight:600;white-space:nowrap">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
     Email me
   </a>
 
-  <p style="position:absolute;z-index:5;right:22px;bottom:22px;margin:0;text-align:right;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10.5px;font-weight:600;letter-spacing:0.11em;text-transform:uppercase;line-height:1.65">Four public projects<br>Ten merged upstream PRs</p>
+  <p class="os-chrome-stats" style="position:absolute;z-index:5;margin:0;text-align:right;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10.5px;font-weight:600;letter-spacing:0.11em;text-transform:uppercase;line-height:1.65">Four public projects<br>Ten merged upstream PRs</p>
 
   <sc-for list="{{ windows }}" as="win" hint-placeholder-count="0">
   <div style="{{ win.frame }}">
     <section data-screen-label="{{ win.label }}" onMouseDown="{{ win.focus }}" style="{{ win.shellStyle }}">
-      <div onPointerDown="{{ win.dragStart }}" onDoubleClick="{{ win.zoom }}" style="{{ win.barStyle }}">
+      <div class="os-win-titlebar {{ win.barClass }}" onPointerDown="{{ win.dragStart }}" onDoubleClick="{{ win.zoom }}" style="{{ win.barStyle }}">
         <div style="display:flex;align-items:center;gap:8px">
-          <button type="button" aria-label="Close" onClick="{{ win.close }}" style="width:12px;height:12px;border:0;border-radius:999px;padding:0;background:#ff5f57;box-shadow:0 0 0 0.5px rgba(0,0,0,0.14) inset"></button>
-          <button type="button" aria-label="Minimize" onClick="{{ win.minimize }}" style="width:12px;height:12px;border:0;border-radius:999px;padding:0;background:#febc2e;box-shadow:0 0 0 0.5px rgba(0,0,0,0.14) inset"></button>
-          <button type="button" aria-label="Maximize" onClick="{{ win.zoom }}" style="width:12px;height:12px;border:0;border-radius:999px;padding:0;background:#28c840;box-shadow:0 0 0 0.5px rgba(0,0,0,0.14) inset"></button>
+          <button type="button" class="os-traffic close" aria-label="Close" onClick="{{ win.close }}"></button>
+          <button type="button" class="os-traffic min" aria-label="Minimize" onClick="{{ win.minimize }}"></button>
+          <button type="button" class="os-traffic max" aria-label="Maximize" onClick="{{ win.zoom }}"></button>
         </div>
         <div style="{{ win.titleStyle }}">{{ win.label }}</div>
-        <span></span>
+        <span style="{{ win.barPadStyle }}"></span>
       </div>
-      <div class="os-scroll" style="{{ win.bodyStyle }}">
+      <div class="os-scroll os-win-body-pad {{ win.bodyClass }}" style="{{ win.bodyStyle }}">
         <sc-if value="{{ win.isAbout }}" hint-placeholder-val="{{ false }}">
-          <div style="display:grid;grid-template-columns:minmax(0,1fr) 236px;gap:32px;height:100%;align-items:center">
+          <div class="os-about-grid">
             <div>
-              <p style="margin:0 0 10px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">Engineer / Builder</p>
-              <h2 style="margin:0;max-width:17ch;color:var(--ink);font-size:40px;font-weight:700;line-height:1.05;letter-spacing:-0.03em;text-wrap:pretty">I build full-stack products and contribute focused fixes to open source.</h2>
-              <p style="max-width:50ch;margin:16px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.6">My current work includes Tray, Unhold, TabMind, and AquaVision, alongside merged contributions across developer tools I use.</p>
+              <p style="margin:0 0 10px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">Full-stack engineer</p>
+              <h2 class="os-about-h" style="margin:0;max-width:18ch;color:var(--ink);font-weight:700;line-height:1.05;letter-spacing:-0.03em;text-wrap:pretty">I ship products end to end — and send precise fixes back upstream.</h2>
+              <p style="max-width:52ch;margin:16px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.65">I'm <strong style="color:var(--ink);font-weight:650">Thribhuvan</strong> (<a href="mailto:thribhuvan003@gmail.com" style="color:var(--accent);font-weight:600">thribhuvan003@gmail.com</a>). I design, build, and operate full-stack systems: multi-tenant SaaS, payments, auth, and AI-assisted workflows.</p>
+              <p style="max-width:52ch;margin:12px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.65">I also contribute focused patches to tools I use daily — Svelte, Prisma, Supabase, SolidJS, Nitro, and more. Small diffs. Real production bugs. Merged upstream.</p>
               <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:22px">
-                <span style="display:inline-flex;align-items:center;gap:8px;border:1px solid var(--hair);border-radius:999px;background:var(--chip);padding:9px 14px;color:var(--ink-soft);font-size:12px;font-weight:560">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12h.01"></path><path d="M16 6V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path><path d="M22 13a18.15 18.15 0 0 1-20 0"></path><rect width="20" height="14" x="2" y="6" rx="2"></rect></svg>
-                  Building four products
-                </span>
-                <span style="display:inline-flex;align-items:center;gap:8px;border:1px solid var(--hair);border-radius:999px;background:var(--chip);padding:9px 14px;color:var(--ink-soft);font-size:12px;font-weight:560">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"></path><path d="m6 8-4 4 4 4"></path><path d="m14.5 4-5 16"></path></svg>
-                  Contributing upstream
-                </span>
+                <span style="display:inline-flex;align-items:center;gap:8px;border:1px solid var(--hair);border-radius:999px;background:var(--chip);padding:9px 14px;color:var(--ink-soft);font-size:12px;font-weight:560">4 public products</span>
+                <span style="display:inline-flex;align-items:center;gap:8px;border:1px solid var(--hair);border-radius:999px;background:var(--chip);padding:9px 14px;color:var(--ink-soft);font-size:12px;font-weight:560">10 merged OSS PRs</span>
+                <span style="display:inline-flex;align-items:center;gap:8px;border:1px solid var(--hair);border-radius:999px;background:var(--chip);padding:9px 14px;color:var(--ink-soft);font-size:12px;font-weight:560">TypeScript · Postgres · React</span>
               </div>
             </div>
-            <div style="position:relative;overflow:hidden;height:336px;border:1px solid var(--glass-line);border-radius:14px;background:var(--pane);box-shadow:0 18px 42px rgba(10,30,56,0.18)">
-              <img src="assets/profile/thribhuvan.png" alt="Portrait of Thribhuvan" style="width:100%;height:100%;object-fit:cover">
+            <div class="os-about-photo" style="position:relative;overflow:hidden;border:1px solid var(--glass-line);border-radius:16px;background:var(--pane);box-shadow:0 18px 42px rgba(10,30,56,0.18)">
+              <img src="assets/profile/thribhuvan.png" alt="Portrait of Thribhuvan" style="width:100%;height:100%;object-fit:cover;object-position:50% 18%">
             </div>
           </div>
         </sc-if>
@@ -172,7 +286,7 @@
 
             <div style="{{ splitStyle }}">
             <sc-if value="{{ notRoot }}" hint-placeholder-val="{{ false }}">
-            <aside style="display:grid;align-content:start;gap:1px;border-right:1px solid var(--hair);background:var(--pane);padding:10px 8px">
+            <aside class="os-sidebar" style="display:grid;align-content:start;gap:1px;border-right:1px solid var(--hair);background:var(--pane);padding:10px 8px">
               <p style="margin:0 0 5px;padding-left:8px;color:var(--ink-faint);font-size:11px;font-weight:640;letter-spacing:0.01em">Favourites</p>
               <sc-for list="{{ folders }}" as="folder" hint-placeholder-count="4">
                 <button type="button" onClick="{{ folder.select }}" style="{{ folder.rowStyle }}">
@@ -185,21 +299,20 @@
 
             <section class="os-scroll" style="{{ contentStyle }}">
               <sc-if value="{{ atRoot }}" hint-placeholder-val="{{ true }}">
-                <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));justify-items:center;align-items:center;align-content:center;gap:24px;padding:8px 4px">
+                <div class="os-folder-grid">
                   <sc-for list="{{ folders }}" as="folder" hint-placeholder-count="4">
-                    <button type="button" onDoubleClick="{{ folder.select }}" onClick="{{ folder.select }}" style="{{ folder.tileStyle }}">
-                      <span style="position:relative;display:block;width:84px;height:66px;filter:drop-shadow(0 10px 16px rgba(8,40,74,0.34))">
-                        <span style="position:absolute;left:3px;top:0;width:35px;height:13px;border-radius:6px 8px 0 0;background:linear-gradient(180deg,#a9dcfb,#63b3ea)"></span>
-                        <span style="position:absolute;left:0;right:0;top:8px;bottom:0;border-radius:7px 9px 10px 10px;background:linear-gradient(165deg,#bfe6fd 0%,#7cc3f0 42%,#3f96d8 100%);box-shadow:0 1px 0 rgba(255,255,255,0.6) inset"></span>
+                    <button type="button" class="os-folder-tile" onDoubleClick="{{ folder.select }}" onClick="{{ folder.select }}">
+                      <span class="os-folder-icon" aria-hidden="true">
+                        <img src="assets/icons/mac-folder.avif" alt="" width="84" height="84" style="width:100%;height:100%;object-fit:contain;display:block;pointer-events:none">
                       </span>
-                      <span style="{{ folder.tileLabelStyle }}">{{ folder.label }}</span>
+                      <span class="os-folder-label" style="{{ folder.tileLabelStyle }}">{{ folder.label }}</span>
                     </button>
                   </sc-for>
                 </div>
               </sc-if>
 
               <sc-if value="{{ folderIsProjects }}" hint-placeholder-val="{{ false }}">
-                <div style="display:grid;grid-template-columns:repeat(2, minmax(0,1fr));gap:16px">
+                <div class="os-projects-grid">
                   <sc-for list="{{ projects }}" as="p" hint-placeholder-count="4">
                     <article style="display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--hair);border-radius:14px;background:var(--glass);box-shadow:0 14px 34px rgba(12,32,58,0.08), 0 1px 0 rgba(255,255,255,0.4) inset">
                       <sc-if value="{{ p.image }}" hint-placeholder-val="{{ true }}">
@@ -224,12 +337,20 @@
               </sc-if>
 
               <sc-if value="{{ folderIsAbout }}" hint-placeholder-val="{{ false }}">
-                <div style="display:grid;gap:22px;border:1px solid var(--hair);border-radius:14px;background:var(--glass);box-shadow:0 14px 34px rgba(12,32,58,0.10), 0 1px 0 rgba(255,255,255,0.45) inset;-webkit-backdrop-filter:blur(22px) saturate(150%);backdrop-filter:blur(22px) saturate(150%);padding:28px">
+                <div style="display:grid;gap:18px;border:1px solid var(--hair);border-radius:16px;background:var(--glass);box-shadow:0 14px 34px rgba(12,32,58,0.10), 0 1px 0 rgba(255,255,255,0.45) inset;-webkit-backdrop-filter:blur(22px) saturate(150%);backdrop-filter:blur(22px) saturate(150%);padding:clamp(18px,3vw,28px)">
                   <div>
                     <p style="margin:0 0 10px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">About Me</p>
-                    <h3 style="margin:0;max-width:26ch;color:var(--ink);font-size:30px;font-weight:700;line-height:1.1;letter-spacing:-0.03em;text-wrap:pretty">I build practical web products, and I read the code before I trust it.</h3>
-                    <p style="max-width:58ch;margin:16px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.65">My work spans multi-tenant SaaS, AI-assisted workflows, browser tools, and image restoration. Most of what I know came from reading other people's source and finding out where it broke.</p>
-                    <p style="max-width:58ch;margin:12px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.65">That habit turned into open-source work: ten small, specific fixes merged into Svelte, Prisma, SolidJS, SvelteKit, Nitro, Supabase and others. None of them are large. All of them were things I hit myself.</p>
+                    <h3 style="margin:0;max-width:28ch;color:var(--ink);font-size:clamp(22px,3.2vw,30px);font-weight:700;line-height:1.1;letter-spacing:-0.03em;text-wrap:pretty">I build practical web products — and I read the code before I trust it.</h3>
+                    <p style="max-width:58ch;margin:16px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.65">Full-stack engineer shipping multi-tenant SaaS, AI-assisted workflows, browser tools, and vision systems. Contact: <a href="mailto:thribhuvan003@gmail.com" style="color:var(--accent);font-weight:600">thribhuvan003@gmail.com</a> · GitHub <a href="https://github.com/thribhuvan003" target="_blank" rel="noreferrer" style="color:var(--accent);font-weight:600">@thribhuvan003</a>.</p>
+                    <p style="max-width:58ch;margin:12px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.65">Ten merged upstream PRs (Svelte, Prisma, SolidJS, SvelteKit, Nitro, Supabase, …). Small, specific diffs from bugs I hit in production — not drive-by commits.</p>
+                  </div>
+                  <div style="display:flex;flex-wrap:wrap;gap:8px">
+                    <span class="os-skill-chip">TypeScript</span>
+                    <span class="os-skill-chip">React / Next.js</span>
+                    <span class="os-skill-chip">Postgres + RLS</span>
+                    <span class="os-skill-chip">Node.js</span>
+                    <span class="os-skill-chip">System design</span>
+                    <span class="os-skill-chip">Open source</span>
                   </div>
                   <div style="display:grid;gap:8px">
                     <p style="margin:0;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:0.17em;text-transform:uppercase">Away from the editor</p>
@@ -240,7 +361,7 @@
                       </div>
                       <div style="display:grid;grid-template-columns:18px minmax(0,1fr);align-items:start;gap:12px;border-top:1px solid var(--hair);padding-top:11px">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="margin-top:2px"><circle cx="8" cy="18" r="4"></circle><path d="M12 18V2l7 4"></path></svg>
-                        <p style="margin:0;color:var(--ink-soft);font-size:13px;line-height:1.55"><strong style="color:var(--ink);font-weight:640">Mozart, and classical in general.</strong> It is what is playing while I work. No lyrics to argue with.</p>
+                        <p style="margin:0;color:var(--ink-soft);font-size:13px;line-height:1.55"><strong style="color:var(--ink);font-weight:640">Mozart, and classical in general.</strong> Usually playing while I work — focus without lyrical noise.</p>
                       </div>
                     </div>
                   </div>
@@ -325,14 +446,14 @@
                       <h4 style="margin:0;color:var(--ink);font-size:11.5px;font-weight:720">Tools I Use</h4>
                     </div>
                     <div style="display:grid;gap:13px">
-                      <sc-for list="{{ toolGroups }}" as="g" hint-placeholder-count="5">
+                      <sc-for list="{{ toolGroups }}" as="g" hint-placeholder-count="7">
                         <section aria-label="{{ g.label }}">
                           <h5 style="margin:0;color:var(--ink-soft);font-size:10.5px;font-weight:700;letter-spacing:0.04em">{{ g.label }}</h5>
                           <ul style="display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0;padding:0;list-style:none">
-                            <sc-for list="{{ g.tools }}" as="t" hint-placeholder-count="9">
-                              <li style="display:inline-flex;min-height:30px;align-items:center;gap:6px;border:1px solid var(--hair);border-radius:999px;background:var(--chip);color:var(--ink-soft);padding:5px 12px 5px 8px;font-size:10.5px;font-weight:620">
+                            <sc-for list="{{ g.tools }}" as="t" hint-placeholder-count="6">
+                              <li class="os-skill-chip">
                                 <sc-if value="{{ t.icon }}" hint-placeholder-val="{{ true }}">
-                                  <img src="{{ t.icon }}" alt="" aria-hidden="true" style="width:14px;height:14px;object-fit:contain;flex:0 0 14px">
+                                  <img src="{{ t.icon }}" alt="" aria-hidden="true">
                                 </sc-if>
                                 {{ t.name }}
                               </li>
@@ -366,7 +487,7 @@
               <h2 style="margin:0;color:var(--ink);font-size:34px;font-weight:700;line-height:1.06;letter-spacing:-0.032em">Products I'm building and tools I work with.</h2>
               <p style="max-width:62ch;margin:0;color:var(--ink-soft);font-size:13.5px;line-height:1.55">Four public projects, supported by hands-on open-source contributions.</p>
             </header>
-            <div style="display:grid;grid-template-columns:minmax(0,1.3fr) minmax(228px,0.9fr);gap:14px">
+            <div class="os-resume-split">
               <section aria-label="Projects" style="min-width:0;border:1px solid var(--hair);border-radius:14px;background:var(--glass);box-shadow:0 14px 34px rgba(12,32,58,0.10), 0 1px 0 rgba(255,255,255,0.45) inset;-webkit-backdrop-filter:blur(22px) saturate(150%);backdrop-filter:blur(22px) saturate(150%);padding:17px">
                 <div style="display:flex;align-items:center;gap:8px;color:var(--accent)">
                   <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12h.01"></path><path d="M16 6V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path><path d="M22 13a18.15 18.15 0 0 1-20 0"></path><rect width="20" height="14" x="2" y="6" rx="2"></rect></svg>
@@ -429,15 +550,15 @@
         </sc-if>
 
         <sc-if value="{{ win.isOss }}" hint-placeholder-val="{{ false }}">
-          <div style="display:grid;grid-template-columns:250px 1fr;gap:24px">
+          <div class="os-oss-layout">
             <div style="position:sticky;top:0;height:fit-content">
               <p style="margin:0 0 10px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">Open Source</p>
-              <h2 style="margin:0;color:var(--ink);font-size:31px;font-weight:700;line-height:1.06;letter-spacing:-0.03em">Focused fixes, merged upstream.</h2>
+              <h2 style="margin:0;color:var(--ink);font-size:clamp(22px,4vw,31px);font-weight:700;line-height:1.06;letter-spacing:-0.03em">Focused fixes, merged upstream.</h2>
               <p style="margin:13px 0 0;color:var(--ink-soft);font-size:13.5px;line-height:1.55">Contributions across compiler behavior, generated types, cookies, storage errors, and developer tooling. Each item links to the merged PR.</p>
             </div>
             <div style="display:grid;gap:8px">
               <sc-for list="{{ oss }}" as="row" hint-placeholder-count="10">
-                <a href="{{ row.href }}" target="_blank" rel="noreferrer" style="display:grid;grid-template-columns:150px 1fr 16px;align-items:center;gap:12px;min-height:52px;border:1px solid var(--hair);border-radius:12px;background:var(--glass);padding:11px 14px">
+                <a href="{{ row.href }}" target="_blank" rel="noreferrer" class="os-oss-row" style="min-height:52px;border:1px solid var(--hair);border-radius:12px;background:var(--glass);padding:11px 14px">
                   <span style="color:var(--ink);font-size:12.5px;font-weight:660">{{ row.name }}</span>
                   <p style="margin:0;color:var(--ink-soft);font-size:12px;line-height:1.4">{{ row.note }}</p>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--ink-faint)"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
@@ -448,23 +569,36 @@
         </sc-if>
 
         <sc-if value="{{ win.isImages }}" hint-placeholder-val="{{ false }}">
-          <div style="display:grid;gap:18px">
+          <div style="display:grid;gap:18px;height:100%;align-content:start">
             <div>
               <p style="margin:0 0 8px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">Photos</p>
-              <h2 style="margin:0;color:var(--ink);font-size:26px;font-weight:700;line-height:1.1;letter-spacing:-0.028em">A small visual archive.</h2>
-              <p style="margin:8px 0 0;color:var(--ink-soft);font-size:13.5px;line-height:1.55">Portraits, product captures, and personal photographs.</p>
+              <h2 style="margin:0;color:var(--ink);font-size:clamp(22px,4vw,26px);font-weight:700;line-height:1.1;letter-spacing:-0.028em">Gallery</h2>
+              <p style="margin:8px 0 0;color:var(--ink-soft);font-size:13.5px;line-height:1.55">Visual archive for product shots and personal photos.</p>
             </div>
-            <div style="display:grid;grid-template-columns:repeat(3, minmax(0,1fr));gap:12px">
-              <sc-for list="{{ gallery }}" as="g" hint-placeholder-count="6">
-                <figure style="{{ g.style }}">
-                  <img src="{{ g.src }}" alt="{{ g.title }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
-                  <figcaption style="position:absolute;left:10px;right:10px;bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid rgba(255,255,255,0.22);border-radius:10px;background:rgba(10,22,40,0.56);color:#fff;padding:7px 10px;-webkit-backdrop-filter:blur(16px) saturate(160%);backdrop-filter:blur(16px) saturate(160%);font-size:11.5px">
-                    <span style="color:rgba(255,255,255,0.68);font-family:'Geist Mono',monospace;font-size:9.5px;letter-spacing:0.12em;text-transform:uppercase">{{ g.kind }}</span>
-                    <strong style="font-weight:620">{{ g.title }}</strong>
-                  </figcaption>
-                </figure>
-              </sc-for>
-            </div>
+            <sc-if value="{{ hasGallery }}" hint-placeholder-val="{{ false }}">
+              <div class="os-gallery-grid">
+                <sc-for list="{{ gallery }}" as="g" hint-placeholder-count="0">
+                  <figure style="{{ g.style }}">
+                    <img src="{{ g.src }}" alt="{{ g.title }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+                    <figcaption style="position:absolute;left:10px;right:10px;bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid rgba(255,255,255,0.22);border-radius:10px;background:rgba(10,22,40,0.56);color:#fff;padding:7px 10px;-webkit-backdrop-filter:blur(16px) saturate(160%);backdrop-filter:blur(16px) saturate(160%);font-size:11.5px">
+                      <span style="color:rgba(255,255,255,0.68);font-family:'Geist Mono',monospace;font-size:9.5px;letter-spacing:0.12em;text-transform:uppercase">{{ g.kind }}</span>
+                      <strong style="font-weight:620">{{ g.title }}</strong>
+                    </figcaption>
+                  </figure>
+                </sc-for>
+              </div>
+            </sc-if>
+            <sc-if value="{{ galleryEmpty }}" hint-placeholder-val="{{ true }}">
+              <div class="os-empty">
+                <div class="os-empty-icon" aria-hidden="true">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path></svg>
+                </div>
+                <div>
+                  <p style="margin:0;color:var(--ink);font-size:15px;font-weight:650;letter-spacing:-0.01em">No photos yet</p>
+                  <p style="margin:6px 0 0;max-width:36ch;color:var(--ink-soft);font-size:13px;line-height:1.5">This folder is intentionally empty. Images will land here later.</p>
+                </div>
+              </div>
+            </sc-if>
           </div>
         </sc-if>
 
@@ -506,18 +640,18 @@
           </div>
         </sc-if>
       </div>
-      <span role="separator" tabindex="0" aria-label="Resize" onPointerDown="{{ win.resizeStart }}" style="position:absolute;right:0;bottom:0;width:18px;height:18px;cursor:nwse-resize;touch-action:none"></span>
+      <span class="os-resize-grip" role="separator" tabindex="0" aria-label="Resize" onPointerDown="{{ win.resizeStart }}" style="position:absolute;right:0;bottom:0;width:18px;height:18px;cursor:nwse-resize;touch-action:none"></span>
     </section>
   </div>
   </sc-for>
 
-  <nav aria-label="Dock" style="position:fixed;z-index:6000;left:0;right:0;bottom:9px;display:flex;justify-content:center;pointer-events:none">
-    <div style="position:relative;display:flex;align-items:flex-end;gap:6px;padding:6px;border:1px solid var(--dock-line);border-radius:24px;background:var(--dock);box-shadow:0 24px 60px rgba(6,20,40,0.30), 0 6px 18px rgba(6,20,40,0.14), 0 1px 0 rgba(255,255,255,0.55) inset, 0 -1px 0 rgba(0,0,0,0.06) inset;-webkit-backdrop-filter:blur(34px) saturate(190%);backdrop-filter:blur(34px) saturate(190%);pointer-events:auto">
+  <nav class="os-dock-nav" aria-label="Dock" style="position:fixed;z-index:6000;left:0;right:0;display:flex;justify-content:center;pointer-events:none">
+    <div class="os-dock-shell" style="position:relative;display:flex;align-items:flex-end;gap:6px;padding:6px;border:1px solid var(--dock-line);border-radius:24px;background:var(--dock);box-shadow:0 24px 60px rgba(6,20,40,0.30), 0 6px 18px rgba(6,20,40,0.14), 0 1px 0 rgba(255,255,255,0.55) inset, 0 -1px 0 rgba(0,0,0,0.06) inset;-webkit-backdrop-filter:blur(34px) saturate(190%);backdrop-filter:blur(34px) saturate(190%);pointer-events:auto">
       <sc-for list="{{ dock }}" as="item" hint-placeholder-count="8">
         <span style="{{ item.wrapStyle }}">
-          <button type="button" aria-label="{{ item.aria }}" onClick="{{ item.activate }}" onMouseEnter="{{ item.enter }}" onMouseLeave="{{ item.leave }}" style="position:relative;display:grid;place-items:end center;width:56px;height:56px;border:0;background:transparent;padding:0">
+          <button type="button" class="os-dock-btn" aria-label="{{ item.aria }}" onClick="{{ item.activate }}" onMouseEnter="{{ item.enter }}" onMouseLeave="{{ item.leave }}" style="position:relative;display:grid;place-items:end center;border:0;background:transparent;padding:0">
             <span style="{{ item.tooltipStyle }}">{{ item.label }}</span>
-            <span style="{{ item.iconStyle }}">
+            <span class="os-dock-icon" style="{{ item.iconStyle }}">
               <sc-if value="{{ item.artwork }}" hint-placeholder-val="{{ true }}">
                 <img src="{{ item.artwork }}" alt="" aria-hidden="true" style="{{ item.artStyle }}">
               </sc-if>
@@ -613,40 +747,41 @@ const PROJECTS = [
 const ICON = (slug) => "https://cdn.simpleicons.org/" + slug;
 
 const TOOL_GROUPS = [
+  { label: "Languages", tools: [
+    ["TypeScript", "typescript"], ["JavaScript", "javascript"], ["Python", "python"], ["SQL", "postgresql"],
+  ] },
   { label: "Frontend", tools: [
-    ["TypeScript", "typescript"], ["React", "react"], ["Next.js", "nextdotjs"], ["Tailwind CSS", "tailwindcss"], ["Framer Motion", "framer"],
+    ["React", "react"], ["Next.js", "nextdotjs"], ["Tailwind CSS", "tailwindcss"], ["HTML5", "html5"], ["CSS3", "css"],
   ] },
-  { label: "Backend & database", tools: [
-    ["Node.js", "nodedotjs"], ["Postgres", "postgresql"], ["Supabase", "supabase"], ["Redis", "redis"], ["Zod", "zod"],
+  { label: "Backend & data", tools: [
+    ["Node.js", "nodedotjs"], ["Postgres", "postgresql"], ["Supabase", "supabase"], ["Redis", "redis"], ["Prisma", "prisma"], ["Zod", "zod"],
   ] },
-  { label: "Infrastructure & services", tools: [
-    ["Razorpay", "razorpay"], ["Resend", "resend"], ["Sentry", "sentry"], ["GitHub", "github"],
+  { label: "Cloud & delivery", tools: [
+    ["Vercel", "vercel"], ["GitHub", "github"], ["Docker", "docker"], ["Sentry", "sentry"],
   ] },
-  { label: "AI & browser", tools: [
-    ["Gemini", "googlegemini"], ["Chrome Extensions", "googlechrome"],
+  { label: "Payments & comms", tools: [
+    ["Razorpay", "razorpay"], ["Resend", "resend"],
   ] },
-  { label: "Python & vision", tools: [
-    ["Python", "python"], ["Flask", "flask"], ["PyTorch", "pytorch"], ["OpenCV", "opencv"], ["NumPy", "numpy"],
+  { label: "AI & platform", tools: [
+    ["Gemini", "googlegemini"], ["Chrome Extensions", "googlechrome"], ["PyTorch", "pytorch"], ["OpenCV", "opencv"],
   ] },
-  { label: "Testing", tools: [
-    ["Vitest", "vitest"], ["Playwright", "playwright"],
+  { label: "Quality", tools: [
+    ["Vitest", "vitest"], ["Playwright", "playwright"], ["Git", "git"],
   ] },
 ];
 
+// Recruiter-facing: signals depth (systems, security, shipping) not buzzwords
 const LEARNING = [
-  { title: "Postgres row-level security, properly", note: "Tray runs multi-tenant on RLS, so I keep going back to the policy model rather than working around it.", slug: "postgresql" },
-  { title: "Computer vision without a GPU", note: "AquaVision is CPU-only on purpose. Getting usable results under that constraint is the interesting part.", slug: "pytorch" },
-  { title: "Reading compilers", note: "The Svelte and SvelteKit fixes came from this. Slow going, but it is the fastest way to stop guessing.", slug: "svelte" },
+  { title: "Distributed systems fundamentals", note: "Consistency trade-offs, queues, idempotency, and failure modes — how production services stay correct under load.", slug: "docker" },
+  { title: "Postgres at scale (indexes, RLS, plans)", note: "Query plans, partial indexes, and row-level security from multi-tenant products like Tray — not just CRUD.", slug: "postgresql" },
+  { title: "System design for product engineers", note: "API boundaries, caching, auth sessions, rate limits, and observability before features ship.", slug: "cloudflare" },
+  { title: "Web security that actually ships", note: "XSS/CSRF, cookie flags, secret handling, and least-privilege data access in real apps.", slug: "auth0" },
+  { title: "Compilers & language tooling", note: "Reading Svelte/SvelteKit internals led to merged upstream fixes. Deep tools beat shallow frameworks.", slug: "svelte" },
+  { title: "Practical ML systems (CPU-first)", note: "AquaVision: classical CV + lightweight routing without GPU dependency. Evaluation over demos.", slug: "pytorch" },
 ];
 
-const GALLERY = [
-  { src: "assets/profile/thribhuvan.png", title: "Portrait", kind: "Profile", featured: true },
-  { src: "assets/profile/thribhuvan-cutout.png", title: "Studio Cutout", kind: "Profile" },
-  { src: "assets/shots/tray-1.png", title: "Tray", kind: "Project" },
-  { src: "assets/shots/unhold-1.png", title: "Unhold", kind: "Project" },
-  { src: "assets/shots/aqua-before.jpg", title: "AquaVision Before", kind: "Project" },
-  { src: "assets/shots/aqua-after.jpg", title: "AquaVision After", kind: "Project" },
-];
+// Empty on purpose — add photos later
+const GALLERY = [];
 
 const FOLDERS = [
   { id: "about", label: "About Me", note: "Profile and current focus" },
@@ -660,13 +795,44 @@ class Component extends DCLogic {
     super(props);
     const w = {};
     Object.keys(GEOM).forEach((id, i) => { w[id] = { ...GEOM[id], open: false, minimized: false, maximized: false, z: 10 + i }; });
-    this.state = { theme: (props && props.theme) || "light", windows: w, hovered: null, folder: null, zTop: 30, typed: "" };
+    const vp = this.viewport();
+    this.state = { theme: (props && props.theme) || "light", windows: w, hovered: null, folder: null, zTop: 30, typed: "", vp };
     this._phrase = 0;
     this._char = 0;
     this._erasing = false;
   }
 
+  viewport() {
+    const w = (typeof window !== "undefined" && window.innerWidth) || 1440;
+    const h = (typeof window !== "undefined" && window.innerHeight) || 900;
+    const phone = w < 700;
+    const tablet = w >= 700 && w < 1024;
+    return { w, h, phone, tablet, compact: phone || tablet, label: phone ? "phone" : tablet ? "tablet" : "desktop" };
+  }
+
   componentDidMount() {
+    this._onResize = () => {
+      const vp = this.viewport();
+      this.setState((s) => {
+        const windows = { ...s.windows };
+        Object.keys(windows).forEach((id) => {
+          const win = windows[id];
+          if (!win.open || win.maximized) return;
+          const maxW = Math.max(280, vp.w - 24);
+          const maxH = Math.max(240, vp.h - 100);
+          windows[id] = {
+            ...win,
+            w: Math.min(win.w, maxW),
+            h: Math.min(win.h, maxH),
+            x: Math.max(8, Math.min(win.x, vp.w - Math.min(win.w, maxW) - 8)),
+            y: Math.max(28, Math.min(win.y, vp.h - Math.min(win.h, maxH) - 84)),
+          };
+        });
+        return { vp, windows };
+      });
+    };
+    window.addEventListener("resize", this._onResize);
+    this.setState({ vp: this.viewport() });
     if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       this.setState({ typed: PHRASES[0] });
       return;
@@ -674,7 +840,10 @@ class Component extends DCLogic {
     this._timer = window.setTimeout(() => this.type(), 5400);
   }
 
-  componentWillUnmount() { window.clearTimeout(this._timer); }
+  componentWillUnmount() {
+    window.clearTimeout(this._timer);
+    if (this._onResize) window.removeEventListener("resize", this._onResize);
+  }
 
   type() {
     const full = PHRASES[this._phrase];
@@ -706,9 +875,35 @@ class Component extends DCLogic {
     this.setState((s) => { const z = s.zTop + 1; return { zTop: z, windows: { ...s.windows, [id]: { ...s.windows[id], z, minimized: false } } }; });
   }
 
+  fitGeom(id, vp) {
+    const g = GEOM[id] || { w: 720, h: 520, x: 80, y: 80 };
+    const maxW = Math.max(280, vp.w - 24);
+    const maxH = Math.max(260, vp.h - 100);
+    const w = Math.min(g.w, maxW);
+    const h = Math.min(g.h, maxH);
+    const x = Math.max(8, Math.min(Math.round((vp.w - w) / 2), vp.w - w - 8));
+    const y = Math.max(36, Math.min(Math.round((vp.h - h) / 2) - 20, vp.h - h - 90));
+    return { w, h, x, y };
+  }
+
   open(app) {
     if (app.external) { window.open(app.external, "_blank", "noopener,noreferrer"); return; }
-    this.setState((s) => { const z = s.zTop + 1; return { zTop: z, windows: { ...s.windows, [app.id]: { ...s.windows[app.id], open: true, minimized: false, z } } }; });
+    if (app.id === "github") { window.open(L.github, "_blank", "noopener,noreferrer"); return; }
+    const vp = this.viewport();
+    this.setState((s) => {
+      const z = s.zTop + 1;
+      const fit = this.fitGeom(app.id, vp);
+      const next = {
+        ...s.windows[app.id],
+        open: true,
+        minimized: false,
+        z,
+        // Keep Workspace root as Miller glass card (not a full sheet) on all sizes
+        maximized: !!vp.phone && app.id !== "work",
+        ...(vp.phone && app.id === "work" ? fit : (vp.phone ? {} : fit)),
+      };
+      return { zTop: z, windows: { ...s.windows, [app.id]: next } };
+    });
   }
 
   patch(id, next) { this.setState((s) => ({ windows: { ...s.windows, [id]: { ...s.windows[id], ...next } } })); }
@@ -717,16 +912,18 @@ class Component extends DCLogic {
     if (mode === "move" && event.target.closest("button, a")) return;
     const w = this.state.windows[id];
     if (w.maximized) return;
+    const vp = this.viewport();
+    if (vp.phone) return;
     if (mode === "resize") event.stopPropagation();
     this.focus(id);
     const sx = event.clientX, sy = event.clientY, ox = w.x, oy = w.y, ow = w.w, oh = w.h;
-    const H = () => ({ w: window.innerWidth, h: Math.max(window.innerHeight, 860) });
+    const H = () => ({ w: window.innerWidth, h: window.innerHeight });
     const move = (e) => {
       const host = H();
       if (mode === "move") {
         this.patch(id, { x: Math.max(8, Math.min(ox + e.clientX - sx, host.w - ow - 8)), y: Math.max(30, Math.min(oy + e.clientY - sy, host.h - oh - 84)) });
       } else {
-        this.patch(id, { w: Math.max(420, Math.min(ow + e.clientX - sx, host.w - ox - 8)), h: Math.max(340, Math.min(oh + e.clientY - sy, host.h - oy - 84)) });
+        this.patch(id, { w: Math.max(300, Math.min(ow + e.clientX - sx, host.w - ox - 8)), h: Math.max(280, Math.min(oh + e.clientY - sy, host.h - oy - 84)) });
       }
     };
     const up = () => { window.removeEventListener("pointermove", move); window.removeEventListener("pointerup", up); };
@@ -737,6 +934,8 @@ class Component extends DCLogic {
   renderVals() {
     const s = this.state;
     const dark = s.theme === "dark";
+    const vp = s.vp || this.viewport();
+    const phone = !!vp.phone;
 
     const wallpaper = {
       position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none",
@@ -769,18 +968,24 @@ class Component extends DCLogic {
 
     const windows = Object.keys(s.windows).map((id) => ({ id, ...s.windows[id] })).filter((w) => w.open)
       .sort((a, b) => a.z - b.z).map((w) => {
+        // Miller glass card: root Workspace only (folder drill-in uses standard window chrome)
         const launcher = w.id === "work" && s.folder === null && !w.maximized;
-        const lw = 424, lh = 412;
-        const vw = typeof window !== "undefined" ? window.innerWidth : 1440;
-        const vh = typeof window !== "undefined" ? Math.max(window.innerHeight, 420) : 900;
+        const lw = Math.min(380, Math.max(300, vp.w - 32));
+        const lh = phone ? Math.min(400, Math.max(340, vp.h - 140)) : 392;
+        const vw = vp.w;
+        const vh = vp.h;
+        const sheet = !!w.maximized;
         return {
-        id: w.id, label: w.label,
+        id: w.id, label: launcher ? "Workspace" : w.label,
+        barClass: launcher ? "is-launcher" : "",
+        bodyClass: launcher ? "is-launcher" : "",
         frame: {
           position: "absolute", zIndex: w.z,
-          left: w.maximized ? 8 : (launcher ? Math.round((vw - lw) / 2) : w.x),
-          top: w.maximized ? 32 : (launcher ? Math.round((vh - lh) / 2) - 26 : w.y),
-          width: w.maximized ? "calc(100% - 16px)" : (launcher ? lw : w.w),
-          height: w.maximized ? "calc(100% - 112px)" : (launcher ? lh : w.h),
+          left: sheet ? (phone ? 8 : 8) : (launcher ? Math.round((vw - lw) / 2) : w.x),
+          top: sheet ? (phone ? 10 : 28) : (launcher ? Math.round((vh - lh) / 2) - 18 : w.y),
+          width: sheet ? (phone ? "calc(100% - 16px)" : "calc(100% - 16px)") : (launcher ? lw : w.w),
+          height: sheet ? (phone ? "calc(100% - 88px)" : "calc(100% - 112px)") : (launcher ? lh : w.h),
+          maxWidth: launcher && !sheet ? 380 : undefined,
           opacity: w.minimized ? 0 : 1,
           transform: w.minimized ? "translateY(280px) scale(0.8)" : "none",
           pointerEvents: w.minimized ? "none" : "auto",
@@ -790,14 +995,17 @@ class Component extends DCLogic {
           position: "relative", display: "flex", flexDirection: "column", gap: 24,
           width: "100%", height: "100%", minWidth: 0, overflow: "hidden", isolation: "isolate",
           borderRadius: 32, padding: 24,
-          border: "1px solid " + (dark ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.62)"),
-          background: dark ? "rgba(44,44,46,0.85)" : "rgba(250,250,252,0.82)",
-          boxShadow: dark ? "rgba(0,0,0,0.6) 0px 25px 60px" : "rgba(24,40,64,0.24) 0px 25px 60px",
+          border: "1px solid " + (dark ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.55)"),
+          background: dark ? "rgba(44,44,46,0.85)" : "rgba(250,250,252,0.86)",
+          boxShadow: dark
+            ? "rgba(0,0,0,0.6) 0px 25px 60px, rgba(255,255,255,0.08) 0px 1px 0px inset"
+            : "rgba(24,40,64,0.24) 0px 25px 60px, rgba(255,255,255,0.55) 0px 1px 0px inset",
           WebkitBackdropFilter: "blur(40px) saturate(1.8)", backdropFilter: "blur(40px) saturate(1.8)",
         } : {
           position: "relative", display: "flex", flexDirection: "column",
           width: "100%", height: "100%", minWidth: 0, overflow: "hidden", isolation: "isolate",
-          border: "0.5px solid var(--glass-line)", borderRadius: 10,
+          border: "0.5px solid var(--glass-line)",
+          borderRadius: phone ? 18 : 12,
           background: "var(--glass-2)", boxShadow: "var(--shadow)",
           WebkitBackdropFilter: "blur(40px) saturate(160%)", backdropFilter: "blur(40px) saturate(160%)",
         },
@@ -807,7 +1015,7 @@ class Component extends DCLogic {
         } : {
           flex: "0 0 44px", height: 44, display: "grid", gridTemplateColumns: "80px 1fr 44px",
           alignItems: "center", gap: 8, padding: "0 13px", userSelect: "none", touchAction: "none",
-          borderRadius: "9.5px 9.5px 0 0", borderBottom: "0.5px solid var(--hair)",
+          borderRadius: phone ? "17px 17px 0 0" : "11px 11px 0 0", borderBottom: "0.5px solid var(--hair)",
           background: "var(--titlebar)", boxShadow: "0 0.5px 0 rgba(255,255,255,0.2) inset",
         },
         titleStyle: launcher ? {
@@ -818,19 +1026,20 @@ class Component extends DCLogic {
           justifySelf: "center", fontFamily: "-apple-system,BlinkMacSystemFont,'Geist',sans-serif",
           color: "var(--ink-soft)", fontSize: 13, fontWeight: 600, letterSpacing: "-0.01em",
         },
+        barPadStyle: launcher ? { display: "none" } : { display: "block" },
         bodyStyle: launcher ? {
           position: "relative", flex: 1, minHeight: 0, overflow: "hidden", padding: 0,
           background: "transparent", zIndex: 10,
         } : {
           position: "relative", flex: 1, minHeight: 0, overflow: "auto",
-          padding: w.id === "work" ? 0 : 26,
+          padding: w.id === "work" ? 0 : (phone ? 16 : 26),
           background: "var(--sheet)", scrollbarWidth: "thin",
         },
         isAbout: w.id === "about", isWorkspace: w.id === "work", isResume: w.id === "resume",
         isOss: w.id === "oss", isImages: w.id === "images", isSpotify: w.id === "spotify",
         isContact: w.id === "contact" || w.id === "resumepdf",
         focus: () => this.focus(w.id),
-        close: () => this.patch(w.id, { open: false, minimized: false, maximized: false }),
+        close: () => { this.patch(w.id, { open: false, minimized: false, maximized: false }); if (w.id === "work") this.setState({ folder: null }); },
         minimize: () => this.patch(w.id, { minimized: !w.minimized }),
         zoom: () => { this.focus(w.id); this.patch(w.id, { maximized: !w.maximized }); },
         dragStart: (e) => this.drag(w.id, e, "move"),
@@ -840,10 +1049,10 @@ class Component extends DCLogic {
 
     const dock = APPS.map((app, i) => {
       const st = s.windows[app.id];
-      const d = s.hovered === null ? 4 : Math.abs(s.hovered - i);
-      const lift = d === 0 ? -16 : d === 1 ? -7 : d === 2 ? -2 : 0;
-      const scale = d === 0 ? 1.42 : d === 1 ? 1.2 : d === 2 ? 1.06 : 1;
-      const hovering = s.hovered === i;
+      const d = (!phone && s.hovered !== null) ? Math.abs(s.hovered - i) : 4;
+      const lift = phone ? 0 : (d === 0 ? -16 : d === 1 ? -7 : d === 2 ? -2 : 0);
+      const scale = phone ? 1 : (d === 0 ? 1.42 : d === 1 ? 1.2 : d === 2 ? 1.06 : 1);
+      const hovering = !phone && s.hovered === i;
       return {
         label: app.label,
         aria: app.external ? "Open " + app.label + " in a new tab" : (st && st.minimized ? "Restore " : st && st.open ? "Focus " : "Open ") + app.label,
@@ -854,12 +1063,12 @@ class Component extends DCLogic {
         wrapStyle: {
           display: "inline-block", transformOrigin: "50% 100%",
           transform: "translateY(" + lift + "px) scale(" + scale + ")",
-          marginInline: ((scale - 1) * 26).toFixed(2) + "px",
+          marginInline: phone ? "0px" : ((scale - 1) * 26).toFixed(2) + "px",
           transition: "transform 260ms cubic-bezier(0.22,1,0.36,1), margin-inline 260ms cubic-bezier(0.22,1,0.36,1)",
         },
         iconStyle: {
           position: "relative", display: "grid", placeItems: "center", isolation: "isolate",
-          width: 52, height: 52, overflow: "hidden", borderRadius: SQUIRCLE,
+          width: phone ? 40 : 52, height: phone ? 40 : 52, overflow: "hidden", borderRadius: phone ? 11 : SQUIRCLE,
           background: app.artwork ? (app.plate || "#f7f9fc") : app.plate,
           boxShadow: "0 8px 16px rgba(6,20,40,0.22), 0 1px 3px rgba(6,20,40,0.14), 0 1px 0 rgba(255,255,255,0.45) inset, 0 -1px 0 rgba(0,0,0,0.18) inset",
         },
@@ -874,9 +1083,12 @@ class Component extends DCLogic {
           WebkitBackdropFilter: "blur(24px) saturate(180%)", backdropFilter: "blur(24px) saturate(180%)",
           transition: "opacity 160ms ease, transform 160ms ease",
         },
-        activate: () => this.open(app),
-        enter: () => this.setState({ hovered: i }),
-        leave: () => this.setState({ hovered: null }),
+        activate: () => {
+          if (st && st.open && !st.minimized && !app.external) this.focus(app.id);
+          else this.open(app);
+        },
+        enter: () => { if (!phone) this.setState({ hovered: i }); },
+        leave: () => { if (!phone) this.setState({ hovered: null }); },
       };
     });
 
@@ -892,14 +1104,7 @@ class Component extends DCLogic {
           background: active ? (dark ? "rgba(158,205,247,0.16)" : "rgba(10,104,201,0.12)") : "transparent",
           color: "var(--ink)", padding: "4px 8px", textAlign: "left", cursor: "default", transition: "background 140ms ease",
         },
-        tileStyle: {
-          display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-          gap: 8, border: 0, borderRadius: 12, background: "transparent",
-          padding: "6px 4px", cursor: "pointer", userSelect: "none",
-        },
         tileLabelStyle: {
-          marginTop: 2, maxWidth: 132, textAlign: "center", fontSize: 13, fontWeight: 600,
-          letterSpacing: "-0.005em", textWrap: "balance",
           color: dark ? "rgba(255,255,255,0.85)" : "rgba(18,30,48,0.86)",
         },
       };
@@ -931,15 +1136,17 @@ class Component extends DCLogic {
 
     return {
       theme: s.theme, isDark: dark, isLight: !dark, wallpaper, wallpaperWave, modes, typed: s.typed,
+      vpLabel: vp.label || "desktop",
       windows, dock, folders, finderViews, atRoot, notRoot: !atRoot,
       splitStyle: {
         display: "grid",
-        gridTemplateColumns: atRoot ? "minmax(0,1fr)" : "194px minmax(0,1fr)",
+        gridTemplateColumns: (atRoot || phone) ? "minmax(0,1fr)" : "194px minmax(0,1fr)",
         flex: 1, minHeight: 0,
       },
       contentStyle: {
-        minWidth: 0, overflow: "auto", background: "var(--sheet)",
-        padding: atRoot ? "34px 30px" : "20px",
+        minWidth: 0, overflow: atRoot ? "hidden" : "auto",
+        background: atRoot ? "transparent" : "var(--sheet)",
+        padding: atRoot ? "8px 4px" : (phone ? "14px" : "20px"),
         display: atRoot ? "grid" : "block",
         alignContent: atRoot ? "center" : "start",
         justifyContent: atRoot ? "center" : "stretch",
@@ -956,14 +1163,39 @@ class Component extends DCLogic {
       folderIsAbout: s.folder === "about",
       folderIsOss: s.folder === "open-source",
       folderIsExperience: s.folder === "experience",
+      hasGallery: GALLERY.length > 0,
+      galleryEmpty: GALLERY.length === 0,
       oss: OSS.map((o) => ({ ...o, icon: o.slug ? ICON(o.slug) : null })),
       learning: LEARNING.map((l) => ({ ...l, icon: l.slug ? ICON(l.slug) : null })),
       toolGroups: TOOL_GROUPS.map((g) => ({
         label: g.label,
         tools: g.tools.map(([name, slug]) => ({ name, icon: slug ? ICON(slug) : null })),
       })),
-      projects: PROJECTS.map((p, i) => ({ ...p, rowStyle: { display: "grid", gridTemplateColumns: "minmax(0,1fr) auto", alignItems: "center", gap: 12, borderTop: i === 0 ? "0" : "1px solid var(--hair)", padding: i === 0 ? "8px 0 11px" : "11px 0" } })),
-      gallery: GALLERY.map((g) => ({ ...g, style: { position: "relative", minHeight: g.featured ? 330 : 160, overflow: "hidden", margin: 0, gridColumn: g.featured ? "span 2" : "auto", gridRow: g.featured ? "span 2" : "auto", border: "1px solid var(--hair)", borderRadius: 12, background: "var(--chip)" } })),
+      projects: PROJECTS.map((p, i) => ({
+        ...p,
+        rowStyle: {
+          display: "grid",
+          gridTemplateColumns: phone ? "1fr" : "minmax(0,1fr) auto",
+          alignItems: phone ? "start" : "center",
+          gap: phone ? 8 : 12,
+          borderTop: i === 0 ? "0" : "1px solid var(--hair)",
+          padding: i === 0 ? "8px 0 11px" : "11px 0",
+        },
+      })),
+      gallery: GALLERY.map((g) => ({
+        ...g,
+        style: {
+          position: "relative",
+          minHeight: phone ? (g.featured ? 200 : 120) : (g.featured ? 330 : 160),
+          overflow: "hidden",
+          margin: 0,
+          gridColumn: phone ? "auto" : (g.featured ? "span 2" : "auto"),
+          gridRow: phone ? "auto" : (g.featured ? "span 2" : "auto"),
+          border: "1px solid var(--hair)",
+          borderRadius: 12,
+          background: "var(--chip)",
+        },
+      })),
     };
   }
 }
