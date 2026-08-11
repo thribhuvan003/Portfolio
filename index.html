@@ -363,7 +363,7 @@
     Email me
   </a>
 
-  <p class="os-chrome-stats" style="position:absolute;z-index:5;margin:0;text-align:right;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10.5px;font-weight:600;letter-spacing:0.11em;text-transform:uppercase;line-height:1.65">Four public projects<br>Ten merged upstream PRs</p>
+  <p class="os-chrome-stats" style="position:absolute;z-index:5;margin:0;text-align:right;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10.5px;font-weight:600;letter-spacing:0.11em;text-transform:uppercase;line-height:1.65">Four public projects<br>Full-stack products</p>
 
   <sc-for list="{{ windows }}" as="win" hint-placeholder-count="0">
   <div class="os-win-frame" style="{{ win.frame }}">
@@ -509,26 +509,6 @@
                 </div>
               </sc-if>
 
-              <sc-if value="{{ folderIsOss }}" hint-placeholder-val="{{ false }}">
-                <div style="display:grid;gap:8px">
-                  <sc-for list="{{ oss }}" as="row" hint-placeholder-count="10">
-                    <a href="{{ row.href }}" target="_blank" rel="noreferrer" style="display:grid;grid-template-columns:30px minmax(0,0.9fr) minmax(0,1.1fr) 14px;align-items:center;gap:14px;min-height:60px;border:1px solid var(--hair);border-radius:12px;background:var(--glass);padding:12px 14px">
-                      <span style="display:grid;place-items:center;width:30px;height:30px;border:1px solid var(--hair);border-radius:8px;background:var(--chip)">
-                        <sc-if value="{{ row.icon }}" hint-placeholder-val="{{ true }}">
-                          <img src="{{ row.icon }}" alt="" aria-hidden="true" style="width:17px;height:17px;object-fit:contain">
-                        </sc-if>
-                      </span>
-                      <span style="min-width:0">
-                        <strong style="display:block;color:var(--ink);font-size:12.5px;font-weight:660;letter-spacing:-0.01em">{{ row.name }}</strong>
-                        <small style="display:block;margin-top:2px;color:var(--ink-faint);font-size:11px;line-height:1.35">{{ row.what }}</small>
-                      </span>
-                      <p style="margin:0;color:var(--ink-soft);font-size:12px;line-height:1.45">{{ row.note }}</p>
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--ink-faint)"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
-                    </a>
-                  </sc-for>
-                </div>
-              </sc-if>
-
               <sc-if value="{{ folderIsExperience }}" hint-placeholder-val="{{ false }}">
                 <div style="display:grid;gap:14px">
                   <div>
@@ -621,94 +601,6 @@
             </sc-if>
           </div>
         </sc-if>
-        <sc-if value="{{ win.isResume }}" hint-placeholder-val="{{ false }}">
-          <div style="display:grid;gap:16px">
-            <header style="display:grid;gap:7px">
-              <p style="margin:0;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">Selected Work</p>
-              <h2 style="margin:0;color:var(--ink);font-size:34px;font-weight:700;line-height:1.06;letter-spacing:-0.032em">Products I'm building and tools I work with.</h2>
-              <p style="max-width:62ch;margin:0;color:var(--ink-soft);font-size:13.5px;line-height:1.55">Four public projects, supported by hands-on open-source contributions.</p>
-            </header>
-            <div class="os-resume-split">
-              <section aria-label="Projects" style="min-width:0;border:1px solid var(--hair);border-radius:14px;background:var(--glass);box-shadow:0 14px 34px rgba(12,32,58,0.10), 0 1px 0 rgba(255,255,255,0.45) inset;-webkit-backdrop-filter:blur(22px) saturate(150%);backdrop-filter:blur(22px) saturate(150%);padding:17px">
-                <div style="display:flex;align-items:center;gap:8px;color:var(--accent)">
-                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12h.01"></path><path d="M16 6V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path><path d="M22 13a18.15 18.15 0 0 1-20 0"></path><rect width="20" height="14" x="2" y="6" rx="2"></rect></svg>
-                  <h3 style="margin:0;color:var(--ink);font-size:11.5px;font-weight:720">Projects</h3>
-                </div>
-                <div style="display:grid">
-                  <sc-for list="{{ projects }}" as="p" hint-placeholder-count="4">
-                    <article style="{{ p.rowStyle }}">
-                      <div style="min-width:0">
-                        <h4 style="margin:0 0 3px;color:var(--ink);font-size:12.5px;font-weight:680">{{ p.name }}</h4>
-                        <p style="margin:0;color:var(--ink-soft);font-size:11.5px;line-height:1.45">{{ p.summary }}</p>
-                      </div>
-                      <div style="display:flex;align-items:center;gap:6px">
-                        <sc-if value="{{ p.live }}" hint-placeholder-val="{{ true }}">
-                          <a href="{{ p.live }}" target="_blank" rel="noreferrer" style="display:inline-flex;min-height:30px;align-items:center;border:1px solid var(--hair);border-radius:999px;background:var(--chip);color:var(--ink-soft);padding:6px 11px;font-size:10.5px;font-weight:640">Live</a>
-                        </sc-if>
-                        <a href="{{ p.repo }}" target="_blank" rel="noreferrer" style="display:inline-flex;min-height:30px;align-items:center;border:1px solid var(--hair);border-radius:999px;background:var(--chip);color:var(--ink-soft);padding:6px 11px;font-size:10.5px;font-weight:640">Code</a>
-                      </div>
-                    </article>
-                  </sc-for>
-                </div>
-              </section>
-              <section aria-label="Open Source" style="min-width:0;border:1px solid var(--hair);border-radius:14px;background:var(--glass);box-shadow:0 14px 34px rgba(12,32,58,0.10), 0 1px 0 rgba(255,255,255,0.45) inset;-webkit-backdrop-filter:blur(22px) saturate(150%);backdrop-filter:blur(22px) saturate(150%);padding:17px">
-                <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px;color:var(--accent)">
-                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"></path><path d="m6.08 9.5-3.5 1.6a1 1 0 0 0 0 1.81l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9a1 1 0 0 0 0-1.83l-3.5-1.59"></path><path d="m6.08 14.5-3.5 1.6a1 1 0 0 0 0 1.81l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9a1 1 0 0 0 0-1.83l-3.5-1.59"></path></svg>
-                  <h3 style="margin:0;color:var(--ink);font-size:11.5px;font-weight:720">Open Source</h3>
-                </div>
-                <p style="margin:0;color:var(--ink-soft);font-size:11.5px;line-height:1.45">Merged contributions across these projects:</p>
-                <ul style="display:flex;flex-wrap:wrap;gap:6px;margin:11px 0 0;padding:0;list-style:none">
-                  <sc-for list="{{ oss }}" as="row" hint-placeholder-count="10">
-                    <li><a href="{{ row.href }}" target="_blank" rel="noreferrer" style="display:inline-flex;min-height:30px;align-items:center;border:1px solid var(--hair);border-radius:999px;background:var(--chip);color:var(--ink-soft);padding:6px 11px;font-size:10.5px;font-weight:640">{{ row.name }}</a></li>
-                  </sc-for>
-                </ul>
-              </section>
-            </div>
-            <section aria-label="Tools I Use" style="border:1px solid var(--hair);border-radius:14px;background:var(--glass);box-shadow:0 14px 34px rgba(12,32,58,0.10), 0 1px 0 rgba(255,255,255,0.45) inset;-webkit-backdrop-filter:blur(22px) saturate(150%);backdrop-filter:blur(22px) saturate(150%);padding:17px">
-              <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;color:var(--accent)">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"></path><path d="m6 8-4 4 4 4"></path><path d="m14.5 4-5 16"></path></svg>
-                <h3 style="margin:0;color:var(--ink);font-size:11.5px;font-weight:720">Tools I Use</h3>
-              </div>
-              <div style="display:grid;gap:13px">
-                <sc-for list="{{ toolGroups }}" as="g" hint-placeholder-count="5">
-                  <section aria-label="{{ g.label }}">
-                    <h4 style="margin:0;color:var(--ink-soft);font-size:10.5px;font-weight:700;letter-spacing:0.04em">{{ g.label }}</h4>
-                    <ul style="display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0;padding:0;list-style:none">
-                      <sc-for list="{{ g.tools }}" as="t" hint-placeholder-count="9">
-                        <li style="display:inline-flex;min-height:30px;align-items:center;gap:6px;border:1px solid var(--hair);border-radius:999px;background:var(--chip);color:var(--ink-soft);padding:5px 12px 5px 8px;font-size:10.5px;font-weight:620">
-                          <sc-if value="{{ t.icon }}" hint-placeholder-val="{{ true }}">
-                            <img src="{{ t.icon }}" alt="" aria-hidden="true" style="width:14px;height:14px;object-fit:contain;flex:0 0 14px">
-                          </sc-if>
-                          {{ t.name }}
-                        </li>
-                      </sc-for>
-                    </ul>
-                  </section>
-                </sc-for>
-              </div>
-            </section>
-          </div>
-        </sc-if>
-
-        <sc-if value="{{ win.isOss }}" hint-placeholder-val="{{ false }}">
-          <div class="os-oss-layout">
-            <div style="position:sticky;top:0;height:fit-content">
-              <p style="margin:0 0 10px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">Open Source</p>
-              <h2 style="margin:0;color:var(--ink);font-size:clamp(22px,4vw,31px);font-weight:700;line-height:1.06;letter-spacing:-0.03em">Focused fixes, merged upstream.</h2>
-              <p style="margin:13px 0 0;color:var(--ink-soft);font-size:13.5px;line-height:1.55">Contributions across compiler behavior, generated types, cookies, storage errors, and developer tooling. Each item links to the merged PR.</p>
-            </div>
-            <div style="display:grid;gap:8px">
-              <sc-for list="{{ oss }}" as="row" hint-placeholder-count="10">
-                <a href="{{ row.href }}" target="_blank" rel="noreferrer" class="os-oss-row" style="min-height:52px;border:1px solid var(--hair);border-radius:12px;background:var(--glass);padding:11px 14px">
-                  <span style="color:var(--ink);font-size:12.5px;font-weight:660">{{ row.name }}</span>
-                  <p style="margin:0;color:var(--ink-soft);font-size:12px;line-height:1.4">{{ row.note }}</p>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--ink-faint)"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
-                </a>
-              </sc-for>
-            </div>
-          </div>
-        </sc-if>
-
         <sc-if value="{{ win.isImages }}" hint-placeholder-val="{{ false }}">
           <div style="display:grid;gap:18px;height:100%;align-content:start">
             <div>
@@ -837,46 +729,26 @@ const SQUIRCLE = 13;
 
 const PHRASES = [
   "Full-stack engineer. I build products end to end.",
-  "Ten small fixes merged upstream, into tools I actually use.",
   "I read Vedanta — slowly, and mostly out of order.",
   "Mozart is usually playing while I work.",
 ];
 
 const APPS = [
   { id: "about", label: "About Me", artwork: "assets/profile/thribhuvan.png", plate: "#e9dfd2" },
-  { id: "resume", label: "Work & Skills", artwork: "assets/icons/work-skills.png" },
   { id: "work", label: "Workspace", artwork: "assets/icons/workspace.png" },
-  { id: "oss", label: "Open Source", plate: "linear-gradient(160deg,#5b6470 0%,#333c48 48%,#171d26 100%)", glyph: "m18 16 4-4-4-4", glyph2: "m6 8-4 4 4 4" },
   { id: "images", label: "Photos", artwork: "assets/icons/photos.png" },
   { id: "github", label: "GitHub", plate: "linear-gradient(160deg,#4c545e 0%,#24292f 52%,#0d1117 100%)" },
   { id: "linkedin", label: "LinkedIn", plate: "linear-gradient(160deg,#3d9ae0 0%,#0a66c2 54%,#054a92 100%)", external: L.linkedin },
-  { id: "resumepdf", label: "Résumé", plate: "linear-gradient(160deg,#fdfdfd 0%,#e8ebef 52%,#c8cfd8 100%)", glyph: "M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z", glyph2: "M14 2v5h6M8 13h8M8 17h5", stroke: "#4a5560" },
   { id: "spotify", label: "Spotify", plate: "#1DB954" },
 ];
 
 const GEOM = {
   about:   { w: 800, h: 520, x: 150, y: 110, label: "About Me" },
   work:    { w: 980, h: 640, x: 130, y: 84,  label: "Workspace" },
-  oss:     { w: 780, h: 560, x: 300, y: 108, label: "Open Source" },
   images:  { w: 960, h: 620, x: 180, y: 92,  label: "Photos" },
   spotify: { w: 460, h: 580, x: 900, y: 110, label: "Spotify" },
-  resume:  { w: 820, h: 610, x: 260, y: 96,  label: "Work & Skills" },
   contact: { w: 600, h: 430, x: 420, y: 150, label: "Contact" },
-  resumepdf: { w: 620, h: 520, x: 400, y: 120, label: "Résumé" },
 };
-
-const OSS = [
-  { name: "Svelte", slug: "svelte", what: "UI framework that compiles components at build time", note: "compiler fix for keyed computed destructuring keys", href: "https://github.com/sveltejs/svelte/pull/18521" },
-  { name: "Prisma", slug: "prisma", what: "Type-safe ORM for Node and TypeScript", note: "Bytes values and Node Buffer pool behavior", href: "https://github.com/prisma/prisma/pull/29701" },
-  { name: "SvelteKit", slug: "svelte", what: "Application framework built on Svelte", note: "destructured route exports during type generation", href: "https://github.com/sveltejs/kit/pull/16329" },
-  { name: "Supabase JS", slug: "supabase", what: "Client library for the Supabase platform", note: "Storage service error code exposure", href: "https://github.com/supabase/supabase-js/pull/2537" },
-  { name: "Supabase SSR", slug: "supabase", what: "Server-side auth helpers for Supabase", note: "domain-scoped cookie deletion during sign out", href: "https://github.com/supabase/ssr/pull/258" },
-  { name: "SolidJS", slug: "solid", what: "Reactive UI library with fine-grained updates", note: "emitted storage types at the advertised path", href: "https://github.com/solidjs/solid/pull/2875" },
-  { name: "Nitro", slug: "nuxt", what: "Server toolkit that powers Nuxt", note: "SameSite=Lax for Vercel skew-protection cookies", href: "https://github.com/nitrojs/nitro/pull/4422" },
-  { name: "Refined GitHub", slug: "github", what: "Browser extension that improves the GitHub UI", note: "capitalized conventional commit type support", href: "https://github.com/refined-github/refined-github/pull/9777" },
-  { name: "react-jsonschema-form", slug: "react", what: "Builds React forms from a JSON Schema", note: "preserve empty-string titles in oneOf / anyOf", href: "https://github.com/rjsf-team/react-jsonschema-form/pull/5150" },
-  { name: "Music Blocks", slug: null, what: "Visual programming environment for learning music", note: "Turtle Blocks import fixes", href: "https://github.com/sugarlabs/musicblocks/pull/7727" },
-];
 
 const PROJECTS = [
   { name: "Tray", summary: "Multi-tenant food-ordering SaaS for stalls, tiffin centres, and campus messes.", detail: "Postgres RLS, Razorpay UPI, token-counter workflows, and realtime kitchen boards.", image: "assets/shots/tray-1.png", live: L.trayLive, repo: L.trayRepo },
@@ -927,8 +799,7 @@ const GALLERY = [];
 const FOLDERS = [
   { id: "about", label: "About Me", note: "Profile and current focus" },
   { id: "projects", label: "Projects", note: "Tray, Unhold, TabMind & AquaVision" },
-  { id: "experience", label: "Work & Skills", note: "Projects, tools & open source" },
-  { id: "open-source", label: "Open Source", note: "Merged upstream contributions" },
+  { id: "experience", label: "Work & Skills", note: "Projects, tools & learning" },
 ];
 
 class Component extends DCLogic {
@@ -1184,9 +1055,9 @@ class Component extends DCLogic {
           padding: w.id === "work" ? 0 : (phone ? 16 : 26),
           background: "var(--sheet)", scrollbarWidth: "thin",
         },
-        isAbout: w.id === "about", isWorkspace: w.id === "work", isResume: w.id === "resume",
-        isOss: w.id === "oss", isImages: w.id === "images", isSpotify: w.id === "spotify",
-        isContact: w.id === "contact" || w.id === "resumepdf",
+        isAbout: w.id === "about", isWorkspace: w.id === "work",
+        isImages: w.id === "images", isSpotify: w.id === "spotify",
+        isContact: w.id === "contact",
         focus: () => this.focus(w.id),
         stopDrag: (e) => this.stopDrag(e),
         close: (e) => {
@@ -1293,7 +1164,6 @@ class Component extends DCLogic {
       about: { title: "About Me", count: "1 item" },
       projects: { title: "Projects", count: PROJECTS.length + " items" },
       experience: { title: "Work & Skills", count: "1 item" },
-      "open-source": { title: "Open Source", count: OSS.length + " items" },
     };
     const atRoot = s.folder === null;
     const meta = atRoot ? { title: "Workspace", count: FOLDERS.length + " items" } : (FOLDER_META[s.folder] || FOLDER_META.projects);
@@ -1343,11 +1213,9 @@ class Component extends DCLogic {
       toggleTheme: () => this.setState({ theme: dark ? "light" : "dark" }),
       folderIsProjects: s.folder === "projects",
       folderIsAbout: s.folder === "about",
-      folderIsOss: s.folder === "open-source",
       folderIsExperience: s.folder === "experience",
       hasGallery: GALLERY.length > 0,
       galleryEmpty: GALLERY.length === 0,
-      oss: OSS.map((o) => ({ ...o, icon: o.slug ? ICON(o.slug) : null })),
       learning: LEARNING.map((l) => ({ ...l, icon: l.slug ? ICON(l.slug) : null })),
       toolGroups: TOOL_GROUPS.map((g) => ({
         label: g.label,
