@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  html, body { margin:0; padding:0; width:100%; height:100%; overflow:hidden; background:#ecebe7; }
+  body { font-family:'Geist', ui-sans-serif, system-ui, sans-serif; color:#161412; -webkit-font-smoothing:antialiased; }
+  * { box-sizing:border-box; }
+  a { color:inherit; text-decoration:none; }
+  a:hover { color:#1f4f76; }
+  button { font:inherit; cursor:pointer; }
+  img { user-select:none; }
+  ::selection { background:rgba(212,164,72,0.28); }
+  .om-scroll::-webkit-scrollbar { width:8px; height:8px; }
+  .om-scroll::-webkit-scrollbar-thumb { background:rgba(45,47,48,0.2); border-radius:8px; }
+  .om-scroll::-webkit-scrollbar-track { background:transparent; }
+</style>
+</helmet>
+
+<div style="position:relative;width:100%;height:100vh;min-height:900px;overflow:hidden;background:#ecebe7 url('assets/wallpapers/glass-paper-landscape.png') center / cover no-repeat">
+
+  <div aria-hidden="true" style="position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0.032;mix-blend-mode:overlay;background-image:url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E&quot;);background-size:180px 180px"></div>
+
+  <sc-for list="{{ windows }}" as="win" hint-placeholder-count="1">
+  <div style="{{ win.frame }}">
+    <section data-screen-label="{{ win.label }}" style="position:relative;display:flex;flex-direction:column;width:100%;height:100%;min-width:0;overflow:hidden;isolation:isolate;border:1px solid rgba(255,255,255,0.86);border-radius:16px;background:rgba(246,246,243,0.82);box-shadow:0 34px 90px rgba(41,43,44,0.18), 0 12px 34px rgba(41,43,44,0.09), 0 1px 0 rgba(255,255,255,0.94) inset, 0 0 0 1px rgba(33,35,36,0.055) inset;-webkit-backdrop-filter:blur(34px) saturate(125%);backdrop-filter:blur(34px) saturate(125%)" onMouseDown="{{ win.focus }}">
+
+      <div style="flex:0 0 46px;height:46px;display:grid;grid-template-columns:84px 1fr 44px;align-items:center;gap:8px;padding:0 12px;user-select:none;touch-action:none;cursor:default;border-bottom:1px solid rgba(44,46,47,0.1);background:rgba(243,243,240,0.78);box-shadow:0 1px 0 rgba(255,255,255,0.8) inset, 0 -1px 0 rgba(36,38,39,0.025) inset;-webkit-backdrop-filter:blur(20px) saturate(118%);backdrop-filter:blur(20px) saturate(118%)" onPointerDown="{{ win.dragStart }}" onDoubleClick="{{ win.zoom }}">
+        <div style="display:flex;align-items:center;gap:2px">
+          <button type="button" aria-label="Close" onClick="{{ win.close }}" style="position:relative;display:grid;place-items:center;width:26px;height:26px;border:0;border-radius:999px;padding:0;background:transparent;color:transparent">
+            <span style="width:13px;height:13px;border-radius:999px;background:#ff5f57;box-shadow:0 0 0 0.5px rgba(35,36,37,0.18) inset, 0 1px 0 rgba(255,255,255,0.36) inset"></span>
+          </button>
+          <button type="button" aria-label="Minimize" onClick="{{ win.minimize }}" style="position:relative;display:grid;place-items:center;width:26px;height:26px;border:0;border-radius:999px;padding:0;background:transparent;color:transparent">
+            <span style="width:13px;height:13px;border-radius:999px;background:#ffbd2e;box-shadow:0 0 0 0.5px rgba(35,36,37,0.18) inset, 0 1px 0 rgba(255,255,255,0.36) inset"></span>
+          </button>
+          <button type="button" aria-label="Maximize" onClick="{{ win.zoom }}" style="position:relative;display:grid;place-items:center;width:26px;height:26px;border:0;border-radius:999px;padding:0;background:transparent;color:transparent">
+            <span style="width:13px;height:13px;border-radius:999px;background:#28c840;box-shadow:0 0 0 0.5px rgba(35,36,37,0.18) inset, 0 1px 0 rgba(255,255,255,0.36) inset"></span>
+          </button>
+        </div>
+        <div style="justify-self:center;display:flex;align-items:center;gap:7px;min-width:0;color:rgba(27,29,30,0.7);font-size:12px;font-weight:640">
+          <sc-if value="{{ win.isWorkspace }}" hint-placeholder-val="{{ true }}">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path><path d="M2 10h20"></path></svg>
+          </sc-if>
+          <span>{{ win.label }}</span>
+        </div>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="justify-self:end;color:rgba(37,30,24,0.32)"><path d="m6 9 6 6 6-6"></path></svg>
+      </div>
+
+      <div class="om-scroll" style="{{ win.bodyStyle }}">
+
+        <sc-if value="{{ win.isAbout }}" hint-placeholder-val="{{ true }}">
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,33%);gap:30px;height:100%;align-items:stretch">
+            <div style="align-self:center">
+              <p style="margin:0 0 8px;color:rgba(82,72,58,0.72);font-family:'Geist Mono',monospace;font-size:11px;font-weight:720;letter-spacing:0.13em;text-transform:uppercase">Engineer / Builder</p>
+              <h1 style="margin:0;max-width:17ch;color:#1e1a16;font-size:41px;font-weight:620;line-height:1.045;letter-spacing:0;text-wrap:pretty">I'm Thribhuvan. I build full-stack products and contribute focused fixes to open source.</h1>
+              <p style="max-width:49ch;margin:15px 0 0;color:#706a60;font-size:14px;line-height:1.55">My current work includes Tray, Unhold, TabMind, and AquaVision, alongside merged contributions across developer tools I use.</p>
+              <div style="display:grid;gap:7px;margin-top:20px">
+                <span style="display:flex;align-items:center;gap:8px;width:fit-content;border:1px solid rgba(75,64,51,0.12);border-radius:8px;background:rgba(255,255,255,0.36);padding:8px 10px;color:rgba(38,32,25,0.78);font-size:12px">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12h.01"></path><path d="M16 6V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path><path d="M22 13a18.15 18.15 0 0 1-20 0"></path><rect width="20" height="14" x="2" y="6" rx="2"></rect></svg>
+                  Building four products
+                </span>
+                <span style="display:flex;align-items:center;gap:8px;width:fit-content;border:1px solid rgba(75,64,51,0.12);border-radius:8px;background:rgba(255,255,255,0.36);padding:8px 10px;color:rgba(38,32,25,0.78);font-size:12px">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"></path><path d="m6 8-4 4 4 4"></path><path d="m14.5 4-5 16"></path></svg>
+                  Contributing upstream
+                </span>
+              </div>
+            </div>
+            <div style="position:relative;overflow:hidden;align-self:center;height:340px;border:1px solid rgba(45,47,48,0.1);border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.42), rgba(215,203,184,0.38));box-shadow:0 18px 44px rgba(42,44,45,0.1)">
+              <img src="assets/profile/thribhuvan.png" alt="Portrait of Thribhuvan" style="width:100%;height:100%;object-fit:cover">
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ win.isWorkspace }}" hint-placeholder-val="{{ true }}">
+          <div style="display:grid;grid-template-columns:220px 1fr;gap:16px;min-height:100%;padding:16px">
+            <aside style="display:grid;align-content:start;gap:8px;border:1px solid rgba(68,56,42,0.1);border-radius:8px;background:rgba(231,232,230,0.64);padding:12px">
+              <p style="margin:0 0 8px;color:rgba(82,72,58,0.72);font-family:'Geist Mono',monospace;font-size:11px;font-weight:720;letter-spacing:0.13em;text-transform:uppercase">Workspace</p>
+              <sc-for list="{{ folders }}" as="folder" hint-placeholder-count="4">
+                <button type="button" onClick="{{ folder.select }}" style="{{ folder.rowStyle }}">
+                  <span style="display:grid;place-items:center;width:34px;height:34px;border-radius:9px;background:linear-gradient(145deg, #fff3ca, #d29b2f);box-shadow:inset 0 1px 0 rgba(255,255,255,0.72), 0 8px 16px rgba(94,68,23,0.14);color:rgba(77,52,17,0.86)">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path><path d="M2 10h20"></path></svg>
+                  </span>
+                  <span>
+                    <strong style="display:block;font-size:13px;font-weight:650">{{ folder.label }}</strong>
+                    <small style="display:block;margin-top:2px;color:rgba(39,34,29,0.52);font-size:11px;line-height:1.25">{{ folder.note }}</small>
+                  </span>
+                </button>
+              </sc-for>
+              <div role="group" aria-label="Appearance" style="margin-top:6px;display:grid;gap:6px;border-top:1px solid rgba(68,56,42,0.11);padding-top:10px">
+                <span style="color:rgba(82,72,58,0.7);font-family:'Geist Mono',monospace;font-size:10px;font-weight:720;letter-spacing:0.1em;text-transform:uppercase">Appearance</span>
+                <div style="display:flex;gap:4px">
+                  <sc-for list="{{ appearanceOptions }}" as="opt" hint-placeholder-count="3">
+                    <button type="button" onClick="{{ opt.select }}" style="{{ opt.style }}">{{ opt.label }}</button>
+                  </sc-for>
+                </div>
+              </div>
+            </aside>
+
+            <section class="om-scroll" style="min-width:0;overflow:auto;padding-right:3px">
+              <sc-if value="{{ folderIsProjects }}" hint-placeholder-val="{{ true }}">
+                <div style="display:grid;grid-template-columns:repeat(2, minmax(0,1fr));gap:14px">
+                  <article style="overflow:hidden;border:1px solid rgba(42,44,45,0.1);border-radius:8px;background:rgba(255,255,253,0.84);box-shadow:0 12px 32px rgba(42,44,45,0.065), 0 1px 0 rgba(255,255,255,0.9) inset">
+                    <div style="position:relative;height:150px;overflow:hidden;background:color-mix(in srgb, #9faf93, white 72%)"><img src="assets/shots/tray-1.png" alt="Tray screenshot" style="width:100%;height:100%;object-fit:cover;object-position:top"></div>
+                    <div style="display:grid;gap:14px;padding:14px">
+                      <div>
+                        <p style="margin:0 0 8px;color:rgba(82,72,58,0.72);font-family:'Geist Mono',monospace;font-size:11px;font-weight:720;letter-spacing:0.13em;text-transform:uppercase">Tray</p>
+                        <h2 style="margin:0;color:#211d19;font-size:17px;font-weight:650;line-height:1.2">Multi-tenant food-ordering SaaS for stalls, tiffin centres, and campus messes.</h2>
+                        <p style="margin:8px 0 0;color:#706a60;font-size:14px;line-height:1.55">Postgres RLS, Razorpay UPI, token-counter workflows, and realtime kitchen boards.</p>
+                      </div>
+                      <div style="display:flex;flex-wrap:wrap;gap:8px">
+                        <a href="https://trayy.vercel.app" target="_blank" rel="noreferrer" style="display:inline-flex;align-items:center;gap:6px;min-height:34px;border:1px solid rgba(51,43,35,0.12);border-radius:8px;background:rgba(255,255,255,0.52);padding:8px 10px;color:#27221d;font-size:12px;font-weight:650">Live <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a>
+                        <a href="https://github.com/thribhuvan003/trayy" target="_blank" rel="noreferrer" style="display:inline-flex;align-items:center;gap:6px;min-height:34px;border:1px solid rgba(51,43,35,0.12);border-radius:8px;background:rgba(255,255,255,0.52);padding:8px 10px;color:#27221d;font-size:12px;font-weight:650">GitHub <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .8a11.2 11.2 0 0 0-3.54 21.82c.56.1.76-.24.76-.54v-2.1c-3.1.68-3.75-1.32-3.75-1.32-.5-1.28-1.24-1.62-1.24-1.62-1.02-.7.08-.69.08-.69 1.12.08 1.7 1.16 1.7 1.16 1 .1.55 2.62 3.16 1.86.1-.73.39-1.23.71-1.51-2.47-.28-5.06-1.24-5.06-5.5 0-1.22.43-2.21 1.15-2.99-.12-.28-.5-1.42.1-2.95 0 0 .95-.3 3.08 1.14a10.6 10.6 0 0 1 5.6 0c2.13-1.44 3.07-1.14 3.07-1.14.6 1.53.22 2.67.11 2.95.72.78 1.15 1.77 1.15 2.99 0 4.27-2.6 5.21-5.08 5.49.4.34.76 1.02.76 2.06v3.06c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"></path></svg></a>
+                      </div>
+                    </div>
+                  </article>
+
+                  <article style="overflow:hidden;border:1px solid rgba(42,44,45,0.1);border-radius:8px;background:rgba(255,255,253,0.84);box-shadow:0 12px 32px rgba(42,44,45,0.065), 0 1px 0 rgba(255,255,255,0.9) inset">
+                    <div style="position:relative;height:150px;overflow:hidden;background:color-mix(in srgb, #d69a92, white 72%)"><img src="assets/shots/unhold-1.png" alt="Unhold screenshot" style="width:100%;height:100%;object-fit:cover;object-position:top"></div>
+                    <div style="display:grid;gap:14px;padding:14px">
+                      <div>
+                        <p style="margin:0 0 8px;color:rgba(82,72,58,0.72);font-family:'Geist Mono',monospace;font-size:11px;font-weight:720;letter-spacing:0.13em;text-transform:uppercase">Unhold</p>
+                        <h2 style="margin:0;color:#211d19;font-size:17px;font-weight:650;line-height:1.2">AI-assisted workspace for Indian bank-account and UPI freeze cases.</h2>
+                        <p style="margin:8px 0 0;color:#706a60;font-size:14px;line-height:1.55">Document drafting and OCR verification within a review-first workflow.</p>
+                      </div>
+                      <div style="display:flex;flex-wrap:wrap;gap:8px">
+                        <a href="https://unhold.live" target="_blank" rel="noreferrer" style="display:inline-flex;align-items:center;gap:6px;min-height:34px;border:1px solid rgba(51,43,35,0.12);border-radius:8px;background:rgba(255,255,255,0.52);padding:8px 10px;color:#27221d;font-size:12px;font-weight:650">Live <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a>
+                        <a href="https://github.com/thribhuvan003/unhold" target="_blank" rel="noreferrer" style="display:inline-flex;align-items:center;gap:6px;min-height:34px;border:1px solid rgba(51,43,35,0.12);border-radius:8px;background:rgba(255,255,255,0.52);padding:8px 10px;color:#27221d;font-size:12px;font-weight:650">GitHub <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .8a11.2 11.2 0 0 0-3.54 21.82c.56.1.76-.24.76-.54v-2.1c-3.1.68-3.75-1.32-3.75-1.32-.5-1.28-1.24-1.62-1.24-1.62-1.02-.7.08-.69.08-.69 1.12.08 1.7 1.16 1.7 1.16 1 .1.55 2.62 3.16 1.86.1-.73.39-1.23.71-1.51-2.47-.28-5.06-1.24-5.06-5.5 0-1.22.43-2.21 1.15-2.99-.12-.28-.5-1.42.1-2.95 0 0 .95-.3 3.08 1.14a10.6 10.6 0 0 1 5.6 0c2.13-1.44 3.07-1.14 3.07-1.14.6 1.53.22 2.67.11 2.95.72.78 1.15 1.77 1.15 2.99 0 4.27-2.6 5.21-5.08 5.49.4.34.76 1.02.76 2.06v3.06c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"></path></svg></a>
+                      </div>
+                    </div>
+                  </article>
+
+                  <article style="overflow:hidden;border:1px solid rgba(42,44,45,0.1);border-radius:8px;background:rgba(255,255,253,0.84);box-shadow:0 12px 32px rgba(42,44,45,0.065), 0 1px 0 rgba(255,255,255,0.9) inset">
+                    <div style="display:grid;gap:14px;padding:14px">
+                      <div>
+                        <p style="margin:0 0 8px;color:rgba(82,72,58,0.72);font-family:'Geist Mono',monospace;font-size:11px;font-weight:720;letter-spacing:0.13em;text-transform:uppercase">TabMind</p>
+                        <h2 style="margin:0;color:#211d19;font-size:17px;font-weight:650;line-height:1.2">Local-first Chrome extension that turns browsing sessions into summaries and tasks.</h2>
+                        <p style="margin:8px 0 0;color:#706a60;font-size:14px;line-height:1.55">Built around local storage, session recovery, and a calmer way to resume research.</p>
+                      </div>
+                      <div style="display:flex;flex-wrap:wrap;gap:8px">
+                        <a href="https://github.com/thribhuvan003/tabmind" target="_blank" rel="noreferrer" style="display:inline-flex;align-items:center;gap:6px;min-height:34px;border:1px solid rgba(51,43,35,0.12);border-radius:8px;background:rgba(255,255,255,0.52);padding:8px 10px;color:#27221d;font-size:12px;font-weight:650">GitHub <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .8a11.2 11.2 0 0 0-3.54 21.82c.56.1.76-.24.76-.54v-2.1c-3.1.68-3.75-1.32-3.75-1.32-.5-1.28-1.24-1.62-1.24-1.62-1.02-.7.08-.69.08-.69 1.12.08 1.7 1.16 1.7 1.16 1 .1.55 2.62 3.16 1.86.1-.73.39-1.23.71-1.51-2.47-.28-5.06-1.24-5.06-5.5 0-1.22.43-2.21 1.15-2.99-.12-.28-.5-1.42.1-2.95 0 0 .95-.3 3.08 1.14a10.6 10.6 0 0 1 5.6 0c2.13-1.44 3.07-1.14 3.07-1.14.6 1.53.22 2.67.11 2.95.72.78 1.15 1.77 1.15 2.99 0 4.27-2.6 5.21-5.08 5.49.4.34.76 1.02.76 2.06v3.06c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"></path></svg></a>
+                      </div>
+                    </div>
+                  </article>
+
+                  <article style="overflow:hidden;border:1px solid rgba(42,44,45,0.1);border-radius:8px;background:rgba(255,255,253,0.84);box-shadow:0 12px 32px rgba(42,44,45,0.065), 0 1px 0 rgba(255,255,255,0.9) inset">
+                    <div style="position:relative;height:150px;overflow:hidden;background:color-mix(in srgb, #2371b9, white 72%)"><img src="assets/shots/aqua-grid.png" alt="AquaVision screenshot" style="width:100%;height:100%;object-fit:cover;object-position:top"></div>
+                    <div style="display:grid;gap:14px;padding:14px">
+                      <div>
+                        <p style="margin:0 0 8px;color:rgba(82,72,58,0.72);font-family:'Geist Mono',monospace;font-size:11px;font-weight:720;letter-spacing:0.13em;text-transform:uppercase">AquaVision</p>
+                        <h2 style="margin:0;color:#211d19;font-size:17px;font-weight:650;line-height:1.2">CPU-only underwater image restoration with reproducible comparisons.</h2>
+                        <p style="margin:8px 0 0;color:#706a60;font-size:14px;line-height:1.55">Combines classical computer vision with lightweight model routing.</p>
+                      </div>
+                      <div style="display:flex;flex-wrap:wrap;gap:8px">
+                        <a href="https://huggingface.co/spaces/mark2423432/AquaVision" target="_blank" rel="noreferrer" style="display:inline-flex;align-items:center;gap:6px;min-height:34px;border:1px solid rgba(51,43,35,0.12);border-radius:8px;background:rgba(255,255,255,0.52);padding:8px 10px;color:#27221d;font-size:12px;font-weight:650">Live <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a>
+                        <a href="https://github.com/thribhuvan003/AquaVision-Web" target="_blank" rel="noreferrer" style="display:inline-flex;align-items:center;gap:6px;min-height:34px;border:1px solid rgba(51,43,35,0.12);border-radius:8px;background:rgba(255,255,255,0.52);padding:8px 10px;color:#27221d;font-size:12px;font-weight:650">GitHub <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .8a11.2 11.2 0 0 0-3.54 21.82c.56.1.76-.24.76-.54v-2.1c-3.1.68-3.75-1.32-3.75-1.32-.5-1.28-1.24-1.62-1.24-1.62-1.02-.7.08-.69.08-.69 1.12.08 1.7 1.16 1.7 1.16 1 .1.55 2.62 3.16 1.86.1-.73.39-1.23.71-1.51-2.47-.28-5.06-1.24-5.06-5.5 0-1.22.43-2.21 1.15-2.99-.12-.28-.5-1.42.1-2.95 0 0 .95-.3 3.08 1.14a10.6 10.6 0 0 1 5.6 0c2.13-1.44 3.07-1.14 3.07-1.14.6 1.53.22 2.67.11 2.95.72.78 1.15 1.77 1.15 2.99 0 4.27-2.6 5.21-5.08 5.49.4.34.76 1.02.76 2.06v3.06c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"></path></svg></a>
+                      </div>
+                    </div>
+                  </article>
+                </div>
+              </sc-if>
+
+              <sc-if value="{{ folderIsAbout }}" hint-placeholder-val="{{ false }}">
+                <div style="display:grid;align-content:center;min-height:100%;border:1px solid rgba(68,56,42,0.1);border-radius:8px;background:rgba(252,252,250,0.92);padding:24px">
+                  <p style="margin:0 0 8px;color:rgba(82,72,58,0.72);font-family:'Geist Mono',monospace;font-size:11px;font-weight:720;letter-spacing:0.13em;text-transform:uppercase">About Me</p>
+                  <h2 style="margin:0;max-width:560px;color:#211d19;font-size:34px;font-weight:620;line-height:1.02">I build practical web products and contribute fixes upstream.</h2>
+                  <p style="max-width:520px;margin:14px 0 0;color:#706a60;font-size:14px;line-height:1.55">My work spans multi-tenant SaaS, AI-assisted workflows, browser tools, and image restoration.</p>
+                </div>
+              </sc-if>
+
+              <sc-if value="{{ folderIsOss }}" hint-placeholder-val="{{ false }}">
+                <div style="display:grid;grid-template-columns:1fr;gap:20px">
+                  <div>
+                    <p style="margin:0 0 8px;color:rgba(82,72,58,0.72);font-family:'Geist Mono',monospace;font-size:11px;font-weight:720;letter-spacing:0.13em;text-transform:uppercase">Open Source</p>
+                    <h2 style="margin:0;color:#1e1a16;font-size:32px;font-weight:620;line-height:1.02">Focused fixes, merged upstream.</h2>
+                    <p style="margin:12px 0 0;max-width:62ch;color:#706a60;font-size:14px;line-height:1.55">Contributions across compiler behavior, generated types, cookies, storage errors, and developer tooling. Each item links to the merged PR.</p>
+                  </div>
+                  <div style="display:grid;gap:8px">
+                    <sc-for list="{{ oss }}" as="row" hint-placeholder-count="10">
+                      <a href="{{ row.href }}" target="_blank" rel="noreferrer" style="display:grid;grid-template-columns:142px 1fr 18px;align-items:center;gap:10px;min-height:52px;border:1px solid rgba(42,44,45,0.1);border-radius:8px;background:rgba(255,255,253,0.84);box-shadow:0 12px 32px rgba(42,44,45,0.065), 0 1px 0 rgba(255,255,255,0.9) inset;padding:10px 12px">
+                        <span style="font-size:13px;font-weight:720">{{ row.name }}</span>
+                        <p style="margin:0;color:#706a60;font-size:12px;line-height:1.35">{{ row.note }}</p>
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color:rgba(37,41,44,0.45)"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                      </a>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-if>
+
+              <sc-if value="{{ folderIsExperience }}" hint-placeholder-val="{{ false }}">
+                <div style="display:grid;align-content:center;min-height:100%;border:1px solid rgba(68,56,42,0.1);border-radius:8px;background:rgba(252,252,250,0.92);padding:24px">
+                  <p style="margin:0 0 8px;color:rgba(82,72,58,0.72);font-family:'Geist Mono',monospace;font-size:11px;font-weight:720;letter-spacing:0.13em;text-transform:uppercase">Work &amp; Skills</p>
+                  <h2 style="margin:0;max-width:24ch;color:#202326;font-size:27px;font-weight:620;line-height:1.08">Products I'm building and tools I work with.</h2>
+                  <p style="max-width:60ch;margin:12px 0 0;color:rgba(37,41,44,0.6);font-size:13px;line-height:1.45">Open the Work &amp; Skills app from the dock for the full panel.</p>
+                </div>
+              </sc-if>
+            </section>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ win.isResume }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid;grid-template-columns:1fr;align-content:start;gap:14px">
+            <header style="display:grid;gap:6px;padding:1px 2px 5px">
+              <p style="margin:0;color:rgba(35,39,42,0.5);font-family:'Geist Mono',monospace;font-size:10px;font-weight:720;letter-spacing:0.08em;text-transform:uppercase">Selected Work</p>
+              <h2 style="margin:0;color:#202326;font-size:36px;font-weight:620;line-height:1.04">Products I'm building and tools I work with.</h2>
+              <p style="max-width:62ch;margin:0;color:rgba(37,41,44,0.6);font-size:13px;line-height:1.45">Four public projects, supported by hands-on open-source contributions.</p>
+            </header>
+
+            <div style="display:grid;grid-template-columns:minmax(0,1.35fr) minmax(230px,0.85fr);gap:12px">
+              <section aria-label="Projects" style="min-width:0;border:1px solid rgba(45,49,52,0.09);border-radius:12px;background:linear-gradient(145deg, rgba(255,255,255,0.76), rgba(247,247,244,0.56));box-shadow:0 14px 32px rgba(35,39,42,0.055), 0 1px 0 rgba(255,255,255,0.92) inset;padding:16px">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;color:rgba(35,76,108,0.84)">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12h.01"></path><path d="M16 6V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path><path d="M22 13a18.15 18.15 0 0 1-20 0"></path><rect width="20" height="14" x="2" y="6" rx="2"></rect></svg>
+                  <h3 style="margin:0;color:#25292c;font-size:12px;font-weight:730">Projects</h3>
+                </div>
+                <div style="display:grid">
+                  <sc-for list="{{ projects }}" as="p" hint-placeholder-count="4">
+                    <article style="{{ p.rowStyle }}">
+                      <div>
+                        <h4 style="margin:0 0 3px;color:#262a2d;font-size:12px;font-weight:720">{{ p.name }}</h4>
+                        <p style="margin:0;color:rgba(37,41,44,0.59);font-size:11px;line-height:1.42">{{ p.summary }}</p>
+                      </div>
+                      <div style="display:flex;align-items:center;gap:5px">
+                        <sc-if value="{{ p.live }}" hint-placeholder-val="{{ true }}">
+                          <a href="{{ p.live }}" target="_blank" rel="noreferrer" style="display:inline-flex;min-height:30px;align-items:center;justify-content:center;gap:4px;border:1px solid rgba(42,46,49,0.1);border-radius:8px;background:rgba(255,255,255,0.58);color:rgba(33,37,40,0.78);padding:6px 8px;font-size:10px;font-weight:680">Live <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a>
+                        </sc-if>
+                        <a href="{{ p.repo }}" target="_blank" rel="noreferrer" style="display:inline-flex;min-height:30px;align-items:center;justify-content:center;gap:4px;border:1px solid rgba(42,46,49,0.1);border-radius:8px;background:rgba(255,255,255,0.58);color:rgba(33,37,40,0.78);padding:6px 8px;font-size:10px;font-weight:680">Code <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .8a11.2 11.2 0 0 0-3.54 21.82c.56.1.76-.24.76-.54v-2.1c-3.1.68-3.75-1.32-3.75-1.32-.5-1.28-1.24-1.62-1.24-1.62-1.02-.7.08-.69.08-.69 1.12.08 1.7 1.16 1.7 1.16 1 .1.55 2.62 3.16 1.86.1-.73.39-1.23.71-1.51-2.47-.28-5.06-1.24-5.06-5.5 0-1.22.43-2.21 1.15-2.99-.12-.28-.5-1.42.1-2.95 0 0 .95-.3 3.08 1.14a10.6 10.6 0 0 1 5.6 0c2.13-1.44 3.07-1.14 3.07-1.14.6 1.53.22 2.67.11 2.95.72.78 1.15 1.77 1.15 2.99 0 4.27-2.6 5.21-5.08 5.49.4.34.76 1.02.76 2.06v3.06c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"></path></svg></a>
+                      </div>
+                    </article>
+                  </sc-for>
+                </div>
+              </section>
+
+              <section aria-label="Open Source" style="min-width:0;border:1px solid rgba(45,49,52,0.09);border-radius:12px;background:linear-gradient(145deg, rgba(255,255,255,0.76), rgba(247,247,244,0.56));box-shadow:0 14px 32px rgba(35,39,42,0.055), 0 1px 0 rgba(255,255,255,0.92) inset;padding:16px">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;color:rgba(35,76,108,0.84)">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"></path><path d="m6.08 9.5-3.5 1.6a1 1 0 0 0 0 1.81l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9a1 1 0 0 0 0-1.83l-3.5-1.59"></path><path d="m6.08 14.5-3.5 1.6a1 1 0 0 0 0 1.81l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9a1 1 0 0 0 0-1.83l-3.5-1.59"></path></svg>
+                  <h3 style="margin:0;color:#25292c;font-size:12px;font-weight:730">Open Source</h3>
+                </div>
+                <p style="margin:0;color:rgba(37,41,44,0.59);font-size:11px;line-height:1.42">Merged contributions across these projects:</p>
+                <ul style="display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0;padding:0;list-style:none">
+                  <sc-for list="{{ oss }}" as="row" hint-placeholder-count="10">
+                    <li><a href="{{ row.href }}" target="_blank" rel="noreferrer" style="display:inline-flex;min-height:30px;align-items:center;gap:5px;border:1px solid rgba(43,47,50,0.08);border-radius:8px;background:rgba(255,255,255,0.55);color:rgba(31,35,38,0.72);padding:6px 8px;font-size:10px;font-weight:650;line-height:1.2">{{ row.name }}<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg></a></li>
+                  </sc-for>
+                </ul>
+              </section>
+            </div>
+
+            <section aria-label="Tools I Use" style="min-width:0;border:1px solid rgba(45,49,52,0.09);border-radius:12px;background:linear-gradient(145deg, rgba(255,255,255,0.76), rgba(247,247,244,0.56));box-shadow:0 14px 32px rgba(35,39,42,0.055), 0 1px 0 rgba(255,255,255,0.92) inset;padding:14px 16px">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;color:rgba(35,76,108,0.84)">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"></path><path d="m6 8-4 4 4 4"></path><path d="m14.5 4-5 16"></path></svg>
+                <h3 style="margin:0;color:#25292c;font-size:12px;font-weight:730">Tools I Use</h3>
+              </div>
+              <div style="display:grid;gap:12px">
+                <sc-for list="{{ toolGroups }}" as="g" hint-placeholder-count="5">
+                  <section aria-label="{{ g.label }}">
+                    <h4 style="margin:0;color:#25292c;font-size:11px;font-weight:720">{{ g.label }}</h4>
+                    <ul style="display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0;padding:0;list-style:none">
+                      <sc-for list="{{ g.tools }}" as="t" hint-placeholder-count="8">
+                        <li style="display:inline-flex;min-height:30px;align-items:center;gap:5px;border:1px solid rgba(43,47,50,0.08);border-radius:8px;background:rgba(255,255,255,0.55);color:rgba(31,35,38,0.72);padding:6px 8px;font-size:10px;font-weight:650;line-height:1.2">{{ t }}</li>
+                      </sc-for>
+                    </ul>
+                  </section>
+                </sc-for>
+              </div>
+            </section>
+
+            <nav aria-label="Profile links" style="display:flex;align-items:center;justify-content:flex-end;gap:5px;padding-top:1px">
+              <a href="https://github.com/thribhuvan003" target="_blank" rel="noreferrer" style="display:inline-flex;min-height:30px;align-items:center;gap:4px;border:1px solid rgba(42,46,49,0.1);border-radius:8px;background:rgba(255,255,255,0.58);color:rgba(33,37,40,0.78);padding:6px 8px;font-size:10px;font-weight:680">GitHub <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .8a11.2 11.2 0 0 0-3.54 21.82c.56.1.76-.24.76-.54v-2.1c-3.1.68-3.75-1.32-3.75-1.32-.5-1.28-1.24-1.62-1.24-1.62-1.02-.7.08-.69.08-.69 1.12.08 1.7 1.16 1.7 1.16 1 .1.55 2.62 3.16 1.86.1-.73.39-1.23.71-1.51-2.47-.28-5.06-1.24-5.06-5.5 0-1.22.43-2.21 1.15-2.99-.12-.28-.5-1.42.1-2.95 0 0 .95-.3 3.08 1.14a10.6 10.6 0 0 1 5.6 0c2.13-1.44 3.07-1.14 3.07-1.14.6 1.53.22 2.67.11 2.95.72.78 1.15 1.77 1.15 2.99 0 4.27-2.6 5.21-5.08 5.49.4.34.76 1.02.76 2.06v3.06c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"></path></svg></a>
+              <a href="https://www.linkedin.com/in/thribhuvan003/" target="_blank" rel="noreferrer" style="display:inline-flex;min-height:30px;align-items:center;gap:4px;border:1px solid rgba(42,46,49,0.1);border-radius:8px;background:rgba(255,255,255,0.58);color:rgba(33,37,40,0.78);padding:6px 8px;font-size:10px;font-weight:680">LinkedIn <svg width="14" height="14" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="#0A66C2"></rect><path fill="#fff" d="M7.1 9.2H4.05V19H7.1V9.2ZM5.58 4.32a1.77 1.77 0 1 0 0 3.54 1.77 1.77 0 0 0 0-3.54ZM19.95 13.38c0-2.96-1.58-4.34-3.69-4.34-1.7 0-2.46.94-2.88 1.59V9.2h-3.05V19h3.05v-4.86c0-1.28.24-2.52 1.83-2.52 1.57 0 1.59 1.47 1.59 2.6V19h3.05l.1-5.62Z"></path></svg></a>
+            </nav>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ win.isOss }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid;grid-template-columns:250px 1fr;gap:20px">
+            <div style="position:sticky;top:0;height:fit-content">
+              <p style="margin:0 0 8px;color:rgba(82,72,58,0.72);font-family:'Geist Mono',monospace;font-size:11px;font-weight:720;letter-spacing:0.13em;text-transform:uppercase">Open Source</p>
+              <h2 style="margin:0;color:#1e1a16;font-size:32px;font-weight:620;line-height:1.02">Focused fixes, merged upstream.</h2>
+              <p style="margin:12px 0 0;color:#706a60;font-size:14px;line-height:1.55">Contributions across compiler behavior, generated types, cookies, storage errors, and developer tooling. Each item links to the merged PR.</p>
+            </div>
+            <div style="display:grid;gap:8px">
+              <sc-for list="{{ oss }}" as="row" hint-placeholder-count="10">
+                <a href="{{ row.href }}" target="_blank" rel="noreferrer" style="display:grid;grid-template-columns:142px 1fr 18px;align-items:center;gap:10px;min-height:52px;border:1px solid rgba(42,44,45,0.1);border-radius:8px;background:rgba(255,255,253,0.84);box-shadow:0 12px 32px rgba(42,44,45,0.065), 0 1px 0 rgba(255,255,255,0.9) inset;padding:10px 12px">
+                  <span style="font-size:13px;font-weight:720">{{ row.name }}</span>
+                  <p style="margin:0;color:#706a60;font-size:12px;line-height:1.35">{{ row.note }}</p>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color:rgba(37,41,44,0.45)"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                </a>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ win.isImages }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid;gap:16px">
+            <div style="display:grid;gap:4px;max-width:560px">
+              <p style="margin:0 0 4px;color:rgba(82,72,58,0.72);font-family:'Geist Mono',monospace;font-size:11px;font-weight:720;letter-spacing:0.13em;text-transform:uppercase">Photos</p>
+              <h2 style="margin:0;color:#211d19;font-size:24px;font-weight:620;line-height:1.08">A small visual archive.</h2>
+              <p style="margin:0;color:#706a60;font-size:14px;line-height:1.55">Portraits, product captures, and personal photographs.</p>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(3, minmax(0,1fr));gap:12px">
+              <sc-for list="{{ gallery }}" as="g" hint-placeholder-count="6">
+                <figure style="{{ g.style }}">
+                  <img src="{{ g.src }}" alt="{{ g.title }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+                  <figcaption style="position:absolute;left:10px;right:10px;bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid rgba(255,255,255,0.38);border-radius:8px;background:rgba(26,22,18,0.62);color:white;padding:7px 9px;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);font-size:12px">
+                    <span style="color:rgba(255,255,255,0.7);font-family:'Geist Mono',monospace;font-size:10px;text-transform:uppercase">{{ g.kind }}</span>
+                    <strong>{{ g.title }}</strong>
+                  </figcaption>
+                </figure>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ win.isSpotify }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;min-height:100%;flex-direction:column;gap:16px;border:1px solid rgba(42,44,45,0.1);border-radius:8px;background:rgba(255,255,253,0.84);box-shadow:0 12px 32px rgba(42,44,45,0.065), 0 1px 0 rgba(255,255,255,0.9) inset;padding:18px">
+            <div style="position:relative;display:grid;place-items:center;aspect-ratio:1;overflow:hidden;border-radius:8px;color:#092514;background:linear-gradient(140deg, rgba(255,255,255,0.7), transparent 44%), radial-gradient(circle at 72% 22%, #d8f3c1, transparent 30%), linear-gradient(135deg, #34c66d, #0b4f2b);box-shadow:inset 0 1px 0 rgba(255,255,255,0.62), 0 16px 38px rgba(16,84,43,0.22)">
+              <svg width="66" height="66" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="18" r="4"></circle><path d="M12 18V2l7 4"></path></svg>
+              <span style="position:absolute;inset:16%;border:1px solid rgba(255,255,255,0.28);border-radius:999px"></span>
+            </div>
+            <p style="margin:0;color:rgba(82,72,58,0.72);font-family:'Geist Mono',monospace;font-size:11px;font-weight:720;letter-spacing:0.13em;text-transform:uppercase">Music</p>
+            <h2 style="margin:0;color:#1e1a16;font-size:26px;font-weight:620;line-height:1.05">A quiet corner for music I return to while working.</h2>
+            <p style="margin:0;color:#706a60;font-size:14px;line-height:1.55">Spotify listening will appear here once it is connected.</p>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ win.isContact }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid;gap:16px">
+            <div>
+              <p style="margin:0 0 8px;color:rgba(82,72,58,0.72);font-family:'Geist Mono',monospace;font-size:11px;font-weight:720;letter-spacing:0.13em;text-transform:uppercase">Contact</p>
+              <h2 style="margin:0;color:#1e1a16;font-size:34px;font-weight:620;line-height:1.02">Have something thoughtful to build or fix?</h2>
+              <p style="margin:12px 0 0;color:#706a60;font-size:14px;line-height:1.55">Email is the clearest way to reach me. GitHub and LinkedIn are here for more context.</p>
+            </div>
+            <a href="mailto:thribhuvan003@gmail.com" style="display:grid;grid-template-columns:22px 1fr 18px;align-items:center;gap:10px;border:1px solid rgba(42,44,45,0.1);border-radius:8px;background:rgba(255,255,253,0.84);box-shadow:0 12px 32px rgba(42,44,45,0.065), 0 1px 0 rgba(255,255,255,0.9) inset;padding:13px;color:#24201b;font-size:13px">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+              <span>thribhuvan003@gmail.com</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+            </a>
+            <a href="https://github.com/thribhuvan003" target="_blank" rel="noreferrer" style="display:grid;grid-template-columns:22px 1fr 18px;align-items:center;gap:10px;border:1px solid rgba(42,44,45,0.1);border-radius:8px;background:rgba(255,255,253,0.84);box-shadow:0 12px 32px rgba(42,44,45,0.065), 0 1px 0 rgba(255,255,255,0.9) inset;padding:13px;color:#24201b;font-size:13px">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .8a11.2 11.2 0 0 0-3.54 21.82c.56.1.76-.24.76-.54v-2.1c-3.1.68-3.75-1.32-3.75-1.32-.5-1.28-1.24-1.62-1.24-1.62-1.02-.7.08-.69.08-.69 1.12.08 1.7 1.16 1.7 1.16 1 .1.55 2.62 3.16 1.86.1-.73.39-1.23.71-1.51-2.47-.28-5.06-1.24-5.06-5.5 0-1.22.43-2.21 1.15-2.99-.12-.28-.5-1.42.1-2.95 0 0 .95-.3 3.08 1.14a10.6 10.6 0 0 1 5.6 0c2.13-1.44 3.07-1.14 3.07-1.14.6 1.53.22 2.67.11 2.95.72.78 1.15 1.77 1.15 2.99 0 4.27-2.6 5.21-5.08 5.49.4.34.76 1.02.76 2.06v3.06c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"></path></svg>
+              <span>github.com/thribhuvan003</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+            </a>
+            <a href="https://www.linkedin.com/in/thribhuvan003/" target="_blank" rel="noreferrer" style="display:grid;grid-template-columns:22px 1fr 18px;align-items:center;gap:10px;border:1px solid rgba(42,44,45,0.1);border-radius:8px;background:rgba(255,255,253,0.84);box-shadow:0 12px 32px rgba(42,44,45,0.065), 0 1px 0 rgba(255,255,255,0.9) inset;padding:13px;color:#24201b;font-size:13px">
+              <svg width="18" height="18" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="#0A66C2"></rect><path fill="#fff" d="M7.1 9.2H4.05V19H7.1V9.2ZM5.58 4.32a1.77 1.77 0 1 0 0 3.54 1.77 1.77 0 0 0 0-3.54ZM19.95 13.38c0-2.96-1.58-4.34-3.69-4.34-1.7 0-2.46.94-2.88 1.59V9.2h-3.05V19h3.05v-4.86c0-1.28.24-2.52 1.83-2.52 1.57 0 1.59 1.47 1.59 2.6V19h3.05l.1-5.62Z"></path></svg>
+              <span>linkedin.com/in/thribhuvan003</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+            </a>
+          </div>
+        </sc-if>
+
+      </div>
+
+      <span role="separator" tabindex="0" aria-label="Resize" style="position:absolute;right:7px;bottom:7px;width:24px;height:24px;opacity:0.55;cursor:nwse-resize;touch-action:none" onPointerDown="{{ win.resizeStart }}">
+        <span style="position:absolute;right:3px;bottom:3px;width:9px;height:9px;border-right:1px solid rgba(35,37,38,0.3);border-bottom:1px solid rgba(35,37,38,0.3)"></span>
+      </span>
+    </section>
+  </div>
+  </sc-for>
+
+  <nav aria-label="Dock" style="position:absolute;z-index:6000;left:0;right:0;bottom:16px;display:flex;justify-content:center;pointer-events:none">
+    <div style="position:relative;display:flex;align-items:flex-end;gap:8px;min-height:72px;padding:11px 14px 10px;border:1px solid rgba(255,255,255,0.74);border-radius:21px;background:rgba(238,239,237,0.6);box-shadow:0 24px 58px rgba(32,34,35,0.2), 0 7px 20px rgba(32,34,35,0.09), 0 1px 0 rgba(255,255,255,0.88) inset, 0 -1px 0 rgba(34,36,37,0.06) inset;-webkit-backdrop-filter:blur(28px) saturate(130%);backdrop-filter:blur(28px) saturate(130%);pointer-events:auto">
+      <span aria-hidden="true" style="position:absolute;inset:1px 8px auto;height:48%;border-radius:inherit;background:linear-gradient(180deg, rgba(255,255,255,0.42), rgba(255,255,255,0));pointer-events:none"></span>
+      <sc-for list="{{ dock }}" as="item" hint-placeholder-count="8">
+        <span style="{{ item.wrapStyle }}">
+          <button type="button" aria-label="{{ item.aria }}" onClick="{{ item.activate }}" onMouseEnter="{{ item.enter }}" onMouseLeave="{{ item.leave }}" style="position:relative;display:grid;place-items:center;width:49px;height:51px;border:0;background:transparent;padding:0">
+            <span style="{{ item.tooltipStyle }}">{{ item.label }}</span>
+            <span style="{{ item.iconStyle }}">
+              <sc-if value="{{ item.artwork }}" hint-placeholder-val="{{ true }}">
+                <img src="{{ item.artwork }}" alt="" aria-hidden="true" style="{{ item.artStyle }}">
+              </sc-if>
+              <sc-if value="{{ item.isGithub }}" hint-placeholder-val="{{ false }}">
+                <svg width="25" height="25" viewBox="0 0 24 24" fill="currentColor" style="position:relative;z-index:2;color:#fff;filter:drop-shadow(0 1px 0 rgba(255,255,255,0.2))"><path d="M12 .8a11.2 11.2 0 0 0-3.54 21.82c.56.1.76-.24.76-.54v-2.1c-3.1.68-3.75-1.32-3.75-1.32-.5-1.28-1.24-1.62-1.24-1.62-1.02-.7.08-.69.08-.69 1.12.08 1.7 1.16 1.7 1.16 1 .1.55 2.62 3.16 1.86.1-.73.39-1.23.71-1.51-2.47-.28-5.06-1.24-5.06-5.5 0-1.22.43-2.21 1.15-2.99-.12-.28-.5-1.42.1-2.95 0 0 .95-.3 3.08 1.14a10.6 10.6 0 0 1 5.6 0c2.13-1.44 3.07-1.14 3.07-1.14.6 1.53.22 2.67.11 2.95.72.78 1.15 1.77 1.15 2.99 0 4.27-2.6 5.21-5.08 5.49.4.34.76 1.02.76 2.06v3.06c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"></path></svg>
+              </sc-if>
+              <sc-if value="{{ item.isLinkedin }}" hint-placeholder-val="{{ false }}">
+                <svg width="25" height="25" viewBox="0 0 24 24" style="position:relative;z-index:2"><rect width="24" height="24" rx="4" fill="#0A66C2"></rect><path fill="#fff" d="M7.1 9.2H4.05V19H7.1V9.2ZM5.58 4.32a1.77 1.77 0 1 0 0 3.54 1.77 1.77 0 0 0 0-3.54ZM19.95 13.38c0-2.96-1.58-4.34-3.69-4.34-1.7 0-2.46.94-2.88 1.59V9.2h-3.05V19h3.05v-4.86c0-1.28.24-2.52 1.83-2.52 1.57 0 1.59 1.47 1.59 2.6V19h3.05l.1-5.62Z"></path></svg>
+              </sc-if>
+              <sc-if value="{{ item.isSpotify }}" hint-placeholder-val="{{ false }}">
+                <svg width="25" height="25" viewBox="0 0 24 24" style="position:relative;z-index:2"><circle cx="12" cy="12" r="11" fill="#1ED760"></circle><g fill="none" stroke="#111" stroke-linecap="round"><path d="M6.5 8.9c3.65-1.08 8.08-.75 11.15.82" stroke-width="1.85"></path><path d="M7.15 12.05c3.18-.82 6.92-.52 9.65.7" stroke-width="1.65"></path><path d="M7.85 15.05c2.58-.6 5.53-.36 7.82.57" stroke-width="1.48"></path></g></svg>
+              </sc-if>
+            </span>
+            <sc-if value="{{ item.active }}" hint-placeholder-val="{{ false }}">
+              <span aria-hidden="true" style="position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:999px;background:rgba(31,33,34,0.72);box-shadow:0 1px 2px rgba(255,255,255,0.5)"></span>
+            </sc-if>
+          </button>
+        </span>
+      </sc-for>
+    </div>
+  </nav>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;openOnLoad&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Workspace + Spotify&quot;,&quot;About Me&quot;,&quot;Work &amp; Skills&quot;,&quot;Photos&quot;],&quot;default&quot;:&quot;Workspace + Spotify&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Desktop&quot;},&quot;dockIconSize&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:46,&quot;min&quot;:34,&quot;max&quot;:58,&quot;unit&quot;:&quot;px&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Dock&quot;},&quot;showTooltips&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Dock&quot;}}">
+const LINKS = {
+  github: "https://github.com/thribhuvan003",
+  linkedin: "https://www.linkedin.com/in/thribhuvan003/",
+  trayRepo: "https://github.com/thribhuvan003/trayy",
+  trayLive: "https://trayy.vercel.app",
+  unholdRepo: "https://github.com/thribhuvan003/unhold",
+  unholdLive: "https://unhold.live",
+  tabmindRepo: "https://github.com/thribhuvan003/tabmind",
+  aquaRepo: "https://github.com/thribhuvan003/AquaVision-Web",
+  aquaLive: "https://huggingface.co/spaces/mark2423432/AquaVision",
+};
+
+const APPS = [
+  { id: "about", label: "About Me", artwork: "assets/profile/thribhuvan.png", tone: "linen" },
+  { id: "resume", label: "Work & Skills", artwork: "assets/icons/work-skills.png" },
+  { id: "work", label: "Workspace", artwork: "assets/icons/workspace.png" },
+  { id: "images", label: "Photos", artwork: "assets/icons/photos.png" },
+  { id: "github", label: "GitHub", tone: "graphite", external: LINKS.github },
+  { id: "linkedin", label: "LinkedIn", tone: "blue", external: LINKS.linkedin },
+  { id: "contact", label: "Contact", artwork: "assets/icons/contact.png" },
+  { id: "spotify", label: "Spotify", tone: "green" },
+];
+
+const TONES = {
+  linen: "linear-gradient(145deg, #fff8e9 0%, #edd6b4 58%, #bd9562 100%)",
+  sage: "linear-gradient(145deg, #edf5e8 0%, #b8c9ae 58%, #718b69 100%)",
+  sky: "linear-gradient(145deg, #edf8fc 0%, #b8d5e1 56%, #6898ad 100%)",
+  amber: "linear-gradient(145deg, #fff5cd 0%, #e8c86d 56%, #aa7418 100%)",
+  blue: "linear-gradient(145deg, #dff3ff 0%, #6eb6e8 54%, #1768ad 100%)",
+  green: "linear-gradient(145deg, #e9ffe8 0%, #73d88b 54%, #169447 100%)",
+  rose: "linear-gradient(145deg, #fff0ec 0%, #e6aaa3 56%, #b9635f 100%)",
+  graphite: "linear-gradient(145deg, #767a7c 0%, #3d4143 52%, #151719 100%)",
+};
+
+const GEOM = {
+  about: { w: 760, h: 520, x: 116, y: 92, label: "About Me" },
+  work: { w: 980, h: 650, x: 118, y: 64, label: "Workspace" },
+  oss: { w: 760, h: 540, x: 390, y: 118, label: "Open Source" },
+  images: { w: 1000, h: 640, x: 170, y: 66, label: "Photos" },
+  spotify: { w: 520, h: 570, x: 878, y: 120, label: "Spotify" },
+  resume: { w: 780, h: 600, x: 300, y: 88, label: "Work & Skills" },
+  contact: { w: 600, h: 440, x: 440, y: 140, label: "Contact" },
+};
+
+const OSS = [
+  { name: "Svelte", note: "compiler fix for keyed computed destructuring keys", href: "https://github.com/sveltejs/svelte/pull/18521" },
+  { name: "Prisma", note: "Bytes values and Node Buffer pool behavior", href: "https://github.com/prisma/prisma/pull/29701" },
+  { name: "SolidJS", note: "emitted storage types at the advertised path", href: "https://github.com/solidjs/solid/pull/2875" },
+  { name: "Refined GitHub", note: "capitalized conventional commit type support", href: "https://github.com/refined-github/refined-github/pull/9777" },
+  { name: "SvelteKit", note: "destructured route exports during type generation", href: "https://github.com/sveltejs/kit/pull/16329" },
+  { name: "react-jsonschema-form", note: "preserve empty-string titles in oneOf / anyOf", href: "https://github.com/rjsf-team/react-jsonschema-form/pull/5150" },
+  { name: "Nitro", note: "SameSite=Lax for Vercel skew-protection cookies", href: "https://github.com/nitrojs/nitro/pull/4422" },
+  { name: "Supabase JS", note: "Storage service error code exposure", href: "https://github.com/supabase/supabase-js/pull/2537" },
+  { name: "Supabase SSR", note: "domain-scoped cookie deletion during sign out", href: "https://github.com/supabase/ssr/pull/258" },
+  { name: "Music Blocks", note: "Turtle Blocks import fixes", href: "https://github.com/sugarlabs/musicblocks/pull/7727" },
+];
+
+const PROJECTS = [
+  { name: "Tray", summary: "Multi-tenant food-ordering SaaS for stalls, tiffin centres, and campus messes.", live: LINKS.trayLive, repo: LINKS.trayRepo },
+  { name: "Unhold", summary: "AI-assisted workspace for Indian bank-account and UPI freeze cases.", live: LINKS.unholdLive, repo: LINKS.unholdRepo },
+  { name: "TabMind", summary: "Local-first Chrome extension that turns browsing sessions into summaries and tasks.", live: null, repo: LINKS.tabmindRepo },
+  { name: "AquaVision", summary: "CPU-only underwater image restoration with reproducible comparisons.", live: LINKS.aquaLive, repo: LINKS.aquaRepo },
+];
+
+const TOOL_GROUPS = [
+  { label: "Web", tools: ["TypeScript", "React", "Next.js", "Node.js", "Tailwind CSS", "Radix UI", "Framer Motion", "GSAP", "Lenis"] },
+  { label: "Data & services", tools: ["Supabase JS", "Supabase SSR", "Postgres", "Upstash Redis", "Upstash Ratelimit", "Upstash QStash", "Razorpay", "Resend", "Sentry"] },
+  { label: "Application", tools: ["Zod", "Zustand", "React Hook Form", "WXT", "Chrome Extensions", "Google Generative AI"] },
+  { label: "Quality", tools: ["Vitest", "Playwright", "axe-core", "GitHub"] },
+  { label: "Imaging & Python", tools: ["Python", "Flask", "NumPy", "Pillow", "OpenCV", "PyTorch", "Torchvision", "SciPy", "imageio", "FFmpeg", "Waitress"] },
+];
+
+const GALLERY = [
+  { src: "assets/profile/thribhuvan.png", title: "Portrait", kind: "Profile", featured: true },
+  { src: "assets/profile/thribhuvan-cutout.png", title: "Studio Cutout", kind: "Profile" },
+  { src: "assets/shots/tray-1.png", title: "Tray", kind: "Project" },
+  { src: "assets/shots/unhold-1.png", title: "Unhold", kind: "Project" },
+  { src: "assets/shots/aqua-before.jpg", title: "AquaVision Before", kind: "Project" },
+  { src: "assets/shots/aqua-after.jpg", title: "AquaVision After", kind: "Project" },
+];
+
+const FOLDERS = [
+  { id: "about", label: "About Me", note: "Profile and current focus" },
+  { id: "projects", label: "Projects", note: "Tray, Unhold, TabMind & AquaVision" },
+  { id: "experience", label: "Work & Skills", note: "Projects, tools & open source" },
+  { id: "open-source", label: "Open Source", note: "Merged upstream contributions" },
+];
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const initial = {};
+    Object.keys(GEOM).forEach((id, i) => {
+      initial[id] = { ...GEOM[id], open: false, minimized: false, maximized: false, z: 10 + i };
+    });
+    const boot = (props && props.openOnLoad) || "Workspace + Spotify";
+    if (boot === "Workspace + Spotify") { initial.work.open = true; initial.work.z = 20; initial.spotify.open = true; initial.spotify.z = 21; }
+    else if (boot === "About Me") { initial.about.open = true; initial.about.z = 20; }
+    else if (boot === "Work & Skills") { initial.resume.open = true; initial.resume.z = 20; }
+    else if (boot === "Photos") { initial.images.open = true; initial.images.z = 20; }
+    this.state = { windows: initial, hovered: null, folder: "projects", appearance: "auto", zTop: 22 };
+  }
+
+  focus(id) {
+    this.setState((s) => {
+      const z = s.zTop + 1;
+      return { zTop: z, windows: { ...s.windows, [id]: { ...s.windows[id], z, minimized: false } } };
+    });
+  }
+
+  open(app) {
+    if (app.external) { window.open(app.external, "_blank", "noopener,noreferrer"); return; }
+    this.setState((s) => {
+      const z = s.zTop + 1;
+      return { zTop: z, windows: { ...s.windows, [app.id]: { ...s.windows[app.id], open: true, minimized: false, z } } };
+    });
+  }
+
+  patch(id, next) {
+    this.setState((s) => ({ windows: { ...s.windows, [id]: { ...s.windows[id], ...next } } }));
+  }
+
+  startDrag(id, event) {
+    if (event.target.closest("button, a")) return;
+    const w = this.state.windows[id];
+    if (w.maximized) return;
+    this.focus(id);
+    const ox = w.x, oy = w.y, sx = event.clientX, sy = event.clientY;
+    const move = (e) => {
+      const host = this.hostRect();
+      this.patch(id, {
+        x: Math.max(12, Math.min(ox + e.clientX - sx, host.w - w.w - 12)),
+        y: Math.max(12, Math.min(oy + e.clientY - sy, host.h - w.h - 92)),
+      });
+    };
+    const up = () => { window.removeEventListener("pointermove", move); window.removeEventListener("pointerup", up); };
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", up);
+  }
+
+  startResize(id, event) {
+    event.stopPropagation();
+    const w = this.state.windows[id];
+    if (w.maximized) return;
+    this.focus(id);
+    const ow = w.w, oh = w.h, sx = event.clientX, sy = event.clientY;
+    const move = (e) => {
+      const host = this.hostRect();
+      this.patch(id, {
+        w: Math.max(400, Math.min(ow + e.clientX - sx, host.w - w.x - 12)),
+        h: Math.max(330, Math.min(oh + e.clientY - sy, host.h - w.y - 92)),
+      });
+    };
+    const up = () => { window.removeEventListener("pointermove", move); window.removeEventListener("pointerup", up); };
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", up);
+  }
+
+  hostRect() {
+    return { w: window.innerWidth, h: Math.max(window.innerHeight, 900) };
+  }
+
+  renderVals() {
+    const s = this.state;
+    const iconSize = Number(this.props.dockIconSize ?? 46);
+    const showTooltips = this.props.showTooltips ?? true;
+
+    const windows = Object.keys(s.windows)
+      .map((id) => ({ id, ...s.windows[id] }))
+      .filter((w) => w.open)
+      .sort((a, b) => a.z - b.z)
+      .map((w) => ({
+        id: w.id,
+        label: w.label,
+        frame: w.maximized
+          ? { position: "absolute", left: 14, top: 44, width: "calc(100% - 28px)", height: "calc(100% - 132px)", zIndex: w.z, opacity: w.minimized ? 0 : 1, transform: w.minimized ? "translateY(260px) scale(0.82)" : "none", pointerEvents: w.minimized ? "none" : "auto", transition: "opacity 200ms ease, transform 220ms cubic-bezier(0.22,1,0.36,1)" }
+          : { position: "absolute", left: w.x, top: w.y, width: w.w, height: w.h, zIndex: w.z, opacity: w.minimized ? 0 : 1, transform: w.minimized ? "translateY(260px) scale(0.82)" : "none", pointerEvents: w.minimized ? "none" : "auto", transition: "opacity 200ms ease, transform 220ms cubic-bezier(0.22,1,0.36,1)" },
+        bodyStyle: {
+          position: "relative", flex: 1, minHeight: 0, overflow: "auto",
+          padding: w.id === "work" ? 0 : "clamp(20px, 2.2vw, 30px)",
+          background: w.id === "resume"
+            ? "linear-gradient(150deg, rgba(255,255,255,0.68), rgba(244,244,241,0.62)), rgba(250,250,248,0.72)"
+            : "rgba(252,252,250,0.9)",
+          scrollbarWidth: "thin", scrollbarColor: "rgba(45,47,48,0.2) transparent",
+        },
+        isAbout: w.id === "about", isWorkspace: w.id === "work", isResume: w.id === "resume",
+        isOss: w.id === "oss", isImages: w.id === "images", isSpotify: w.id === "spotify", isContact: w.id === "contact",
+        focus: () => this.focus(w.id),
+        close: () => this.patch(w.id, { open: false, minimized: false, maximized: false }),
+        minimize: () => this.patch(w.id, { minimized: !w.minimized }),
+        zoom: () => { this.focus(w.id); this.patch(w.id, { maximized: !w.maximized }); },
+        dragStart: (e) => this.startDrag(w.id, e),
+        resizeStart: (e) => this.startResize(w.id, e),
+      }));
+
+    const dock = APPS.map((app, i) => {
+      const st = s.windows[app.id];
+      const d = s.hovered === null ? 4 : Math.abs(s.hovered - i);
+      const lift = d === 0 ? -11 : d === 1 ? -5 : 0;
+      const scale = d === 0 ? 1.18 : d === 1 ? 1.08 : 1;
+      const hovering = s.hovered === i;
+      return {
+        id: app.id,
+        label: app.label,
+        aria: app.external ? "Open " + app.label + " in a new tab" : (st && st.minimized ? "Restore " : st && st.open ? "Focus " : "Open ") + app.label,
+        active: !!(st && st.open && !app.external),
+        artwork: app.artwork || null,
+        isGithub: app.id === "github", isLinkedin: app.id === "linkedin", isSpotify: app.id === "spotify",
+        wrapStyle: { display: "inline-block", transformOrigin: "50% 100%", transform: "translateY(" + lift + "px) scale(" + scale + ")", transition: "transform 220ms cubic-bezier(0.22,1,0.36,1)" },
+        iconStyle: {
+          position: "relative", display: "grid", placeItems: "center", isolation: "isolate",
+          width: iconSize, height: iconSize, overflow: "hidden", borderRadius: 12,
+          border: "1px solid rgba(255,255,255," + (app.artwork ? "0.62" : "0.54") + ")",
+          background: app.artwork ? "#faf9f6" : TONES[app.tone],
+          boxShadow: app.artwork
+            ? "0 9px 20px rgba(29,31,32,0.16), 0 2px 5px rgba(29,31,32,0.08)"
+            : "0 9px 20px rgba(29,31,32,0.18), 0 2px 5px rgba(29,31,32,0.1), 0 1px 0 rgba(255,255,255,0.76) inset, 0 -1px 0 rgba(24,26,27,0.14) inset",
+        },
+        artStyle: { position: "absolute", inset: 0, zIndex: 2, width: "100%", height: "100%", objectFit: "cover", objectPosition: app.id === "about" ? "50% 30%" : "center", transform: app.id === "work" ? "scale(1)" : "scale(1.19)", filter: "saturate(0.98) contrast(1.01)", pointerEvents: "none" },
+        tooltipStyle: {
+          position: "absolute", bottom: "calc(100% + 11px)", left: "50%", zIndex: 3,
+          transform: "translateX(-50%) scale(" + (hovering && showTooltips ? 1 : 0.88) + ")", transformOrigin: "bottom",
+          opacity: hovering && showTooltips ? 1 : 0, pointerEvents: "none", whiteSpace: "nowrap",
+          border: "1px solid rgba(255,255,255,0.14)", borderRadius: 7, background: "rgba(29,30,31,0.9)",
+          boxShadow: "0 9px 25px rgba(21,22,23,0.24)", color: "white", padding: "5px 8px",
+          fontFamily: "'Geist Mono', monospace", fontSize: 9, fontWeight: 650, letterSpacing: "0.08em",
+          textTransform: "uppercase", transition: "opacity 150ms ease, transform 150ms ease",
+        },
+        activate: () => this.open(app),
+        enter: () => this.setState({ hovered: i }),
+        leave: () => this.setState({ hovered: null }),
+      };
+    });
+
+    const folders = FOLDERS.map((f) => {
+      const active = s.folder === f.id;
+      return {
+        label: f.label, note: f.note,
+        select: () => this.setState({ folder: f.id }),
+        rowStyle: {
+          display: "grid", gridTemplateColumns: "34px 1fr", alignItems: "center", gap: 10, minHeight: 52,
+          border: "1px solid " + (active ? "rgba(255,255,255,0.9)" : "transparent"),
+          borderRadius: 7, background: active ? "rgba(255,255,255,0.76)" : "transparent",
+          boxShadow: active ? "0 5px 15px rgba(42,44,45,0.07), 0 1px 0 rgba(255,255,255,0.88) inset" : "none",
+          padding: 7, textAlign: "left", color: "#27221d", cursor: "pointer",
+          transition: "background 150ms ease, border-color 150ms ease",
+        },
+      };
+    });
+
+    const appearanceOptions = ["auto", "light", "dark"].map((o) => ({
+      label: o[0].toUpperCase() + o.slice(1),
+      select: () => this.setState({ appearance: o }),
+      style: {
+        flex: 1, minHeight: 28, border: "1px solid " + (s.appearance === o ? "rgba(255,255,255,0.9)" : "rgba(43,47,50,0.1)"),
+        borderRadius: 7, background: s.appearance === o ? "rgba(255,255,255,0.82)" : "rgba(255,255,255,0.4)",
+        color: "rgba(31,35,38,0.76)", padding: "5px 6px", fontSize: 10, fontWeight: 680,
+      },
+    }));
+
+    return {
+      windows, dock, folders, appearanceOptions,
+      folderIsProjects: s.folder === "projects",
+      folderIsAbout: s.folder === "about",
+      folderIsOss: s.folder === "open-source",
+      folderIsExperience: s.folder === "experience",
+      oss: OSS,
+      projects: PROJECTS.map((p, i) => ({
+        ...p,
+        rowStyle: {
+          display: "grid", gridTemplateColumns: "minmax(0,1fr) auto", alignItems: "center", gap: 12, minWidth: 0,
+          borderTop: i === 0 ? "0" : "1px solid rgba(43,47,50,0.075)",
+          padding: i === 0 ? "2px 0 10px" : "10px 0",
+        },
+      })),
+      toolGroups: TOOL_GROUPS,
+      gallery: GALLERY.map((g) => ({
+        ...g,
+        style: {
+          position: "relative", minHeight: g.featured ? 348 : 168, overflow: "hidden", margin: 0,
+          gridColumn: g.featured ? "span 2" : "auto", gridRow: g.featured ? "span 2" : "auto",
+          border: "1px solid rgba(42,44,45,0.1)", borderRadius: 8, background: "rgba(255,255,255,0.45)",
+          boxShadow: "0 12px 32px rgba(42,44,45,0.065), 0 1px 0 rgba(255,255,255,0.9) inset",
+        },
+      })),
+    };
+  }
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&family=Geist+Mono:wght@400;500;600;700&family=Grand+Hotel&display=swap" rel="stylesheet">
+<style>
+  html, body { margin:0; padding:0; width:100%; height:100%; overflow:hidden; }
+  body { font-family:'Geist', -apple-system, ui-sans-serif, system-ui, sans-serif; -webkit-font-smoothing:antialiased; background:#dfeaf6; }
+  * { box-sizing:border-box; }
+  button { font:inherit; cursor:default; }
+  img { user-select:none; -webkit-user-drag:none; }
+  a { color:inherit; text-decoration:none; }
+  a:hover { color:var(--accent); }
+  [data-os-theme="light"] {
+    --ink:#10233d; --ink-soft:rgba(16,35,61,0.60); --ink-faint:rgba(16,35,61,0.38); --wordmark:#5b544c; --wm-glow:rgba(140,128,110,0.55);
+    --hair:rgba(16,35,61,0.10); --glass:rgba(255,255,255,0.50); --glass-2:rgba(255,255,255,0.34);
+    --glass-line:rgba(255,255,255,0.72); --titlebar:rgba(244,246,249,0.86); --pane:rgba(255,255,255,0.30);
+    --sheet:rgba(255,255,255,0.26); --chip:rgba(255,255,255,0.58); --accent:#0a68c9; --accent-soft:rgba(10,104,201,0.12);
+    --shadow:0 34px 88px rgba(18,45,80,0.18), 0 12px 30px rgba(18,45,80,0.10), 0 1px 0 rgba(255,255,255,0.95) inset, 0 0 0 1px rgba(18,45,80,0.05) inset;
+    --dock:rgba(255,255,255,0.42); --dock-line:rgba(255,255,255,0.75);
+    --menubar:rgba(255,255,255,0.34); --menubar-ink:rgba(14,30,52,0.86);
+    --chrome:linear-gradient(177deg,#ffffff 3%,#eaf3fc 22%,#9dbcda 46%,#ffffff 60%,#c6dbee 76%,#7c9dc0 100%);
+    --chrome-glow:drop-shadow(0 20px 34px rgba(26,58,98,0.22)) drop-shadow(0 1px 0 rgba(255,255,255,0.95));
+  }
+  [data-os-theme="dark"] {
+    --ink:#eaf2fd; --ink-soft:rgba(226,238,252,0.62); --ink-faint:rgba(226,238,252,0.38); --wordmark:#dbe6f4; --wm-glow:rgba(150,200,250,0.6);
+    --hair:rgba(175,210,246,0.16); --glass:rgba(34,64,104,0.46); --glass-2:rgba(20,42,72,0.40);
+    --glass-line:rgba(190,220,250,0.20); --titlebar:rgba(33,58,92,0.88); --pane:rgba(14,32,56,0.42);
+    --sheet:rgba(8,22,42,0.26); --chip:rgba(170,208,248,0.16); --accent:#6fb7f5; --accent-soft:rgba(111,183,245,0.16);
+    --shadow:0 34px 88px rgba(1,6,14,0.60), 0 12px 30px rgba(1,6,14,0.38), 0 1px 0 rgba(190,220,250,0.14) inset, 0 0 0 1px rgba(0,0,0,0.30) inset;
+    --dock:rgba(22,45,76,0.46); --dock-line:rgba(190,220,250,0.18);
+    --menubar:rgba(8,20,38,0.40); --menubar-ink:rgba(233,242,253,0.88);
+    --chrome:linear-gradient(177deg,#ffffff 3%,#d3e6f8 22%,#6d95bd 44%,#ffffff 58%,#94b8d8 74%,#48699093 100%);
+    --chrome-glow:drop-shadow(0 22px 36px rgba(0,0,0,0.55)) drop-shadow(0 1px 0 rgba(255,255,255,0.35));
+  }
+  @keyframes wm-draw {
+    from { -webkit-mask-position:112% 0; mask-position:112% 0; }
+    to   { -webkit-mask-position:0% 0; mask-position:0% 0; }
+  }
+  @keyframes wm-glow {
+    0%   { text-shadow:0 0 42px var(--wm-glow), 0 0 14px var(--wm-glow); }
+    55%  { text-shadow:0 0 34px var(--wm-glow), 0 0 11px var(--wm-glow); }
+    82%  { text-shadow:0 0 20px var(--wm-glow), 0 0 6px var(--wm-glow); }
+    100% { text-shadow:0 0 0 transparent; }
+  }
+  @keyframes caret-blink { 0%,49% { opacity:1; } 50%,100% { opacity:0; } }
+  @keyframes wm-rise { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
+  @media (prefers-reduced-motion: reduce) {
+    [data-wm], [data-wm-eyebrow], [data-wm-sub] { animation:none !important; clip-path:none !important; filter:none !important; opacity:1 !important; transform:none !important; }
+  }
+  .os-scroll::-webkit-scrollbar { width:9px; height:9px; }
+  .os-scroll::-webkit-scrollbar-thumb { background:var(--hair); border-radius:9px; border:2px solid transparent; background-clip:padding-box; }
+  .os-scroll::-webkit-scrollbar-track { background:transparent; }
+</style>
+</helmet>
+
+<div data-os-theme="{{ theme }}" style="position:relative;width:100%;height:100vh;min-height:420px;overflow:hidden;color:var(--ink);transition:color 300ms ease">
+
+  <div aria-hidden="true" style="{{ wallpaper }}"></div>
+  <div aria-hidden="true" style="{{ wallpaperWave }}"></div>
+  <div aria-hidden="true" style="position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0.035;mix-blend-mode:overlay;background-image:url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;);background-size:180px 180px"></div>
+
+  <section data-screen-label="Desktop hero" style="position:absolute;z-index:2;inset:0;display:grid;align-content:center;justify-content:stretch;justify-items:stretch;padding:56px clamp(56px,22vw,320px) 104px;pointer-events:none">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;container-type:inline-size">
+      <p data-wm-eyebrow="true" style="margin:0;color:var(--ink-soft);font-family:'Geist Mono',monospace;font-size:12px;font-weight:600;letter-spacing:0.5em;text-transform:uppercase;text-indent:0.5em;animation:wm-rise 1.2s cubic-bezier(0.16,1,0.3,1) 0.15s both">Hi, I'm</p>
+      <h1 data-wm="true" style="display:block;width:100%;margin:0;font-family:'Grand Hotel',cursive;text-align:center;font-size:min(16cqw,24vh,214px);font-weight:400;letter-spacing:0.006em;line-height:1;color:var(--wordmark);-webkit-mask-image:linear-gradient(90deg,#000 0%,#000 28%,rgba(0,0,0,0.55) 36%,rgba(0,0,0,0.18) 43%,transparent 50%);mask-image:linear-gradient(90deg,#000 0%,#000 28%,rgba(0,0,0,0.55) 36%,rgba(0,0,0,0.18) 43%,transparent 50%);-webkit-mask-size:300% 100%;mask-size:300% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;animation:wm-draw 4.6s cubic-bezier(0.36,0.03,0.16,1) 0.5s both, wm-glow 7s ease-out 0.5s both">Thribhuvan</h1>
+      <p data-wm-sub="true" style="display:flex;align-items:center;justify-content:center;gap:1px;min-height:24px;margin:0;max-width:56ch;text-align:center;color:var(--ink-soft);font-size:15.5px;font-weight:500;line-height:1.5;letter-spacing:-0.008em;animation:wm-rise 1.1s cubic-bezier(0.16,1,0.3,1) 5.1s both"><span>{{ typed }}</span><span aria-hidden="true" style="display:inline-block;width:1.5px;height:17px;margin-left:2px;background:var(--ink-faint);animation:caret-blink 1.06s step-end infinite"></span></p>
+    </div>
+    <span></span>
+  </section>
+
+  <aside style="position:absolute;z-index:6;right:22px;top:22px;width:224px;border:1px solid var(--glass-line);border-radius:20px;background:var(--glass);box-shadow:var(--shadow);-webkit-backdrop-filter:blur(30px) saturate(170%);backdrop-filter:blur(30px) saturate(170%);padding:14px">
+    <p style="margin:0 0 11px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:0.17em;text-transform:uppercase">Last Played</p>
+    <div style="position:relative;display:grid;place-items:center;aspect-ratio:1;overflow:hidden;border:1px solid var(--hair);border-radius:13px;background:linear-gradient(150deg, rgba(30,215,96,0.26), rgba(30,215,96,0.04) 58%), var(--chip)">
+      <svg width="52" height="52" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#1ED760"></circle><g fill="none" stroke="#0b2016" stroke-linecap="round"><path d="M6.5 8.9c3.65-1.08 8.08-.75 11.15.82" stroke-width="1.85"></path><path d="M7.15 12.05c3.18-.82 6.92-.52 9.65.7" stroke-width="1.65"></path><path d="M7.85 15.05c2.58-.6 5.53-.36 7.82.57" stroke-width="1.48"></path></g></svg>
+    </div>
+    <p style="margin:12px 0 0;color:var(--ink);font-size:13px;font-weight:620;line-height:1.3;letter-spacing:-0.01em">Nothing connected yet</p>
+    <p style="margin:4px 0 0;color:var(--ink-faint);font-size:11.5px;line-height:1.4">Open Spotify from the dock</p>
+  </aside>
+
+  <div style="position:absolute;z-index:5000;left:22px;top:22px;display:flex;align-items:center;gap:2px;border:1px solid var(--glass-line);border-radius:999px;background:var(--glass);box-shadow:var(--shadow);-webkit-backdrop-filter:blur(28px) saturate(170%);backdrop-filter:blur(28px) saturate(170%);padding:4px">
+    <sc-for list="{{ modes }}" as="m" hint-placeholder-count="2">
+      <button type="button" onClick="{{ m.select }}" aria-label="{{ m.aria }}" style="{{ m.style }}">
+        <sc-if value="{{ m.isLight }}" hint-placeholder-val="{{ true }}">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
+        </sc-if>
+        <sc-if value="{{ m.isDark }}" hint-placeholder-val="{{ false }}">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+        </sc-if>
+      </button>
+    </sc-for>
+  </div>
+
+  <a href="mailto:thribhuvan003@gmail.com" style="position:absolute;z-index:5000;left:22px;bottom:22px;display:inline-flex;align-items:center;gap:9px;min-height:42px;border:1px solid var(--glass-line);border-radius:999px;background:var(--glass);box-shadow:var(--shadow);-webkit-backdrop-filter:blur(28px) saturate(170%);backdrop-filter:blur(28px) saturate(170%);padding:0 18px;color:var(--ink);font-size:13px;font-weight:600;white-space:nowrap">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+    Email me
+  </a>
+
+  <p style="position:absolute;z-index:5;right:22px;bottom:22px;margin:0;text-align:right;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10.5px;font-weight:600;letter-spacing:0.11em;text-transform:uppercase;line-height:1.65">Four public projects<br>Ten merged upstream PRs</p>
+
+  <sc-for list="{{ windows }}" as="win" hint-placeholder-count="0">
+  <div style="{{ win.frame }}">
+    <section data-screen-label="{{ win.label }}" onMouseDown="{{ win.focus }}" style="{{ win.shellStyle }}">
+      <div onPointerDown="{{ win.dragStart }}" onDoubleClick="{{ win.zoom }}" style="{{ win.barStyle }}">
+        <div style="display:flex;align-items:center;gap:8px">
+          <button type="button" aria-label="Close" onClick="{{ win.close }}" style="width:12px;height:12px;border:0;border-radius:999px;padding:0;background:#ff5f57;box-shadow:0 0 0 0.5px rgba(0,0,0,0.14) inset"></button>
+          <button type="button" aria-label="Minimize" onClick="{{ win.minimize }}" style="width:12px;height:12px;border:0;border-radius:999px;padding:0;background:#febc2e;box-shadow:0 0 0 0.5px rgba(0,0,0,0.14) inset"></button>
+          <button type="button" aria-label="Maximize" onClick="{{ win.zoom }}" style="width:12px;height:12px;border:0;border-radius:999px;padding:0;background:#28c840;box-shadow:0 0 0 0.5px rgba(0,0,0,0.14) inset"></button>
+        </div>
+        <div style="{{ win.titleStyle }}">{{ win.label }}</div>
+        <span></span>
+      </div>
+      <div class="os-scroll" style="{{ win.bodyStyle }}">
+        <sc-if value="{{ win.isAbout }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) 236px;gap:32px;height:100%;align-items:center">
+            <div>
+              <p style="margin:0 0 10px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">Engineer / Builder</p>
+              <h2 style="margin:0;max-width:17ch;color:var(--ink);font-size:40px;font-weight:700;line-height:1.05;letter-spacing:-0.03em;text-wrap:pretty">I build full-stack products and contribute focused fixes to open source.</h2>
+              <p style="max-width:50ch;margin:16px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.6">My current work includes Tray, Unhold, TabMind, and AquaVision, alongside merged contributions across developer tools I use.</p>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:22px">
+                <span style="display:inline-flex;align-items:center;gap:8px;border:1px solid var(--hair);border-radius:999px;background:var(--chip);padding:9px 14px;color:var(--ink-soft);font-size:12px;font-weight:560">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12h.01"></path><path d="M16 6V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path><path d="M22 13a18.15 18.15 0 0 1-20 0"></path><rect width="20" height="14" x="2" y="6" rx="2"></rect></svg>
+                  Building four products
+                </span>
+                <span style="display:inline-flex;align-items:center;gap:8px;border:1px solid var(--hair);border-radius:999px;background:var(--chip);padding:9px 14px;color:var(--ink-soft);font-size:12px;font-weight:560">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"></path><path d="m6 8-4 4 4 4"></path><path d="m14.5 4-5 16"></path></svg>
+                  Contributing upstream
+                </span>
+              </div>
+            </div>
+            <div style="position:relative;overflow:hidden;height:336px;border:1px solid var(--glass-line);border-radius:14px;background:var(--pane);box-shadow:0 18px 42px rgba(10,30,56,0.18)">
+              <img src="assets/profile/thribhuvan.png" alt="Portrait of Thribhuvan" style="width:100%;height:100%;object-fit:cover">
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ win.isWorkspace }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;height:100%;min-height:0;font-family:-apple-system,BlinkMacSystemFont,'Geist',sans-serif">
+            <sc-if value="{{ notRoot }}" hint-placeholder-val="{{ false }}">
+            <div style="flex:0 0 39px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:0 12px;border-bottom:1px solid var(--hair);background:var(--titlebar)">
+              <div style="display:flex;align-items:center;gap:2px;color:var(--ink-faint)">
+                <button type="button" aria-label="Back to Workspace" onClick="{{ goRoot }}" style="{{ backStyle }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg></button>
+                <span style="display:grid;place-items:center;width:26px;height:24px;border-radius:6px;opacity:0.45"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg></span>
+              </div>
+              <div style="display:flex;align-items:center;gap:7px;min-width:0;color:var(--ink);font-size:13px;font-weight:600;letter-spacing:-0.01em">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+                <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ folderTitle }}</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px">
+                <sc-if value="{{ notRoot }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;align-items:center;gap:1px;border:1px solid var(--hair);border-radius:7px;background:var(--chip);padding:2px">
+                  <sc-for list="{{ finderViews }}" as="v" hint-placeholder-count="4">
+                    <span style="{{ v.style }}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="{{ v.d1 }}"></path><path d="{{ v.d2 }}"></path></svg></span>
+                  </sc-for>
+                </div>
+                <div style="display:flex;align-items:center;gap:6px;width:132px;border:1px solid var(--hair);border-radius:7px;background:var(--chip);padding:4px 8px;color:var(--ink-faint);font-size:12px">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.35-4.35"></path></svg>
+                  Search
+                </div>
+                </sc-if>
+              </div>
+            </div>
+            </sc-if>
+
+            <div style="{{ splitStyle }}">
+            <sc-if value="{{ notRoot }}" hint-placeholder-val="{{ false }}">
+            <aside style="display:grid;align-content:start;gap:1px;border-right:1px solid var(--hair);background:var(--pane);padding:10px 8px">
+              <p style="margin:0 0 5px;padding-left:8px;color:var(--ink-faint);font-size:11px;font-weight:640;letter-spacing:0.01em">Favourites</p>
+              <sc-for list="{{ folders }}" as="folder" hint-placeholder-count="4">
+                <button type="button" onClick="{{ folder.select }}" style="{{ folder.rowStyle }}">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="{{ folder.iconColor }}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+                  <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;font-weight:520;letter-spacing:-0.01em">{{ folder.label }}</span>
+                </button>
+              </sc-for>
+            </aside>
+            </sc-if>
+
+            <section class="os-scroll" style="{{ contentStyle }}">
+              <sc-if value="{{ atRoot }}" hint-placeholder-val="{{ true }}">
+                <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));justify-items:center;align-items:center;align-content:center;gap:24px;padding:8px 4px">
+                  <sc-for list="{{ folders }}" as="folder" hint-placeholder-count="4">
+                    <button type="button" onDoubleClick="{{ folder.select }}" onClick="{{ folder.select }}" style="{{ folder.tileStyle }}">
+                      <span style="position:relative;display:block;width:84px;height:66px;filter:drop-shadow(0 10px 16px rgba(8,40,74,0.34))">
+                        <span style="position:absolute;left:3px;top:0;width:35px;height:13px;border-radius:6px 8px 0 0;background:linear-gradient(180deg,#a9dcfb,#63b3ea)"></span>
+                        <span style="position:absolute;left:0;right:0;top:8px;bottom:0;border-radius:7px 9px 10px 10px;background:linear-gradient(165deg,#bfe6fd 0%,#7cc3f0 42%,#3f96d8 100%);box-shadow:0 1px 0 rgba(255,255,255,0.6) inset"></span>
+                      </span>
+                      <span style="{{ folder.tileLabelStyle }}">{{ folder.label }}</span>
+                    </button>
+                  </sc-for>
+                </div>
+              </sc-if>
+
+              <sc-if value="{{ folderIsProjects }}" hint-placeholder-val="{{ false }}">
+                <div style="display:grid;grid-template-columns:repeat(2, minmax(0,1fr));gap:16px">
+                  <sc-for list="{{ projects }}" as="p" hint-placeholder-count="4">
+                    <article style="display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--hair);border-radius:14px;background:var(--glass);box-shadow:0 14px 34px rgba(12,32,58,0.08), 0 1px 0 rgba(255,255,255,0.4) inset">
+                      <sc-if value="{{ p.image }}" hint-placeholder-val="{{ true }}">
+                        <div style="position:relative;height:146px;overflow:hidden;border-bottom:1px solid var(--hair);background:var(--chip)"><img src="{{ p.image }}" alt="{{ p.name }} screenshot" style="width:100%;height:100%;object-fit:cover;object-position:top"></div>
+                      </sc-if>
+                      <div style="display:flex;flex-direction:column;gap:12px;flex:1;padding:15px">
+                        <div>
+                          <p style="margin:0 0 6px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:0.17em;text-transform:uppercase">{{ p.name }}</p>
+                          <h3 style="margin:0;color:var(--ink);font-size:16px;font-weight:640;line-height:1.25;letter-spacing:-0.012em">{{ p.summary }}</h3>
+                          <p style="margin:7px 0 0;color:var(--ink-soft);font-size:12.5px;line-height:1.5">{{ p.detail }}</p>
+                        </div>
+                        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:auto">
+                          <sc-if value="{{ p.live }}" hint-placeholder-val="{{ true }}">
+                            <a href="{{ p.live }}" target="_blank" rel="noreferrer" style="display:inline-flex;align-items:center;gap:6px;min-height:32px;border:1px solid var(--hair);border-radius:999px;background:var(--chip);padding:7px 13px;color:var(--ink);font-size:11.5px;font-weight:620">Live <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a>
+                          </sc-if>
+                          <a href="{{ p.repo }}" target="_blank" rel="noreferrer" style="display:inline-flex;align-items:center;gap:6px;min-height:32px;border:1px solid var(--hair);border-radius:999px;background:var(--chip);padding:7px 13px;color:var(--ink);font-size:11.5px;font-weight:620">Code <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .8a11.2 11.2 0 0 0-3.54 21.82c.56.1.76-.24.76-.54v-2.1c-3.1.68-3.75-1.32-3.75-1.32-.5-1.28-1.24-1.62-1.24-1.62-1.02-.7.08-.69.08-.69 1.12.08 1.7 1.16 1.7 1.16 1 .1.55 2.62 3.16 1.86.1-.73.39-1.23.71-1.51-2.47-.28-5.06-1.24-5.06-5.5 0-1.22.43-2.21 1.15-2.99-.12-.28-.5-1.42.1-2.95 0 0 .95-.3 3.08 1.14a10.6 10.6 0 0 1 5.6 0c2.13-1.44 3.07-1.14 3.07-1.14.6 1.53.22 2.67.11 2.95.72.78 1.15 1.77 1.15 2.99 0 4.27-2.6 5.21-5.08 5.49.4.34.76 1.02.76 2.06v3.06c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"></path></svg></a>
+                        </div>
+                      </div>
+                    </article>
+                  </sc-for>
+                </div>
+              </sc-if>
+
+              <sc-if value="{{ folderIsAbout }}" hint-placeholder-val="{{ false }}">
+                <div style="display:grid;gap:22px;border:1px solid var(--hair);border-radius:14px;background:var(--glass);box-shadow:0 14px 34px rgba(12,32,58,0.10), 0 1px 0 rgba(255,255,255,0.45) inset;-webkit-backdrop-filter:blur(22px) saturate(150%);backdrop-filter:blur(22px) saturate(150%);padding:28px">
+                  <div>
+                    <p style="margin:0 0 10px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">About Me</p>
+                    <h3 style="margin:0;max-width:26ch;color:var(--ink);font-size:30px;font-weight:700;line-height:1.1;letter-spacing:-0.03em;text-wrap:pretty">I build practical web products, and I read the code before I trust it.</h3>
+                    <p style="max-width:58ch;margin:16px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.65">My work spans multi-tenant SaaS, AI-assisted workflows, browser tools, and image restoration. Most of what I know came from reading other people's source and finding out where it broke.</p>
+                    <p style="max-width:58ch;margin:12px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.65">That habit turned into open-source work: ten small, specific fixes merged into Svelte, Prisma, SolidJS, SvelteKit, Nitro, Supabase and others. None of them are large. All of them were things I hit myself.</p>
+                  </div>
+                  <div style="display:grid;gap:8px">
+                    <p style="margin:0;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:0.17em;text-transform:uppercase">Away from the editor</p>
+                    <div style="display:grid;gap:8px">
+                      <div style="display:grid;grid-template-columns:18px minmax(0,1fr);align-items:start;gap:12px;border-top:1px solid var(--hair);padding-top:11px">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="margin-top:2px"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a2.5 2.5 0 0 1 0-5H20"></path></svg>
+                        <p style="margin:0;color:var(--ink-soft);font-size:13px;line-height:1.55"><strong style="color:var(--ink);font-weight:640">Reading Vedanta.</strong> Slowly, and mostly out of order. It has done more for how I think about problems than any engineering book I own.</p>
+                      </div>
+                      <div style="display:grid;grid-template-columns:18px minmax(0,1fr);align-items:start;gap:12px;border-top:1px solid var(--hair);padding-top:11px">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="margin-top:2px"><circle cx="8" cy="18" r="4"></circle><path d="M12 18V2l7 4"></path></svg>
+                        <p style="margin:0;color:var(--ink-soft);font-size:13px;line-height:1.55"><strong style="color:var(--ink);font-weight:640">Mozart, and classical in general.</strong> It is what is playing while I work. No lyrics to argue with.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </sc-if>
+
+              <sc-if value="{{ folderIsOss }}" hint-placeholder-val="{{ false }}">
+                <div style="display:grid;gap:8px">
+                  <sc-for list="{{ oss }}" as="row" hint-placeholder-count="10">
+                    <a href="{{ row.href }}" target="_blank" rel="noreferrer" style="display:grid;grid-template-columns:30px minmax(0,0.9fr) minmax(0,1.1fr) 14px;align-items:center;gap:14px;min-height:60px;border:1px solid var(--hair);border-radius:12px;background:var(--glass);padding:12px 14px">
+                      <span style="display:grid;place-items:center;width:30px;height:30px;border:1px solid var(--hair);border-radius:8px;background:var(--chip)">
+                        <sc-if value="{{ row.icon }}" hint-placeholder-val="{{ true }}">
+                          <img src="{{ row.icon }}" alt="" aria-hidden="true" style="width:17px;height:17px;object-fit:contain">
+                        </sc-if>
+                      </span>
+                      <span style="min-width:0">
+                        <strong style="display:block;color:var(--ink);font-size:12.5px;font-weight:660;letter-spacing:-0.01em">{{ row.name }}</strong>
+                        <small style="display:block;margin-top:2px;color:var(--ink-faint);font-size:11px;line-height:1.35">{{ row.what }}</small>
+                      </span>
+                      <p style="margin:0;color:var(--ink-soft);font-size:12px;line-height:1.45">{{ row.note }}</p>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--ink-faint)"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                    </a>
+                  </sc-for>
+                </div>
+              </sc-if>
+
+              <sc-if value="{{ folderIsExperience }}" hint-placeholder-val="{{ false }}">
+                <div style="display:grid;gap:14px">
+                  <div>
+                    <p style="margin:0 0 10px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">Work &amp; Skills</p>
+                    <h3 style="margin:0;max-width:26ch;color:var(--ink);font-size:29px;font-weight:700;line-height:1.1;letter-spacing:-0.03em">Products I'm building, tools I use, and what I'm working through.</h3>
+                  </div>
+
+                  <section style="border:1px solid var(--hair);border-radius:14px;background:var(--glass);padding:17px">
+                    <div style="display:flex;align-items:center;gap:8px;color:var(--accent)">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12h.01"></path><path d="M16 6V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path><path d="M22 13a18.15 18.15 0 0 1-20 0"></path><rect width="20" height="14" x="2" y="6" rx="2"></rect></svg>
+                      <h4 style="margin:0;color:var(--ink);font-size:11.5px;font-weight:720">Projects</h4>
+                    </div>
+                    <div style="display:grid">
+                      <sc-for list="{{ projects }}" as="p" hint-placeholder-count="4">
+                        <article style="{{ p.rowStyle }}">
+                          <div style="min-width:0">
+                            <strong style="display:block;margin-bottom:3px;color:var(--ink);font-size:12.5px;font-weight:680">{{ p.name }}</strong>
+                            <p style="margin:0;color:var(--ink-soft);font-size:11.5px;line-height:1.45">{{ p.summary }}</p>
+                          </div>
+                          <div style="display:flex;align-items:center;gap:6px">
+                            <sc-if value="{{ p.live }}" hint-placeholder-val="{{ true }}">
+                              <a href="{{ p.live }}" target="_blank" rel="noreferrer" style="display:inline-flex;min-height:29px;align-items:center;border:1px solid var(--hair);border-radius:999px;background:var(--chip);color:var(--ink-soft);padding:6px 11px;font-size:10.5px;font-weight:640">Live</a>
+                            </sc-if>
+                            <a href="{{ p.repo }}" target="_blank" rel="noreferrer" style="display:inline-flex;min-height:29px;align-items:center;border:1px solid var(--hair);border-radius:999px;background:var(--chip);color:var(--ink-soft);padding:6px 11px;font-size:10.5px;font-weight:640">Code</a>
+                          </div>
+                        </article>
+                      </sc-for>
+                    </div>
+                  </section>
+
+                  <section style="border:1px solid var(--hair);border-radius:14px;background:var(--glass);padding:17px">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;color:var(--accent)">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"></path><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path></svg>
+                      <h4 style="margin:0;color:var(--ink);font-size:11.5px;font-weight:720">Learning</h4>
+                    </div>
+                    <div style="display:grid;gap:11px">
+                      <sc-for list="{{ learning }}" as="l" hint-placeholder-count="3">
+                        <div style="display:grid;grid-template-columns:28px minmax(0,1fr);align-items:start;gap:12px">
+                          <span style="display:grid;place-items:center;width:28px;height:28px;border:1px solid var(--hair);border-radius:8px;background:var(--chip)">
+                            <sc-if value="{{ l.icon }}" hint-placeholder-val="{{ true }}">
+                              <img src="{{ l.icon }}" alt="" aria-hidden="true" style="width:15px;height:15px;object-fit:contain">
+                            </sc-if>
+                          </span>
+                          <div style="min-width:0">
+                            <strong style="display:block;margin-bottom:2px;color:var(--ink);font-size:12.5px;font-weight:660;letter-spacing:-0.01em">{{ l.title }}</strong>
+                            <p style="margin:0;color:var(--ink-soft);font-size:11.5px;line-height:1.5">{{ l.note }}</p>
+                          </div>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </section>
+
+                  <section style="border:1px solid var(--hair);border-radius:14px;background:var(--glass);padding:17px">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;color:var(--accent)">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"></path><path d="m6 8-4 4 4 4"></path><path d="m14.5 4-5 16"></path></svg>
+                      <h4 style="margin:0;color:var(--ink);font-size:11.5px;font-weight:720">Tools I Use</h4>
+                    </div>
+                    <div style="display:grid;gap:13px">
+                      <sc-for list="{{ toolGroups }}" as="g" hint-placeholder-count="5">
+                        <section aria-label="{{ g.label }}">
+                          <h5 style="margin:0;color:var(--ink-soft);font-size:10.5px;font-weight:700;letter-spacing:0.04em">{{ g.label }}</h5>
+                          <ul style="display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0;padding:0;list-style:none">
+                            <sc-for list="{{ g.tools }}" as="t" hint-placeholder-count="9">
+                              <li style="display:inline-flex;min-height:30px;align-items:center;gap:6px;border:1px solid var(--hair);border-radius:999px;background:var(--chip);color:var(--ink-soft);padding:5px 12px 5px 8px;font-size:10.5px;font-weight:620">
+                                <sc-if value="{{ t.icon }}" hint-placeholder-val="{{ true }}">
+                                  <img src="{{ t.icon }}" alt="" aria-hidden="true" style="width:14px;height:14px;object-fit:contain;flex:0 0 14px">
+                                </sc-if>
+                                {{ t.name }}
+                              </li>
+                            </sc-for>
+                          </ul>
+                        </section>
+                      </sc-for>
+                    </div>
+                  </section>
+                </div>
+              </sc-if>
+            </section>
+            </div>
+            <sc-if value="{{ notRoot }}" hint-placeholder-val="{{ false }}">
+            <div style="flex:0 0 25px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 12px;border-top:1px solid var(--hair);background:var(--titlebar);color:var(--ink-faint);font-size:11px;font-weight:500">
+              <span style="display:flex;align-items:center;gap:5px">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+                Workspace
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.5"><path d="m9 18 6-6-6-6"></path></svg>
+                {{ folderTitle }}
+              </span>
+              <span>{{ folderCount }}</span>
+            </div>
+            </sc-if>
+          </div>
+        </sc-if>
+        <sc-if value="{{ win.isResume }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid;gap:16px">
+            <header style="display:grid;gap:7px">
+              <p style="margin:0;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">Selected Work</p>
+              <h2 style="margin:0;color:var(--ink);font-size:34px;font-weight:700;line-height:1.06;letter-spacing:-0.032em">Products I'm building and tools I work with.</h2>
+              <p style="max-width:62ch;margin:0;color:var(--ink-soft);font-size:13.5px;line-height:1.55">Four public projects, supported by hands-on open-source contributions.</p>
+            </header>
+            <div style="display:grid;grid-template-columns:minmax(0,1.3fr) minmax(228px,0.9fr);gap:14px">
+              <section aria-label="Projects" style="min-width:0;border:1px solid var(--hair);border-radius:14px;background:var(--glass);box-shadow:0 14px 34px rgba(12,32,58,0.10), 0 1px 0 rgba(255,255,255,0.45) inset;-webkit-backdrop-filter:blur(22px) saturate(150%);backdrop-filter:blur(22px) saturate(150%);padding:17px">
+                <div style="display:flex;align-items:center;gap:8px;color:var(--accent)">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12h.01"></path><path d="M16 6V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path><path d="M22 13a18.15 18.15 0 0 1-20 0"></path><rect width="20" height="14" x="2" y="6" rx="2"></rect></svg>
+                  <h3 style="margin:0;color:var(--ink);font-size:11.5px;font-weight:720">Projects</h3>
+                </div>
+                <div style="display:grid">
+                  <sc-for list="{{ projects }}" as="p" hint-placeholder-count="4">
+                    <article style="{{ p.rowStyle }}">
+                      <div style="min-width:0">
+                        <h4 style="margin:0 0 3px;color:var(--ink);font-size:12.5px;font-weight:680">{{ p.name }}</h4>
+                        <p style="margin:0;color:var(--ink-soft);font-size:11.5px;line-height:1.45">{{ p.summary }}</p>
+                      </div>
+                      <div style="display:flex;align-items:center;gap:6px">
+                        <sc-if value="{{ p.live }}" hint-placeholder-val="{{ true }}">
+                          <a href="{{ p.live }}" target="_blank" rel="noreferrer" style="display:inline-flex;min-height:30px;align-items:center;border:1px solid var(--hair);border-radius:999px;background:var(--chip);color:var(--ink-soft);padding:6px 11px;font-size:10.5px;font-weight:640">Live</a>
+                        </sc-if>
+                        <a href="{{ p.repo }}" target="_blank" rel="noreferrer" style="display:inline-flex;min-height:30px;align-items:center;border:1px solid var(--hair);border-radius:999px;background:var(--chip);color:var(--ink-soft);padding:6px 11px;font-size:10.5px;font-weight:640">Code</a>
+                      </div>
+                    </article>
+                  </sc-for>
+                </div>
+              </section>
+              <section aria-label="Open Source" style="min-width:0;border:1px solid var(--hair);border-radius:14px;background:var(--glass);box-shadow:0 14px 34px rgba(12,32,58,0.10), 0 1px 0 rgba(255,255,255,0.45) inset;-webkit-backdrop-filter:blur(22px) saturate(150%);backdrop-filter:blur(22px) saturate(150%);padding:17px">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px;color:var(--accent)">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"></path><path d="m6.08 9.5-3.5 1.6a1 1 0 0 0 0 1.81l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9a1 1 0 0 0 0-1.83l-3.5-1.59"></path><path d="m6.08 14.5-3.5 1.6a1 1 0 0 0 0 1.81l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9a1 1 0 0 0 0-1.83l-3.5-1.59"></path></svg>
+                  <h3 style="margin:0;color:var(--ink);font-size:11.5px;font-weight:720">Open Source</h3>
+                </div>
+                <p style="margin:0;color:var(--ink-soft);font-size:11.5px;line-height:1.45">Merged contributions across these projects:</p>
+                <ul style="display:flex;flex-wrap:wrap;gap:6px;margin:11px 0 0;padding:0;list-style:none">
+                  <sc-for list="{{ oss }}" as="row" hint-placeholder-count="10">
+                    <li><a href="{{ row.href }}" target="_blank" rel="noreferrer" style="display:inline-flex;min-height:30px;align-items:center;border:1px solid var(--hair);border-radius:999px;background:var(--chip);color:var(--ink-soft);padding:6px 11px;font-size:10.5px;font-weight:640">{{ row.name }}</a></li>
+                  </sc-for>
+                </ul>
+              </section>
+            </div>
+            <section aria-label="Tools I Use" style="border:1px solid var(--hair);border-radius:14px;background:var(--glass);box-shadow:0 14px 34px rgba(12,32,58,0.10), 0 1px 0 rgba(255,255,255,0.45) inset;-webkit-backdrop-filter:blur(22px) saturate(150%);backdrop-filter:blur(22px) saturate(150%);padding:17px">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;color:var(--accent)">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"></path><path d="m6 8-4 4 4 4"></path><path d="m14.5 4-5 16"></path></svg>
+                <h3 style="margin:0;color:var(--ink);font-size:11.5px;font-weight:720">Tools I Use</h3>
+              </div>
+              <div style="display:grid;gap:13px">
+                <sc-for list="{{ toolGroups }}" as="g" hint-placeholder-count="5">
+                  <section aria-label="{{ g.label }}">
+                    <h4 style="margin:0;color:var(--ink-soft);font-size:10.5px;font-weight:700;letter-spacing:0.04em">{{ g.label }}</h4>
+                    <ul style="display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0;padding:0;list-style:none">
+                      <sc-for list="{{ g.tools }}" as="t" hint-placeholder-count="9">
+                        <li style="display:inline-flex;min-height:30px;align-items:center;gap:6px;border:1px solid var(--hair);border-radius:999px;background:var(--chip);color:var(--ink-soft);padding:5px 12px 5px 8px;font-size:10.5px;font-weight:620">
+                          <sc-if value="{{ t.icon }}" hint-placeholder-val="{{ true }}">
+                            <img src="{{ t.icon }}" alt="" aria-hidden="true" style="width:14px;height:14px;object-fit:contain;flex:0 0 14px">
+                          </sc-if>
+                          {{ t.name }}
+                        </li>
+                      </sc-for>
+                    </ul>
+                  </section>
+                </sc-for>
+              </div>
+            </section>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ win.isOss }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid;grid-template-columns:250px 1fr;gap:24px">
+            <div style="position:sticky;top:0;height:fit-content">
+              <p style="margin:0 0 10px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">Open Source</p>
+              <h2 style="margin:0;color:var(--ink);font-size:31px;font-weight:700;line-height:1.06;letter-spacing:-0.03em">Focused fixes, merged upstream.</h2>
+              <p style="margin:13px 0 0;color:var(--ink-soft);font-size:13.5px;line-height:1.55">Contributions across compiler behavior, generated types, cookies, storage errors, and developer tooling. Each item links to the merged PR.</p>
+            </div>
+            <div style="display:grid;gap:8px">
+              <sc-for list="{{ oss }}" as="row" hint-placeholder-count="10">
+                <a href="{{ row.href }}" target="_blank" rel="noreferrer" style="display:grid;grid-template-columns:150px 1fr 16px;align-items:center;gap:12px;min-height:52px;border:1px solid var(--hair);border-radius:12px;background:var(--glass);padding:11px 14px">
+                  <span style="color:var(--ink);font-size:12.5px;font-weight:660">{{ row.name }}</span>
+                  <p style="margin:0;color:var(--ink-soft);font-size:12px;line-height:1.4">{{ row.note }}</p>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--ink-faint)"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+                </a>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ win.isImages }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid;gap:18px">
+            <div>
+              <p style="margin:0 0 8px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">Photos</p>
+              <h2 style="margin:0;color:var(--ink);font-size:26px;font-weight:700;line-height:1.1;letter-spacing:-0.028em">A small visual archive.</h2>
+              <p style="margin:8px 0 0;color:var(--ink-soft);font-size:13.5px;line-height:1.55">Portraits, product captures, and personal photographs.</p>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(3, minmax(0,1fr));gap:12px">
+              <sc-for list="{{ gallery }}" as="g" hint-placeholder-count="6">
+                <figure style="{{ g.style }}">
+                  <img src="{{ g.src }}" alt="{{ g.title }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+                  <figcaption style="position:absolute;left:10px;right:10px;bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid rgba(255,255,255,0.22);border-radius:10px;background:rgba(10,22,40,0.56);color:#fff;padding:7px 10px;-webkit-backdrop-filter:blur(16px) saturate(160%);backdrop-filter:blur(16px) saturate(160%);font-size:11.5px">
+                    <span style="color:rgba(255,255,255,0.68);font-family:'Geist Mono',monospace;font-size:9.5px;letter-spacing:0.12em;text-transform:uppercase">{{ g.kind }}</span>
+                    <strong style="font-weight:620">{{ g.title }}</strong>
+                  </figcaption>
+                </figure>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ win.isSpotify }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:16px;min-height:100%">
+            <div style="position:relative;display:grid;place-items:center;aspect-ratio:1;overflow:hidden;border:1px solid var(--hair);border-radius:16px;background:linear-gradient(150deg,#4bef8e 0%,#1ed760 44%,#0f7f3c 100%);box-shadow:0 20px 44px rgba(14,110,56,0.28), 0 1px 0 rgba(255,255,255,0.4) inset">
+              <svg width="118" height="118" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="#0a2416" stroke-linecap="round"><path d="M6.5 8.9c3.65-1.08 8.08-.75 11.15.82" stroke-width="1.9"></path><path d="M7.15 12.05c3.18-.82 6.92-.52 9.65.7" stroke-width="1.7"></path><path d="M7.85 15.05c2.58-.6 5.53-.36 7.82.57" stroke-width="1.5"></path></g></svg>
+            </div>
+            <div>
+              <p style="margin:0 0 8px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">Music</p>
+              <h2 style="margin:0;color:var(--ink);font-size:25px;font-weight:700;line-height:1.1;letter-spacing:-0.028em">A quiet corner for music I return to while working.</h2>
+            </div>
+            <p style="margin:0;color:var(--ink-soft);font-size:13px;line-height:1.55">Spotify listening will appear here once it is connected.</p>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ win.isContact }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid;gap:14px">
+            <div>
+              <p style="margin:0 0 8px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">Contact</p>
+              <h2 style="margin:0;color:var(--ink);font-size:31px;font-weight:700;line-height:1.06;letter-spacing:-0.03em">Have something thoughtful to build or fix?</h2>
+              <p style="margin:12px 0 0;color:var(--ink-soft);font-size:13.5px;line-height:1.55">Email is the clearest way to reach me. GitHub and LinkedIn are here for more context.</p>
+            </div>
+            <a href="mailto:thribhuvan003@gmail.com" style="display:grid;grid-template-columns:20px 1fr 15px;align-items:center;gap:12px;border:1px solid var(--hair);border-radius:12px;background:var(--glass);padding:14px;color:var(--ink);font-size:13px;font-weight:560">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+              <span>thribhuvan003@gmail.com</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--ink-faint)"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+            </a>
+            <a href="https://github.com/thribhuvan003" target="_blank" rel="noreferrer" style="display:grid;grid-template-columns:20px 1fr 15px;align-items:center;gap:12px;border:1px solid var(--hair);border-radius:12px;background:var(--glass);padding:14px;color:var(--ink);font-size:13px;font-weight:560">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .8a11.2 11.2 0 0 0-3.54 21.82c.56.1.76-.24.76-.54v-2.1c-3.1.68-3.75-1.32-3.75-1.32-.5-1.28-1.24-1.62-1.24-1.62-1.02-.7.08-.69.08-.69 1.12.08 1.7 1.16 1.7 1.16 1 .1.55 2.62 3.16 1.86.1-.73.39-1.23.71-1.51-2.47-.28-5.06-1.24-5.06-5.5 0-1.22.43-2.21 1.15-2.99-.12-.28-.5-1.42.1-2.95 0 0 .95-.3 3.08 1.14a10.6 10.6 0 0 1 5.6 0c2.13-1.44 3.07-1.14 3.07-1.14.6 1.53.22 2.67.11 2.95.72.78 1.15 1.77 1.15 2.99 0 4.27-2.6 5.21-5.08 5.49.4.34.76 1.02.76 2.06v3.06c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"></path></svg>
+              <span>github.com/thribhuvan003</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--ink-faint)"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+            </a>
+            <a href="https://www.linkedin.com/in/thribhuvan003/" target="_blank" rel="noreferrer" style="display:grid;grid-template-columns:20px 1fr 15px;align-items:center;gap:12px;border:1px solid var(--hair);border-radius:12px;background:var(--glass);padding:14px;color:var(--ink);font-size:13px;font-weight:560">
+              <svg width="18" height="18" viewBox="0 0 24 24"><rect width="24" height="24" rx="5" fill="#0A66C2"></rect><path fill="#fff" d="M7.1 9.2H4.05V19H7.1V9.2ZM5.58 4.32a1.77 1.77 0 1 0 0 3.54 1.77 1.77 0 0 0 0-3.54ZM19.95 13.38c0-2.96-1.58-4.34-3.69-4.34-1.7 0-2.46.94-2.88 1.59V9.2h-3.05V19h3.05v-4.86c0-1.28.24-2.52 1.83-2.52 1.57 0 1.59 1.47 1.59 2.6V19h3.05l.1-5.62Z"></path></svg>
+              <span>linkedin.com/in/thribhuvan003</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--ink-faint)"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+            </a>
+          </div>
+        </sc-if>
+      </div>
+      <span role="separator" tabindex="0" aria-label="Resize" onPointerDown="{{ win.resizeStart }}" style="position:absolute;right:0;bottom:0;width:18px;height:18px;cursor:nwse-resize;touch-action:none"></span>
+    </section>
+  </div>
+  </sc-for>
+
+  <nav aria-label="Dock" style="position:fixed;z-index:6000;left:0;right:0;bottom:9px;display:flex;justify-content:center;pointer-events:none">
+    <div style="position:relative;display:flex;align-items:flex-end;gap:6px;padding:6px;border:1px solid var(--dock-line);border-radius:24px;background:var(--dock);box-shadow:0 24px 60px rgba(6,20,40,0.30), 0 6px 18px rgba(6,20,40,0.14), 0 1px 0 rgba(255,255,255,0.55) inset, 0 -1px 0 rgba(0,0,0,0.06) inset;-webkit-backdrop-filter:blur(34px) saturate(190%);backdrop-filter:blur(34px) saturate(190%);pointer-events:auto">
+      <sc-for list="{{ dock }}" as="item" hint-placeholder-count="8">
+        <span style="{{ item.wrapStyle }}">
+          <button type="button" aria-label="{{ item.aria }}" onClick="{{ item.activate }}" onMouseEnter="{{ item.enter }}" onMouseLeave="{{ item.leave }}" style="position:relative;display:grid;place-items:end center;width:56px;height:56px;border:0;background:transparent;padding:0">
+            <span style="{{ item.tooltipStyle }}">{{ item.label }}</span>
+            <span style="{{ item.iconStyle }}">
+              <sc-if value="{{ item.artwork }}" hint-placeholder-val="{{ true }}">
+                <img src="{{ item.artwork }}" alt="" aria-hidden="true" style="{{ item.artStyle }}">
+              </sc-if>
+              <sc-if value="{{ item.isGithub }}" hint-placeholder-val="{{ false }}">
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="#f4f7fb" style="position:relative;z-index:2"><path d="M12 .8a11.2 11.2 0 0 0-3.54 21.82c.56.1.76-.24.76-.54v-2.1c-3.1.68-3.75-1.32-3.75-1.32-.5-1.28-1.24-1.62-1.24-1.62-1.02-.7.08-.69.08-.69 1.12.08 1.7 1.16 1.7 1.16 1 .1.55 2.62 3.16 1.86.1-.73.39-1.23.71-1.51-2.47-.28-5.06-1.24-5.06-5.5 0-1.22.43-2.21 1.15-2.99-.12-.28-.5-1.42.1-2.95 0 0 .95-.3 3.08 1.14a10.6 10.6 0 0 1 5.6 0c2.13-1.44 3.07-1.14 3.07-1.14.6 1.53.22 2.67.11 2.95.72.78 1.15 1.77 1.15 2.99 0 4.27-2.6 5.21-5.08 5.49.4.34.76 1.02.76 2.06v3.06c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"></path></svg>
+              </sc-if>
+              <sc-if value="{{ item.isLinkedin }}" hint-placeholder-val="{{ false }}">
+                <svg width="46" height="46" viewBox="0 0 24 24" style="position:relative;z-index:2"><path fill="#fff" d="M7.1 9.2H4.05V19H7.1V9.2ZM5.58 4.32a1.77 1.77 0 1 0 0 3.54 1.77 1.77 0 0 0 0-3.54ZM19.95 13.38c0-2.96-1.58-4.34-3.69-4.34-1.7 0-2.46.94-2.88 1.59V9.2h-3.05V19h3.05v-4.86c0-1.28.24-2.52 1.83-2.52 1.57 0 1.59 1.47 1.59 2.6V19h3.05l.1-5.62Z"></path></svg>
+              </sc-if>
+              <sc-if value="{{ item.isSpotify }}" hint-placeholder-val="{{ false }}">
+                <svg width="46" height="46" viewBox="0 0 24 24" style="position:relative;z-index:2"><g fill="none" stroke="#0b2016" stroke-linecap="round"><path d="M6.5 8.9c3.65-1.08 8.08-.75 11.15.82" stroke-width="1.9"></path><path d="M7.15 12.05c3.18-.82 6.92-.52 9.65.7" stroke-width="1.7"></path><path d="M7.85 15.05c2.58-.6 5.53-.36 7.82.57" stroke-width="1.5"></path></g></svg>
+              </sc-if>
+              <sc-if value="{{ item.glyph }}" hint-placeholder-val="{{ false }}">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="{{ item.glyphStroke }}" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="position:relative;z-index:2;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.18))"><path d="{{ item.glyph }}"></path><path d="{{ item.glyph2 }}"></path></svg>
+              </sc-if>
+            </span>
+            <sc-if value="{{ item.active }}" hint-placeholder-val="{{ false }}">
+              <span aria-hidden="true" style="position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:999px;background:var(--ink-soft)"></span>
+            </sc-if>
+          </button>
+        </span>
+      </sc-for>
+    </div>
+  </nav>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Appearance&quot;}}">
+const L = {
+  github: "https://github.com/thribhuvan003",
+  linkedin: "https://www.linkedin.com/in/thribhuvan003/",
+  trayRepo: "https://github.com/thribhuvan003/trayy",
+  trayLive: "https://trayy.vercel.app",
+  unholdRepo: "https://github.com/thribhuvan003/unhold",
+  unholdLive: "https://unhold.live",
+  tabmindRepo: "https://github.com/thribhuvan003/tabmind",
+  aquaRepo: "https://github.com/thribhuvan003/AquaVision-Web",
+  aquaLive: "https://huggingface.co/spaces/mark2423432/AquaVision",
+};
+
+const SQUIRCLE = 13;
+
+const PHRASES = [
+  "Full-stack engineer. I build products end to end.",
+  "Ten small fixes merged upstream, into tools I actually use.",
+  "I read Vedanta — slowly, and mostly out of order.",
+  "Mozart is usually playing while I work.",
+];
+
+const APPS = [
+  { id: "about", label: "About Me", artwork: "assets/profile/thribhuvan.png", plate: "#e9dfd2" },
+  { id: "resume", label: "Work & Skills", artwork: "assets/icons/work-skills.png" },
+  { id: "work", label: "Workspace", artwork: "assets/icons/workspace.png" },
+  { id: "oss", label: "Open Source", plate: "linear-gradient(160deg,#5b6470 0%,#333c48 48%,#171d26 100%)", glyph: "m18 16 4-4-4-4", glyph2: "m6 8-4 4 4 4" },
+  { id: "images", label: "Photos", artwork: "assets/icons/photos.png" },
+  { id: "github", label: "GitHub", plate: "linear-gradient(160deg,#4c545e 0%,#24292f 52%,#0d1117 100%)" },
+  { id: "linkedin", label: "LinkedIn", plate: "linear-gradient(160deg,#3d9ae0 0%,#0a66c2 54%,#054a92 100%)", external: L.linkedin },
+  { id: "resumepdf", label: "Résumé", plate: "linear-gradient(160deg,#fdfdfd 0%,#e8ebef 52%,#c8cfd8 100%)", glyph: "M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z", glyph2: "M14 2v5h6M8 13h8M8 17h5", stroke: "#4a5560" },
+  { id: "spotify", label: "Spotify", plate: "linear-gradient(160deg,#4bef8e 0%,#1ed760 46%,#12a147 100%)" },
+];
+
+const GEOM = {
+  about:   { w: 800, h: 520, x: 150, y: 110, label: "About Me" },
+  work:    { w: 980, h: 640, x: 130, y: 84,  label: "Workspace" },
+  oss:     { w: 780, h: 560, x: 300, y: 108, label: "Open Source" },
+  images:  { w: 960, h: 620, x: 180, y: 92,  label: "Photos" },
+  spotify: { w: 460, h: 580, x: 900, y: 110, label: "Spotify" },
+  resume:  { w: 820, h: 610, x: 260, y: 96,  label: "Work & Skills" },
+  contact: { w: 600, h: 430, x: 420, y: 150, label: "Contact" },
+  resumepdf: { w: 620, h: 520, x: 400, y: 120, label: "Résumé" },
+};
+
+const OSS = [
+  { name: "Svelte", slug: "svelte", what: "UI framework that compiles components at build time", note: "compiler fix for keyed computed destructuring keys", href: "https://github.com/sveltejs/svelte/pull/18521" },
+  { name: "Prisma", slug: "prisma", what: "Type-safe ORM for Node and TypeScript", note: "Bytes values and Node Buffer pool behavior", href: "https://github.com/prisma/prisma/pull/29701" },
+  { name: "SvelteKit", slug: "svelte", what: "Application framework built on Svelte", note: "destructured route exports during type generation", href: "https://github.com/sveltejs/kit/pull/16329" },
+  { name: "Supabase JS", slug: "supabase", what: "Client library for the Supabase platform", note: "Storage service error code exposure", href: "https://github.com/supabase/supabase-js/pull/2537" },
+  { name: "Supabase SSR", slug: "supabase", what: "Server-side auth helpers for Supabase", note: "domain-scoped cookie deletion during sign out", href: "https://github.com/supabase/ssr/pull/258" },
+  { name: "SolidJS", slug: "solid", what: "Reactive UI library with fine-grained updates", note: "emitted storage types at the advertised path", href: "https://github.com/solidjs/solid/pull/2875" },
+  { name: "Nitro", slug: "nuxt", what: "Server toolkit that powers Nuxt", note: "SameSite=Lax for Vercel skew-protection cookies", href: "https://github.com/nitrojs/nitro/pull/4422" },
+  { name: "Refined GitHub", slug: "github", what: "Browser extension that improves the GitHub UI", note: "capitalized conventional commit type support", href: "https://github.com/refined-github/refined-github/pull/9777" },
+  { name: "react-jsonschema-form", slug: "react", what: "Builds React forms from a JSON Schema", note: "preserve empty-string titles in oneOf / anyOf", href: "https://github.com/rjsf-team/react-jsonschema-form/pull/5150" },
+  { name: "Music Blocks", slug: null, what: "Visual programming environment for learning music", note: "Turtle Blocks import fixes", href: "https://github.com/sugarlabs/musicblocks/pull/7727" },
+];
+
+const PROJECTS = [
+  { name: "Tray", summary: "Multi-tenant food-ordering SaaS for stalls, tiffin centres, and campus messes.", detail: "Postgres RLS, Razorpay UPI, token-counter workflows, and realtime kitchen boards.", image: "assets/shots/tray-1.png", live: L.trayLive, repo: L.trayRepo },
+  { name: "Unhold", summary: "AI-assisted workspace for Indian bank-account and UPI freeze cases.", detail: "Document drafting and OCR verification within a review-first workflow.", image: "assets/shots/unhold-1.png", live: L.unholdLive, repo: L.unholdRepo },
+  { name: "TabMind", summary: "Local-first Chrome extension that turns browsing sessions into summaries and tasks.", detail: "Built around local storage, session recovery, and a calmer way to resume research.", image: null, live: null, repo: L.tabmindRepo },
+  { name: "AquaVision", summary: "CPU-only underwater image restoration with reproducible comparisons.", detail: "Combines classical computer vision with lightweight model routing.", image: "assets/shots/aqua-grid.png", live: L.aquaLive, repo: L.aquaRepo },
+];
+
+const ICON = (slug) => "https://cdn.simpleicons.org/" + slug;
+
+const TOOL_GROUPS = [
+  { label: "Frontend", tools: [
+    ["TypeScript", "typescript"], ["React", "react"], ["Next.js", "nextdotjs"], ["Tailwind CSS", "tailwindcss"], ["Framer Motion", "framer"],
+  ] },
+  { label: "Backend & database", tools: [
+    ["Node.js", "nodedotjs"], ["Postgres", "postgresql"], ["Supabase", "supabase"], ["Redis", "redis"], ["Zod", "zod"],
+  ] },
+  { label: "Infrastructure & services", tools: [
+    ["Razorpay", "razorpay"], ["Resend", "resend"], ["Sentry", "sentry"], ["GitHub", "github"],
+  ] },
+  { label: "AI & browser", tools: [
+    ["Gemini", "googlegemini"], ["Chrome Extensions", "googlechrome"],
+  ] },
+  { label: "Python & vision", tools: [
+    ["Python", "python"], ["Flask", "flask"], ["PyTorch", "pytorch"], ["OpenCV", "opencv"], ["NumPy", "numpy"],
+  ] },
+  { label: "Testing", tools: [
+    ["Vitest", "vitest"], ["Playwright", "playwright"],
+  ] },
+];
+
+const LEARNING = [
+  { title: "Postgres row-level security, properly", note: "Tray runs multi-tenant on RLS, so I keep going back to the policy model rather than working around it.", slug: "postgresql" },
+  { title: "Computer vision without a GPU", note: "AquaVision is CPU-only on purpose. Getting usable results under that constraint is the interesting part.", slug: "pytorch" },
+  { title: "Reading compilers", note: "The Svelte and SvelteKit fixes came from this. Slow going, but it is the fastest way to stop guessing.", slug: "svelte" },
+];
+
+const GALLERY = [
+  { src: "assets/profile/thribhuvan.png", title: "Portrait", kind: "Profile", featured: true },
+  { src: "assets/profile/thribhuvan-cutout.png", title: "Studio Cutout", kind: "Profile" },
+  { src: "assets/shots/tray-1.png", title: "Tray", kind: "Project" },
+  { src: "assets/shots/unhold-1.png", title: "Unhold", kind: "Project" },
+  { src: "assets/shots/aqua-before.jpg", title: "AquaVision Before", kind: "Project" },
+  { src: "assets/shots/aqua-after.jpg", title: "AquaVision After", kind: "Project" },
+];
+
+const FOLDERS = [
+  { id: "about", label: "About Me", note: "Profile and current focus" },
+  { id: "projects", label: "Projects", note: "Tray, Unhold, TabMind & AquaVision" },
+  { id: "experience", label: "Work & Skills", note: "Projects, tools & open source" },
+  { id: "open-source", label: "Open Source", note: "Merged upstream contributions" },
+];
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const w = {};
+    Object.keys(GEOM).forEach((id, i) => { w[id] = { ...GEOM[id], open: false, minimized: false, maximized: false, z: 10 + i }; });
+    this.state = { theme: (props && props.theme) || "light", windows: w, hovered: null, folder: null, zTop: 30, typed: "" };
+    this._phrase = 0;
+    this._char = 0;
+    this._erasing = false;
+  }
+
+  componentDidMount() {
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      this.setState({ typed: PHRASES[0] });
+      return;
+    }
+    this._timer = window.setTimeout(() => this.type(), 5400);
+  }
+
+  componentWillUnmount() { window.clearTimeout(this._timer); }
+
+  type() {
+    const full = PHRASES[this._phrase];
+    const ch = full.charAt(Math.max(this._char - 1, 0));
+    let wait = 72 + (Math.random() * 26);
+    if (!this._erasing) {
+      this._char += 1;
+      if (".,—".indexOf(ch) > -1) wait = 300;
+      if (ch === " ") wait = 105;
+      if (this._char >= full.length) { this._erasing = true; wait = 4600; }
+    } else {
+      this._char -= 1;
+      wait = 32;
+      if (this._char <= 0) {
+        this._erasing = false;
+        this._phrase = (this._phrase + 1) % PHRASES.length;
+        wait = 900;
+      }
+    }
+    this.setState({ typed: full.slice(0, Math.max(this._char, 0)) });
+    this._timer = window.setTimeout(() => this.type(), wait);
+  }
+
+  componentDidUpdate(prev) {
+    if (prev.theme !== this.props.theme && this.props.theme) this.setState({ theme: this.props.theme });
+  }
+
+  focus(id) {
+    this.setState((s) => { const z = s.zTop + 1; return { zTop: z, windows: { ...s.windows, [id]: { ...s.windows[id], z, minimized: false } } }; });
+  }
+
+  open(app) {
+    if (app.external) { window.open(app.external, "_blank", "noopener,noreferrer"); return; }
+    this.setState((s) => { const z = s.zTop + 1; return { zTop: z, windows: { ...s.windows, [app.id]: { ...s.windows[app.id], open: true, minimized: false, z } } }; });
+  }
+
+  patch(id, next) { this.setState((s) => ({ windows: { ...s.windows, [id]: { ...s.windows[id], ...next } } })); }
+
+  drag(id, event, mode) {
+    if (mode === "move" && event.target.closest("button, a")) return;
+    const w = this.state.windows[id];
+    if (w.maximized) return;
+    if (mode === "resize") event.stopPropagation();
+    this.focus(id);
+    const sx = event.clientX, sy = event.clientY, ox = w.x, oy = w.y, ow = w.w, oh = w.h;
+    const H = () => ({ w: window.innerWidth, h: Math.max(window.innerHeight, 860) });
+    const move = (e) => {
+      const host = H();
+      if (mode === "move") {
+        this.patch(id, { x: Math.max(8, Math.min(ox + e.clientX - sx, host.w - ow - 8)), y: Math.max(30, Math.min(oy + e.clientY - sy, host.h - oh - 84)) });
+      } else {
+        this.patch(id, { w: Math.max(420, Math.min(ow + e.clientX - sx, host.w - ox - 8)), h: Math.max(340, Math.min(oh + e.clientY - sy, host.h - oy - 84)) });
+      }
+    };
+    const up = () => { window.removeEventListener("pointermove", move); window.removeEventListener("pointerup", up); };
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", up);
+  }
+
+  renderVals() {
+    const s = this.state;
+    const dark = s.theme === "dark";
+
+    const wallpaper = {
+      position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none",
+      background: dark
+        ? "radial-gradient(112% 86% at 50% -14%, #1f4671 0%, #143459 36%, #0a2040 66%, #050e1c 100%)"
+        : "radial-gradient(108% 84% at 50% -16%, #fffefc 0%, #f7f4ef 40%, #ece7de 100%)",
+      transition: "background 500ms ease",
+    };
+    const wallpaperWave = {
+      position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none",
+      background: dark
+        ? "radial-gradient(64% 40% at 50% 116%, rgba(3,10,20,0.66), transparent 74%)"
+        : "radial-gradient(64% 40% at 50% 116%, rgba(150,136,116,0.32), transparent 74%)",
+      transition: "background 500ms ease",
+    };
+
+    const modes = [
+      { key: "light", label: "Light", aria: "Light appearance" },
+      { key: "dark", label: "Dark", aria: "Dark appearance" },
+    ].map((m) => ({
+      isLight: m.key === "light", isDark: m.key === "dark", aria: m.aria,
+      select: () => this.setState({ theme: m.key }),
+      style: {
+        display: "grid", placeItems: "center", width: 34, height: 34, border: 0, borderRadius: 999,
+        background: s.theme === m.key ? "var(--accent-soft)" : "transparent",
+        color: s.theme === m.key ? "var(--accent)" : "var(--ink-faint)",
+        transition: "background 180ms ease, color 180ms ease",
+      },
+    }));
+
+    const windows = Object.keys(s.windows).map((id) => ({ id, ...s.windows[id] })).filter((w) => w.open)
+      .sort((a, b) => a.z - b.z).map((w) => {
+        const launcher = w.id === "work" && s.folder === null && !w.maximized;
+        const lw = 424, lh = 412;
+        const vw = typeof window !== "undefined" ? window.innerWidth : 1440;
+        const vh = typeof window !== "undefined" ? Math.max(window.innerHeight, 420) : 900;
+        return {
+        id: w.id, label: w.label,
+        frame: {
+          position: "absolute", zIndex: w.z,
+          left: w.maximized ? 8 : (launcher ? Math.round((vw - lw) / 2) : w.x),
+          top: w.maximized ? 32 : (launcher ? Math.round((vh - lh) / 2) - 26 : w.y),
+          width: w.maximized ? "calc(100% - 16px)" : (launcher ? lw : w.w),
+          height: w.maximized ? "calc(100% - 112px)" : (launcher ? lh : w.h),
+          opacity: w.minimized ? 0 : 1,
+          transform: w.minimized ? "translateY(280px) scale(0.8)" : "none",
+          pointerEvents: w.minimized ? "none" : "auto",
+          transition: "opacity 220ms ease, transform 260ms cubic-bezier(0.22,1,0.36,1), width 320ms cubic-bezier(0.22,1,0.36,1), height 320ms cubic-bezier(0.22,1,0.36,1), left 320ms cubic-bezier(0.22,1,0.36,1), top 320ms cubic-bezier(0.22,1,0.36,1)",
+        },
+        shellStyle: launcher ? {
+          position: "relative", display: "flex", flexDirection: "column", gap: 24,
+          width: "100%", height: "100%", minWidth: 0, overflow: "hidden", isolation: "isolate",
+          borderRadius: 32, padding: 24,
+          border: "1px solid " + (dark ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.62)"),
+          background: dark ? "rgba(44,44,46,0.85)" : "rgba(250,250,252,0.82)",
+          boxShadow: dark ? "rgba(0,0,0,0.6) 0px 25px 60px" : "rgba(24,40,64,0.24) 0px 25px 60px",
+          WebkitBackdropFilter: "blur(40px) saturate(1.8)", backdropFilter: "blur(40px) saturate(1.8)",
+        } : {
+          position: "relative", display: "flex", flexDirection: "column",
+          width: "100%", height: "100%", minWidth: 0, overflow: "hidden", isolation: "isolate",
+          border: "0.5px solid var(--glass-line)", borderRadius: 10,
+          background: "var(--glass-2)", boxShadow: "var(--shadow)",
+          WebkitBackdropFilter: "blur(40px) saturate(160%)", backdropFilter: "blur(40px) saturate(160%)",
+        },
+        barStyle: launcher ? {
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+          flex: "0 0 auto", userSelect: "none", touchAction: "none", zIndex: 10,
+        } : {
+          flex: "0 0 44px", height: 44, display: "grid", gridTemplateColumns: "80px 1fr 44px",
+          alignItems: "center", gap: 8, padding: "0 13px", userSelect: "none", touchAction: "none",
+          borderRadius: "9.5px 9.5px 0 0", borderBottom: "0.5px solid var(--hair)",
+          background: "var(--titlebar)", boxShadow: "0 0.5px 0 rgba(255,255,255,0.2) inset",
+        },
+        titleStyle: launcher ? {
+          fontFamily: "-apple-system,BlinkMacSystemFont,'Geist',sans-serif",
+          fontSize: 13, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase",
+          color: dark ? "rgba(255,255,255,0.6)" : "rgba(20,32,50,0.52)",
+        } : {
+          justifySelf: "center", fontFamily: "-apple-system,BlinkMacSystemFont,'Geist',sans-serif",
+          color: "var(--ink-soft)", fontSize: 13, fontWeight: 600, letterSpacing: "-0.01em",
+        },
+        bodyStyle: launcher ? {
+          position: "relative", flex: 1, minHeight: 0, overflow: "hidden", padding: 0,
+          background: "transparent", zIndex: 10,
+        } : {
+          position: "relative", flex: 1, minHeight: 0, overflow: "auto",
+          padding: w.id === "work" ? 0 : 26,
+          background: "var(--sheet)", scrollbarWidth: "thin",
+        },
+        isAbout: w.id === "about", isWorkspace: w.id === "work", isResume: w.id === "resume",
+        isOss: w.id === "oss", isImages: w.id === "images", isSpotify: w.id === "spotify",
+        isContact: w.id === "contact" || w.id === "resumepdf",
+        focus: () => this.focus(w.id),
+        close: () => this.patch(w.id, { open: false, minimized: false, maximized: false }),
+        minimize: () => this.patch(w.id, { minimized: !w.minimized }),
+        zoom: () => { this.focus(w.id); this.patch(w.id, { maximized: !w.maximized }); },
+        dragStart: (e) => this.drag(w.id, e, "move"),
+        resizeStart: (e) => this.drag(w.id, e, "resize"),
+      };
+      });
+
+    const dock = APPS.map((app, i) => {
+      const st = s.windows[app.id];
+      const d = s.hovered === null ? 4 : Math.abs(s.hovered - i);
+      const lift = d === 0 ? -16 : d === 1 ? -7 : d === 2 ? -2 : 0;
+      const scale = d === 0 ? 1.42 : d === 1 ? 1.2 : d === 2 ? 1.06 : 1;
+      const hovering = s.hovered === i;
+      return {
+        label: app.label,
+        aria: app.external ? "Open " + app.label + " in a new tab" : (st && st.minimized ? "Restore " : st && st.open ? "Focus " : "Open ") + app.label,
+        active: !!(st && st.open && !app.external),
+        artwork: app.artwork || null,
+        glyph: app.glyph || null, glyph2: app.glyph2 || "", glyphStroke: app.stroke || "#ffffff",
+        isGithub: app.id === "github", isLinkedin: app.id === "linkedin", isSpotify: app.id === "spotify",
+        wrapStyle: {
+          display: "inline-block", transformOrigin: "50% 100%",
+          transform: "translateY(" + lift + "px) scale(" + scale + ")",
+          marginInline: ((scale - 1) * 26).toFixed(2) + "px",
+          transition: "transform 260ms cubic-bezier(0.22,1,0.36,1), margin-inline 260ms cubic-bezier(0.22,1,0.36,1)",
+        },
+        iconStyle: {
+          position: "relative", display: "grid", placeItems: "center", isolation: "isolate",
+          width: 52, height: 52, overflow: "hidden", borderRadius: SQUIRCLE,
+          background: app.artwork ? (app.plate || "#f7f9fc") : app.plate,
+          boxShadow: "0 8px 16px rgba(6,20,40,0.22), 0 1px 3px rgba(6,20,40,0.14), 0 1px 0 rgba(255,255,255,0.45) inset, 0 -1px 0 rgba(0,0,0,0.18) inset",
+        },
+        artStyle: { position: "absolute", inset: 0, zIndex: 2, width: "100%", height: "100%", objectFit: "cover", objectPosition: app.id === "about" ? "50% 28%" : "center", transform: app.id === "work" ? "scale(1)" : "scale(1.18)", pointerEvents: "none" },
+        tooltipStyle: {
+          position: "absolute", bottom: "calc(100% + 14px)", left: "50%", zIndex: 3,
+          transform: "translateX(-50%) scale(" + (hovering ? 1 : 0.9) + ")", transformOrigin: "bottom",
+          opacity: hovering ? 1 : 0, pointerEvents: "none", whiteSpace: "nowrap",
+          border: "1px solid var(--glass-line)", borderRadius: 8, background: "var(--glass-2)",
+          boxShadow: "0 10px 26px rgba(6,20,40,0.24)", color: "var(--ink)", padding: "5px 10px",
+          fontSize: 11.5, fontWeight: 600, letterSpacing: "-0.005em",
+          WebkitBackdropFilter: "blur(24px) saturate(180%)", backdropFilter: "blur(24px) saturate(180%)",
+          transition: "opacity 160ms ease, transform 160ms ease",
+        },
+        activate: () => this.open(app),
+        enter: () => this.setState({ hovered: i }),
+        leave: () => this.setState({ hovered: null }),
+      };
+    });
+
+    const folders = FOLDERS.map((f) => {
+      const active = s.folder === f.id;
+      return {
+        label: f.label, note: f.note,
+        iconColor: active ? (dark ? "#9ecdf7" : "#0a68c9") : (dark ? "rgba(158,205,247,0.72)" : "rgba(10,104,201,0.7)"),
+        select: () => this.setState({ folder: f.id }),
+        rowStyle: {
+          display: "grid", gridTemplateColumns: "15px minmax(0,1fr)", alignItems: "center", gap: 8, minHeight: 28,
+          border: 0, borderRadius: 6,
+          background: active ? (dark ? "rgba(158,205,247,0.16)" : "rgba(10,104,201,0.12)") : "transparent",
+          color: "var(--ink)", padding: "4px 8px", textAlign: "left", cursor: "default", transition: "background 140ms ease",
+        },
+        tileStyle: {
+          display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+          gap: 8, border: 0, borderRadius: 12, background: "transparent",
+          padding: "6px 4px", cursor: "pointer", userSelect: "none",
+        },
+        tileLabelStyle: {
+          marginTop: 2, maxWidth: 132, textAlign: "center", fontSize: 13, fontWeight: 600,
+          letterSpacing: "-0.005em", textWrap: "balance",
+          color: dark ? "rgba(255,255,255,0.85)" : "rgba(18,30,48,0.86)",
+        },
+      };
+    });
+
+    const FOLDER_META = {
+      about: { title: "About Me", count: "1 item" },
+      projects: { title: "Projects", count: PROJECTS.length + " items" },
+      experience: { title: "Work & Skills", count: "1 item" },
+      "open-source": { title: "Open Source", count: OSS.length + " items" },
+    };
+    const atRoot = s.folder === null;
+    const meta = atRoot ? { title: "Workspace", count: FOLDERS.length + " items" } : (FOLDER_META[s.folder] || FOLDER_META.projects);
+
+    const finderViews = [
+      { d1: "M3 4h7v7H3z", d2: "M14 4h7v7h-7zM3 15h7v5H3zM14 15h7v5h-7z" },
+      { d1: "M8 6h13M8 12h13M8 18h13", d2: "M3 6h.01M3 12h.01M3 18h.01" },
+      { d1: "M4 4v16M12 4v16", d2: "M20 4v16" },
+      { d1: "M6 8h12v9H6z", d2: "M3 19h18" },
+    ].map((v, i) => ({
+      ...v,
+      style: {
+        display: "grid", placeItems: "center", width: 26, height: 21, borderRadius: 5,
+        background: i === 0 ? (dark ? "rgba(190,220,250,0.16)" : "rgba(255,255,255,0.85)") : "transparent",
+        boxShadow: i === 0 ? "0 1px 2px rgba(10,30,56,0.14)" : "none",
+        color: i === 0 ? "var(--ink)" : "var(--ink-faint)",
+      },
+    }));
+
+    return {
+      theme: s.theme, isDark: dark, isLight: !dark, wallpaper, wallpaperWave, modes, typed: s.typed,
+      windows, dock, folders, finderViews, atRoot, notRoot: !atRoot,
+      splitStyle: {
+        display: "grid",
+        gridTemplateColumns: atRoot ? "minmax(0,1fr)" : "194px minmax(0,1fr)",
+        flex: 1, minHeight: 0,
+      },
+      contentStyle: {
+        minWidth: 0, overflow: "auto", background: "var(--sheet)",
+        padding: atRoot ? "34px 30px" : "20px",
+        display: atRoot ? "grid" : "block",
+        alignContent: atRoot ? "center" : "start",
+        justifyContent: atRoot ? "center" : "stretch",
+      },
+      folderTitle: meta.title, folderCount: meta.count,
+      goRoot: () => this.setState({ folder: null }),
+      backStyle: {
+        display: "grid", placeItems: "center", width: 26, height: 24, border: 0, borderRadius: 6,
+        background: "transparent", color: atRoot ? "var(--ink-faint)" : "var(--ink)",
+        opacity: atRoot ? 0.4 : 1, cursor: "default",
+      },
+      toggleTheme: () => this.setState({ theme: dark ? "light" : "dark" }),
+      folderIsProjects: s.folder === "projects",
+      folderIsAbout: s.folder === "about",
+      folderIsOss: s.folder === "open-source",
+      folderIsExperience: s.folder === "experience",
+      oss: OSS.map((o) => ({ ...o, icon: o.slug ? ICON(o.slug) : null })),
+      learning: LEARNING.map((l) => ({ ...l, icon: l.slug ? ICON(l.slug) : null })),
+      toolGroups: TOOL_GROUPS.map((g) => ({
+        label: g.label,
+        tools: g.tools.map(([name, slug]) => ({ name, icon: slug ? ICON(slug) : null })),
+      })),
+      projects: PROJECTS.map((p, i) => ({ ...p, rowStyle: { display: "grid", gridTemplateColumns: "minmax(0,1fr) auto", alignItems: "center", gap: 12, borderTop: i === 0 ? "0" : "1px solid var(--hair)", padding: i === 0 ? "8px 0 11px" : "11px 0" } })),
+      gallery: GALLERY.map((g) => ({ ...g, style: { position: "relative", minHeight: g.featured ? 330 : 160, overflow: "hidden", margin: 0, gridColumn: g.featured ? "span 2" : "auto", gridRow: g.featured ? "span 2" : "auto", border: "1px solid var(--hair)", borderRadius: 12, background: "var(--chip)" } })),
+    };
+  }
+}
+
+</script>
+</body>
+</html>
