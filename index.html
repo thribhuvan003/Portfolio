@@ -26,9 +26,9 @@
   a:hover { color:var(--accent); }
   [data-os-theme="light"] {
     --ink:#10233d; --ink-soft:rgba(16,35,61,0.60); --ink-faint:rgba(16,35,61,0.38); --wordmark:#5b544c; --wm-glow:rgba(140,128,110,0.55);
-    --hair:rgba(16,35,61,0.10); --glass:rgba(255,255,255,0.50); --glass-2:rgba(255,255,255,0.30);
-    --glass-line:rgba(255,255,255,0.72); --titlebar:rgba(246,246,244,0.68); --pane:rgba(255,255,255,0.20);
-    --sheet:rgba(252,252,251,0.90); --chip:rgba(255,255,255,0.58); --accent:#0a68c9; --accent-soft:rgba(10,104,201,0.12);
+    --hair:rgba(16,35,61,0.10); --glass:rgba(255,255,255,0.52); --glass-2:rgba(255,255,255,0.46);
+    --glass-line:rgba(255,255,255,0.72); --titlebar:rgba(246,246,244,0.55); --pane:rgba(255,255,255,0.42);
+    --sheet:rgba(252,252,251,0.52); --chip:rgba(255,255,255,0.60); --btn-face:rgba(255,255,255,0.92); --btn-face-hover:#ffffff; --btn-line:rgba(16,35,61,0.16); --accent:#0a68c9; --accent-soft:rgba(10,104,201,0.12);
     --shadow:0 34px 88px rgba(18,45,80,0.18), 0 12px 30px rgba(18,45,80,0.10), 0 1px 0 rgba(255,255,255,0.95) inset, 0 0 0 1px rgba(18,45,80,0.05) inset;
     --dock:rgba(255,255,255,0.42); --dock-line:rgba(255,255,255,0.75);
     --menubar:rgba(255,255,255,0.34); --menubar-ink:rgba(14,30,52,0.86);
@@ -37,9 +37,9 @@
   }
   [data-os-theme="dark"] {
     --ink:#eaf2fd; --ink-soft:rgba(226,238,252,0.62); --ink-faint:rgba(226,238,252,0.38); --wordmark:#dbe6f4; --wm-glow:rgba(150,200,250,0.6);
-    --hair:rgba(175,210,246,0.16); --glass:rgba(34,64,104,0.46); --glass-2:rgba(20,42,72,0.34);
-    --glass-line:rgba(190,220,250,0.20); --titlebar:rgba(33,58,92,0.70); --pane:rgba(14,32,56,0.30);
-    --sheet:rgba(16,32,54,0.90); --chip:rgba(170,208,248,0.16); --accent:#6fb7f5; --accent-soft:rgba(111,183,245,0.16);
+    --hair:rgba(175,210,246,0.16); --glass:rgba(34,64,104,0.52); --glass-2:rgba(20,42,72,0.46);
+    --glass-line:rgba(190,220,250,0.20); --titlebar:rgba(33,58,92,0.55); --pane:rgba(14,32,56,0.42);
+    --sheet:rgba(16,32,54,0.52); --chip:rgba(170,208,248,0.18); --btn-face:rgba(72,96,132,0.55); --btn-face-hover:rgba(88,116,156,0.72); --btn-line:rgba(190,220,250,0.26); --accent:#6fb7f5; --accent-soft:rgba(111,183,245,0.16);
     --shadow:0 34px 88px rgba(1,6,14,0.60), 0 12px 30px rgba(1,6,14,0.38), 0 1px 0 rgba(190,220,250,0.14) inset, 0 0 0 1px rgba(0,0,0,0.30) inset;
     --dock:rgba(22,45,76,0.46); --dock-line:rgba(190,220,250,0.18);
     --menubar:rgba(8,20,38,0.40); --menubar-ink:rgba(233,242,253,0.88);
@@ -67,7 +67,7 @@
 
   /* —— Responsive OS shell (Miller-style) —— */
   .os-root { --dock-h: 76px; --safe-t: env(safe-area-inset-top, 0px); --safe-b: env(safe-area-inset-bottom, 0px); --safe-l: env(safe-area-inset-left, 0px); --safe-r: env(safe-area-inset-right, 0px); }
-  .os-hero { padding: clamp(30px, 5vh, 60px) clamp(20px, 5vw, 132px) clamp(300px, 46vh, 470px); }
+  .os-hero { padding: clamp(24px, 4vh, 48px) clamp(20px, 5vw, 132px) clamp(360px, 56vh, 560px); }
   .os-hero-title { font-size: min(19cqw, 30vh, 258px); }
   /* Subtle dot grid over the wallpaper */
   .os-dotgrid {
@@ -88,24 +88,62 @@
     left: 50%;
     bottom: 0;
     z-index: 3;
-    height: min(52vh, 500px);
-    max-width: 78vw;
+    height: min(58vh, 540px);
+    width: min(58vh, 540px);
+    max-width: 84vw;
     transform: translateX(-50%);
+    pointer-events: none;
+    /* Painted reveal: a soft-edged mask wipes upward, so the portrait appears to be
+       brushed onto the desktop from the bottom up. */
+    /* Mask box is 2x the element. Its lower half is opaque, so mask-position 100%
+       (mask bottom aligned to element bottom) shows the portrait, and 0% hides it.
+       Animating 0% -> 100% wipes the paint upward. */
+    -webkit-mask-image: linear-gradient(to top, #000 0%, #000 50%, rgba(0,0,0,0.45) 56%, rgba(0,0,0,0.12) 60%, transparent 66%);
+    mask-image: linear-gradient(to top, #000 0%, #000 50%, rgba(0,0,0,0.45) 56%, rgba(0,0,0,0.12) 60%, transparent 66%);
+    -webkit-mask-size: 100% 200%;
+    mask-size: 100% 200%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    animation: subject-paint 2.2s cubic-bezier(0.33, 0.02, 0.18, 1) 0.6s both;
+  }
+  @keyframes subject-paint {
+    from { -webkit-mask-position: 0 0%; mask-position: 0 0%; }
+    to   { -webkit-mask-position: 0 100%; mask-position: 0 100%; }
+  }
+  /* Second, static mask on the image itself feathers the painted square into the
+     desktop. Kept on a separate element because mask-composite is unreliable here. */
+  .os-hero-subject img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
     object-fit: contain;
     object-position: bottom center;
-    pointer-events: none;
-    filter: drop-shadow(0 26px 46px rgba(40, 30, 18, 0.22));
-    animation: subject-rise 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.9s both;
+    -webkit-mask-image: radial-gradient(ellipse 60% 66% at 50% 58%, #000 52%, rgba(0,0,0,0.72) 70%, rgba(0,0,0,0.22) 86%, transparent 100%);
+    mask-image: radial-gradient(ellipse 60% 66% at 50% 58%, #000 52%, rgba(0,0,0,0.72) 70%, rgba(0,0,0,0.22) 86%, transparent 100%);
+    /* Four painted studies of the same portrait dissolve into one another —
+       sketch, watercolour, oil, vector. 4 x 7s, with a 1.6s cross-fade. */
+    opacity: 0;
+    animation: portrait-dissolve 28s ease-in-out infinite;
+    animation-delay: calc(var(--i) * 7s);
   }
-  @keyframes subject-rise {
-    from { opacity: 0; transform: translateX(-50%) translateY(38px); }
-    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  @keyframes portrait-dissolve {
+    0%     { opacity: 0; }
+    2%     { opacity: 1; }
+    23%    { opacity: 1; }
+    27%    { opacity: 0; }
+    100%   { opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .os-hero-subject img { animation: none; opacity: 0; }
+    .os-hero-subject img:first-child { opacity: 1; }
   }
   /* max-width is the binding constraint at these sizes — keep it wide enough that
      object-fit:contain does not letterbox the subject into a smaller box than declared. */
   @media (max-width: 1023px) { .os-hero-subject { left: 50%; height: min(46vh, 420px); max-width: 94vw; } }
   @media (prefers-reduced-motion: reduce) {
-    .os-hero-subject { animation: none; opacity: 1; transform: translateX(-50%); }
+    .os-hero-subject { animation: none; opacity: 1; transform: translateX(-50%); -webkit-mask-image: none; mask-image: none; }
   }
   /* Chrome sits UNDER windows so traffic lights stay clickable (was z:5000 — blocked close) */
   .os-chrome-theme {
@@ -117,7 +155,7 @@
   .os-chrome-spotify {
     right: max(12px, var(--safe-r));
     top: max(12px, var(--safe-t));
-    width: 224px;
+    width: 196px;
     z-index: 40;
     transition: opacity 160ms ease;
   }
@@ -280,7 +318,8 @@
   .os-cv-contact a { color: var(--accent); font-weight: 560; }
   .os-cv-actions { display: flex; gap: 8px; flex-wrap: wrap; }
   .os-btn-ghost, .os-btn-solid { display: inline-flex; align-items: center; gap: 7px; min-height: 34px; border-radius: 999px; padding: 8px 14px; font-size: 12px; font-weight: 640; white-space: nowrap; }
-  .os-btn-ghost { border: 1px solid var(--hair); background: var(--chip); color: var(--ink); }
+  .os-btn-ghost { border: 1px solid var(--btn-line); background: var(--btn-face); color: var(--ink); box-shadow: 0 1px 2px rgba(12,28,50,0.06); }
+  .os-btn-ghost:hover { background: var(--btn-face-hover); }
   .os-btn-solid { border: 1px solid transparent; background: var(--accent); color: #fff; }
   .os-cv-sec { display: grid; gap: 11px; }
   .os-cv-h { margin: 0; color: var(--ink-faint); font-family: 'Geist Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
@@ -298,6 +337,33 @@
   .os-cv-skillrow { display: grid; grid-template-columns: 104px minmax(0,1fr); gap: 12px; align-items: baseline; }
   .os-cv-skilllabel { color: var(--ink); font-size: 12px; font-weight: 680; }
   .os-cv-skillvals { color: var(--ink-soft); font-size: 12.5px; line-height: 1.6; }
+  /* About Me */
+  .os-eyebrow { margin: 0 0 9px; color: var(--ink-faint); font-family: 'Geist Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
+  .os-about-hero { display: grid; grid-template-columns: 132px minmax(0,1fr); gap: 20px; align-items: start; }
+  .os-about-portrait { overflow: hidden; border: 1px solid var(--glass-line); border-radius: 14px; background: var(--chip); box-shadow: 0 10px 26px rgba(12,32,58,0.16); }
+  .os-about-portrait img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; }
+  .os-about-title { margin: 0; max-width: 24ch; color: var(--ink); font-size: clamp(20px, 2.6vw, 26px); font-weight: 700; line-height: 1.14; letter-spacing: -0.03em; text-wrap: pretty; }
+  .os-about-p { max-width: 60ch; margin: 13px 0 0; color: var(--ink-soft); font-size: 13.5px; line-height: 1.68; }
+  .os-fact-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 8px; }
+  .os-fact { display: grid; gap: 4px; border: 1px solid var(--hair); border-radius: 11px; background: var(--chip); padding: 11px 13px; }
+  .os-fact-k { color: var(--ink-faint); font-family: 'Geist Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; }
+  .os-fact-v { color: var(--ink); font-size: 12.5px; font-weight: 620; letter-spacing: -0.01em; }
+  .os-life-row { display: grid; grid-template-columns: 18px minmax(0,1fr); align-items: start; gap: 12px; }
+  .os-life-row.is-sep { border-top: 1px solid var(--hair); padding-top: 10px; }
+  .os-life-row svg { margin-top: 2px; }
+  .os-life-row p { margin: 0; color: var(--ink-soft); font-size: 13px; line-height: 1.6; }
+  .os-life-row strong { color: var(--ink); font-weight: 640; }
+  .os-contact-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .os-contact-pill { display: inline-flex; align-items: center; gap: 8px; min-height: 34px; border: 1px solid var(--btn-line); border-radius: 999px; background: var(--btn-face); padding: 8px 14px; color: var(--ink); font-size: 12.5px; font-weight: 560; transition: background 140ms ease, transform 140ms ease; }
+  .os-contact-pill:hover { background: var(--btn-face-hover); transform: translateY(-1px); color: var(--ink); }
+  @media (max-width: 860px) {
+    .os-about-hero { grid-template-columns: 96px minmax(0,1fr); gap: 15px; }
+    .os-fact-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  }
+  @media (max-width: 560px) {
+    .os-about-hero { grid-template-columns: minmax(0,1fr); }
+    .os-about-portrait { width: 104px; }
+  }
   .os-pdf { flex: 1; min-height: 320px; width: 100%; border: 1px solid var(--hair); border-radius: 12px; background: var(--chip); }
   .os-chip-btn { display: inline-flex; align-items: center; gap: 9px; min-height: 42px; border: 1px solid var(--glass-line); border-radius: 999px; background: var(--glass); box-shadow: var(--shadow); -webkit-backdrop-filter: blur(28px) saturate(170%); backdrop-filter: blur(28px) saturate(170%); padding: 0 18px; color: var(--ink); font-size: 13px; font-weight: 600; white-space: nowrap; transition: transform 150ms ease; }
   .os-chip-btn:hover { transform: translateY(-1px); color: inherit; }
@@ -480,7 +546,12 @@
     <span></span>
   </section>
 
-  <img class="os-hero-subject" src="assets/profile/thribhuvan-cutout.png" alt="" aria-hidden="true" decoding="async" fetchpriority="high">
+  <div class="os-hero-subject" aria-hidden="true">
+    <img src="assets/profile/paint-1-sketch.jpg" alt="" decoding="async" fetchpriority="high" style="--i:0">
+    <img src="assets/profile/paint-2-water.jpg" alt="" decoding="async" loading="lazy" style="--i:1">
+    <img src="assets/profile/paint-3-oil.jpg" alt="" decoding="async" loading="lazy" style="--i:2">
+    <img src="assets/profile/paint-4-vector.jpg" alt="" decoding="async" loading="lazy" style="--i:3">
+  </div>
 
   <aside class="os-chrome-spotify" style="position:absolute;border:1px solid var(--glass-line);border-radius:20px;background:var(--glass);box-shadow:var(--shadow);-webkit-backdrop-filter:blur(30px) saturate(170%);backdrop-filter:blur(30px) saturate(170%);padding:14px">
     <p style="margin:0 0 11px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:0.17em;text-transform:uppercase">Last Played</p>
@@ -544,7 +615,7 @@
               </div>
             </div>
             <div class="os-about-photo" style="position:relative;overflow:hidden;border:1px solid var(--glass-line);border-radius:16px;background:var(--pane);box-shadow:0 18px 42px rgba(10,30,56,0.18)">
-              <img src="assets/profile/thribhuvan.png" alt="Portrait of Thribhuvan" style="width:100%;height:100%;object-fit:cover;object-position:50% 18%">
+              <img src="assets/profile/thribhuvan-portrait.jpg" alt="Portrait of Thribhuvan" width="560" height="560" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:50% 18%">
             </div>
           </div>
         </sc-if>
@@ -584,7 +655,19 @@
                   <sc-for list="{{ folders }}" as="folder" hint-placeholder-count="4">
                     <button type="button" class="os-folder-tile" onDoubleClick="{{ folder.select }}" onClick="{{ folder.select }}">
                       <span class="os-folder-icon" aria-hidden="true">
-                        <img src="assets/icons/mac-folder.avif" alt="" width="84" height="84" style="width:100%;height:100%;object-fit:contain;display:block;pointer-events:none">
+                        <svg viewBox="0 0 96 78" width="84" height="84" style="width:100%;height:100%;display:block;pointer-events:none;overflow:visible" aria-hidden="true">
+                          <defs>
+                            <linearGradient id="fldBack" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="0" stop-color="#8fd4fb"/><stop offset="1" stop-color="#54b3f0"/>
+                            </linearGradient>
+                            <linearGradient id="fldFront" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="0" stop-color="#7ecbfa"/><stop offset="1" stop-color="#3c9fe4"/>
+                            </linearGradient>
+                          </defs>
+                          <path fill="url(#fldBack)" d="M8 10.5A6.5 6.5 0 0 1 14.5 4h20.2c1.9 0 3.7.86 4.9 2.34l4.06 5.02A2.5 2.5 0 0 0 45.6 12H81.5A6.5 6.5 0 0 1 88 18.5V27H8Z"/>
+                          <path fill="url(#fldFront)" d="M4.5 25.5A5.5 5.5 0 0 1 10 20h76a5.5 5.5 0 0 1 5.5 5.5v41A6.5 6.5 0 0 1 85 73H11a6.5 6.5 0 0 1-6.5-6.5Z"/>
+                          <path fill="#ffffff" opacity="0.30" d="M10 20h76a5.5 5.5 0 0 1 5.5 5.5v2.2H4.5v-2.2A5.5 5.5 0 0 1 10 20Z"/>
+                        </svg>
                       </span>
                       <span class="os-folder-label" style="{{ folder.tileLabelStyle }}">{{ folder.label }}</span>
                     </button>
@@ -618,34 +701,84 @@
               </sc-if>
 
               <sc-if value="{{ folderIsAbout }}" hint-placeholder-val="{{ false }}">
-                <div style="display:grid;gap:18px;border:1px solid var(--hair);border-radius:16px;background:var(--glass);box-shadow:0 14px 34px rgba(12,32,58,0.10), 0 1px 0 rgba(255,255,255,0.45) inset;-webkit-backdrop-filter:blur(22px) saturate(150%);backdrop-filter:blur(22px) saturate(150%);padding:clamp(18px,3vw,28px)">
-                  <div>
-                    <p style="margin:0 0 10px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">About Me</p>
-                    <h3 style="margin:0;max-width:28ch;color:var(--ink);font-size:clamp(22px,3.2vw,30px);font-weight:700;line-height:1.1;letter-spacing:-0.03em;text-wrap:pretty">Full-stack engineer in Bengaluru, finishing a CS degree and shipping real systems.</h3>
-                    <p style="max-width:58ch;margin:16px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.65">Full-stack engineer shipping multi-tenant SaaS, AI-assisted workflows, browser tools, and vision systems. Contact: <a href="mailto:thribhuvan003@gmail.com" style="color:var(--accent);font-weight:600">thribhuvan003@gmail.com</a> · GitHub <a href="https://github.com/thribhuvan003" target="_blank" rel="noreferrer" style="color:var(--accent);font-weight:600">@thribhuvan003</a>.</p>
-                    <p style="max-width:58ch;margin:12px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.65">Merged upstream pull requests to Svelte, SvelteKit, Prisma, SolidJS, Nitro, Supabase and WXT. Small, specific diffs from bugs I hit in my own work.</p>
+                <div style="display:grid;gap:14px">
+                  <section class="os-card os-about-hero">
+                    <div class="os-about-portrait">
+                      <img src="assets/profile/thribhuvan-portrait.jpg" alt="Thribhuvan P" width="560" height="560" loading="lazy" decoding="async">
+                    </div>
+                    <div style="min-width:0">
+                      <p class="os-eyebrow">About Me</p>
+                      <h3 class="os-about-title">I build things end to end, then fix what breaks underneath them.</h3>
+                      <p class="os-about-p">I'm Thribhuvan, a final-year computer science student in Bengaluru who spends most of his time shipping. A multi-tenant ordering platform with real payments. An agent pipeline with human review gates. A vision service that runs on CPU alone. Things with users, edge cases and consequences.</p>
+                      <p class="os-about-p">When a library breaks inside one of those builds, I read its source rather than work around it. That habit has turned into {{ ossCount }} merged pull requests across {{ ossRepoCount }} upstream repositories, among them Svelte, Prisma, SvelteKit, SolidJS, Nitro and Supabase.</p>
+                    </div>
+                  </section>
+
+                  <div class="os-fact-grid">
+                    <div class="os-fact"><span class="os-fact-k">Based in</span><span class="os-fact-v">Bengaluru, India</span></div>
+                    <div class="os-fact"><span class="os-fact-k">Studying</span><span class="os-fact-v">B.Tech CSE · JNTUA</span></div>
+                    <div class="os-fact"><span class="os-fact-k">Graduating</span><span class="os-fact-v">2026 · CGPA 8.0</span></div>
+                    <div class="os-fact"><span class="os-fact-k">Shipped</span><span class="os-fact-v">4 public products</span></div>
                   </div>
-                  <div style="display:flex;flex-wrap:wrap;gap:8px">
-                    <span class="os-skill-chip">TypeScript</span>
-                    <span class="os-skill-chip">React / Next.js</span>
-                    <span class="os-skill-chip">Postgres + RLS</span>
-                    <span class="os-skill-chip">Node.js</span>
-                    <span class="os-skill-chip">System design</span>
-                    <span class="os-skill-chip">Open source</span>
-                  </div>
-                  <div style="display:grid;gap:8px">
-                    <p style="margin:0;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:0.17em;text-transform:uppercase">Away from the editor</p>
-                    <div style="display:grid;gap:8px">
-                      <div style="display:grid;grid-template-columns:18px minmax(0,1fr);align-items:start;gap:12px;border-top:1px solid var(--hair);padding-top:11px">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="margin-top:2px"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a2.5 2.5 0 0 1 0-5H20"></path></svg>
-                        <p style="margin:0;color:var(--ink-soft);font-size:13px;line-height:1.55"><strong style="color:var(--ink);font-weight:640">Reading Vedanta.</strong> Slowly, and mostly out of order. It has done more for how I think about problems than any engineering book I own.</p>
+
+                  <section class="os-card">
+                    <div class="os-card-head">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"></path><path d="m6 8-4 4 4 4"></path><path d="m14.5 4-5 16"></path></svg>
+                      <h3>What I reach for</h3>
+                    </div>
+                    <div style="display:flex;flex-wrap:wrap;gap:7px">
+                      <span class="os-skill-chip">TypeScript</span>
+                      <span class="os-skill-chip">React / Next.js</span>
+                      <span class="os-skill-chip">Node.js</span>
+                      <span class="os-skill-chip">PostgreSQL + RLS</span>
+                      <span class="os-skill-chip">Supabase</span>
+                      <span class="os-skill-chip">Python</span>
+                      <span class="os-skill-chip">Docker</span>
+                      <span class="os-skill-chip">System design</span>
+                    </div>
+                  </section>
+
+                  <section class="os-card">
+                    <div class="os-card-head">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+                      <h3>Away from the editor</h3>
+                    </div>
+                    <div style="display:grid;gap:10px">
+                      <div class="os-life-row">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a2.5 2.5 0 0 1 0-5H20"></path></svg>
+                        <p><strong>I read Vedanta.</strong> Slowly, and mostly out of order. It has done more for how I think about problems than any engineering book I own.</p>
                       </div>
-                      <div style="display:grid;grid-template-columns:18px minmax(0,1fr);align-items:start;gap:12px;border-top:1px solid var(--hair);padding-top:11px">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="margin-top:2px"><circle cx="8" cy="18" r="4"></circle><path d="M12 18V2l7 4"></path></svg>
-                        <p style="margin:0;color:var(--ink-soft);font-size:13px;line-height:1.55"><strong style="color:var(--ink);font-weight:640">Building things that are not work.</strong> Most of what I have learned about systems came from projects nobody asked me to build.</p>
+                      <div class="os-life-row is-sep">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="18" r="4"></circle><path d="M12 18V2l7 4"></path></svg>
+                        <p><strong>Mozart is usually playing.</strong> Focus without lyrics. Most of this site was built to a piano concerto.</p>
+                      </div>
+                      <div class="os-life-row is-sep">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        <p><strong>Temples and hill roads.</strong> The Photos folder is mostly Tamil Nadu, Kerala, and whatever the sky was doing that evening.</p>
                       </div>
                     </div>
-                  </div>
+                  </section>
+
+                  <section class="os-card">
+                    <div class="os-card-head">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+                      <h3>Reach me</h3>
+                    </div>
+                    <div class="os-contact-row">
+                      <a href="mailto:thribhuvan003@gmail.com" class="os-contact-pill">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+                        thribhuvan003@gmail.com
+                      </a>
+                      <a href="https://github.com/thribhuvan003" target="_blank" rel="noreferrer" class="os-contact-pill">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .8a11.2 11.2 0 0 0-3.54 21.82c.56.1.76-.24.76-.54v-2.1c-3.1.68-3.75-1.32-3.75-1.32-.5-1.28-1.24-1.62-1.24-1.62-1.02-.7.08-.69.08-.69 1.12.08 1.7 1.16 1.7 1.16 1 .1.55 2.62 3.16 1.86.1-.73.39-1.23.71-1.51-2.47-.28-5.06-1.24-5.06-5.5 0-1.22.43-2.21 1.15-2.99-.12-.28-.5-1.42.1-2.95 0 0 .95-.3 3.08 1.14a10.6 10.6 0 0 1 5.6 0c2.13-1.44 3.07-1.14 3.07-1.14.6 1.53.22 2.67.11 2.95.72.78 1.15 1.77 1.15 2.99 0 4.27-2.6 5.21-5.08 5.49.4.34.76 1.02.76 2.06v3.06c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"></path></svg>
+                        github.com/thribhuvan003
+                      </a>
+                      <a href="https://www.linkedin.com/in/thribhuvan003/" target="_blank" rel="noreferrer" class="os-contact-pill">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M7.1 9.2H4.05V19H7.1V9.2ZM5.58 4.32a1.77 1.77 0 1 0 0 3.54 1.77 1.77 0 0 0 0-3.54ZM19.95 13.38c0-2.96-1.58-4.34-3.69-4.34-1.7 0-2.46.94-2.88 1.59V9.2h-3.05V19h3.05v-4.86c0-1.28.24-2.52 1.83-2.52 1.57 0 1.59 1.47 1.59 2.6V19h3.05l.1-5.62Z"></path></svg>
+                        linkedin.com/in/thribhuvan003
+                      </a>
+                    </div>
+                  </section>
                 </div>
               </sc-if>
 
@@ -1205,20 +1338,48 @@ const RESUME_PDF = "assets/docs/Thribhuvan-P-Resume.pdf";
 // Ordered by how much weight the repo carries with a reader, not by merge date, so the
 // strongest work is read first. Avoid literal {{ }} in these strings — the template
 // engine interpolates that syntax.
+// Star counts read from the GitHub API on 2026-08-11.
+const REPO_META = {
+  "sveltejs/svelte": { stars: "88.0k", what: "UI framework" },
+  "prisma/prisma": { stars: "47.6k", what: "TypeScript ORM" },
+  "solidjs/solid": { stars: "35.8k", what: "Reactive UI library" },
+  "refined-github/refined-github": { stars: "31.9k", what: "GitHub browser extension" },
+  "sveltejs/kit": { stars: "20.7k", what: "Svelte app framework" },
+  "rjsf-team/react-jsonschema-form": { stars: "15.9k", what: "JSON Schema forms" },
+  "nitrojs/nitro": { stars: "11.1k", what: "Server toolkit" },
+  "wxt-dev/wxt": { stars: "10.3k", what: "Web extension framework" },
+  "supabase/supabase-js": { stars: "4.5k", what: "Official Supabase client" },
+  "sugarlabs/musicblocks": { stars: "860", what: "Sugar Labs · GSoC org" },
+  "supabase/ssr": { stars: "202", what: "Supabase SSR auth" },
+};
+
 const OSS = [
-  { repo: "sveltejs/svelte", num: 18521, title: "Transform computed keys in keyed each-block destructuring patterns", area: "compiler" },
-  { repo: "prisma/prisma", num: 29701, title: "Copy Bytes values out of Node’s shared Buffer pool on deserialization", area: "client" },
-  { repo: "supabase/supabase-js", num: 2537, title: "Expose service error code on StorageApiError", area: "storage" },
-  { repo: "supabase/ssr", num: 258, title: "Keep domain-scoped deletion in name-keyed cookie stores", area: "cookies" },
-  { repo: "sveltejs/kit", num: 16329, title: "Detect destructured route exports during type generation", area: "types" },
-  { repo: "solidjs/solid", num: 2875, title: "Emit @solidjs/web/storage types at the advertised path", area: "web" },
-  { repo: "nitrojs/nitro", num: 4422, title: "Use SameSite=Lax for the skew protection cookie", area: "vercel" },
-  { repo: "refined-github/refined-github", num: 9777, title: "Support capitalized conventional-commit types", area: "commits" },
-  { repo: "rjsf-team/react-jsonschema-form", num: 5150, title: "Preserve empty string titles in oneOf/anyOf option lists", area: "forms" },
-  { repo: "wxt-dev/wxt", num: 2486, title: "Stop treating mustache-style tokens as named substitutions", area: "i18n" },
-  { repo: "wxt-dev/wxt", num: 2485, title: "Use consola’s fancy reporter in the init demo", area: "docs" },
-  { repo: "sugarlabs/musicblocks", num: 7731, title: "Preserve numeric action names when importing Turtle Blocks projects", area: "import" },
-  { repo: "sugarlabs/musicblocks", num: 7727, title: "Skip trailing Turtle Blocks metadata entries when loading .tb projects", area: "import" },
+  { repo: 'sveltejs/svelte', num: 18521, title: 'Transform computed keys in keyed each-block destructuring patterns', area: 'compiler',
+    did: 'A keyed each block with a computed destructuring key crashed at runtime. I fixed the client AST transform so the key binds in scope.' },
+  { repo: 'prisma/prisma', num: 29701, title: 'Copy Bytes values out of Node’s shared Buffer pool on deserialization', area: 'client',
+    did: 'Bytes columns were views into Node’s shared buffer, so one row could show another row’s data. Now each value gets its own buffer.' },
+  { repo: 'solidjs/solid', num: 2875, title: 'Emit @solidjs/web/storage types at the advertised path', area: 'types',
+    did: 'The package advertised a types path it never shipped, so TypeScript users got no types. I corrected the build output.' },
+  { repo: 'refined-github/refined-github', num: 9777, title: 'Support capitalized conventional-commit types', area: 'ui',
+    did: 'Commit labels like Fix or Feature lost their colour because matching was case-sensitive. Made it case-insensitive.' },
+  { repo: 'sveltejs/kit', num: 16329, title: 'Detect destructured route exports during type generation', area: 'types',
+    did: 'Routes exporting destructured consts were skipped by type generation. I taught the analyser to see them.' },
+  { repo: 'rjsf-team/react-jsonschema-form', num: 5150, title: 'Preserve empty string titles in oneOf/anyOf option lists', area: 'forms',
+    did: 'An intentional empty title was replaced by a fallback label, so option lists showed the wrong text.' },
+  { repo: 'nitrojs/nitro', num: 4422, title: 'Use SameSite=Lax for the skew protection cookie', area: 'vercel',
+    did: 'The skew-protection cookie was dropped on cross-site navigations, breaking deploys mid-session.' },
+  { repo: 'wxt-dev/wxt', num: 2486, title: 'Stop treating mustache-style tokens as named substitutions', area: 'i18n',
+    did: 'Templates like {{name}} were parsed as i18n substitutions and mangled. Now they pass through untouched.' },
+  { repo: 'wxt-dev/wxt', num: 2485, title: 'Use consola’s fancy reporter in the init demo', area: 'docs',
+    did: 'The onboarding demo did not match what new users actually see on first run.' },
+  { repo: 'supabase/supabase-js', num: 2537, title: 'Expose service error code on StorageApiError', area: 'storage',
+    did: 'Callers could not branch on storage failures without string-matching the message. Now the typed code is surfaced.' },
+  { repo: 'supabase/ssr', num: 258, title: 'Keep domain-scoped deletion in name-keyed cookie stores', area: 'auth',
+    did: 'Sign-out left a domain-scoped cookie behind, so sessions could survive logout in Next.js apps.' },
+  { repo: 'sugarlabs/musicblocks', num: 7731, title: 'Preserve numeric action names when importing Turtle Blocks projects', area: 'import',
+    did: 'Numeric action names were coerced on import, breaking classroom projects on load.' },
+  { repo: 'sugarlabs/musicblocks', num: 7727, title: 'Skip trailing Turtle Blocks metadata entries when loading .tb projects', area: 'import',
+    did: 'Trailing metadata in legacy .tb files was read as a block and failed the load.' },
 ];
 
 const FOLDER_META = {
@@ -1454,7 +1615,7 @@ class Component extends DCLogic {
           width: "100%", height: "100%", minWidth: 0, overflow: "hidden", isolation: "isolate",
           borderRadius: 32, padding: "20px 20px 24px",
           border: "1px solid " + (dark ? "rgba(255,255,255,0.14)" : "rgba(255,255,255,0.62)"),
-          background: dark ? "rgba(38,40,44,0.58)" : "rgba(252,251,249,0.52)",
+          background: dark ? "rgba(40,42,47,0.80)" : "rgba(250,249,247,0.80)",
           boxShadow: dark
             ? "rgba(0,0,0,0.6) 0px 25px 60px, rgba(255,255,255,0.08) 0px 1px 0px inset"
             : "rgba(24,40,64,0.24) 0px 25px 60px, rgba(255,255,255,0.55) 0px 1px 0px inset",
@@ -1672,6 +1833,8 @@ class Component extends DCLogic {
       resumePdf: RESUME_PDF,
       // Hide the built-in PDF toolbar/sidebar so the embed reads as part of the window
       folderIsOss: s.folder === "oss",
+      ossCount: OSS.length,
+      ossRepoCount: new Set(OSS.map((o) => o.repo)).size,
       oss: OSS.map((o, i) => ({
         ...o,
         url: "https://github.com/" + o.repo + "/pull/" + o.num,
