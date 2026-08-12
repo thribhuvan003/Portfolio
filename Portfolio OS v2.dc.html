@@ -524,8 +524,8 @@
       border-radius: 16px;
     }
     .os-chrome-spotify .os-sp-label { display: none !important; }
-    .os-chrome-spotify > div:has(#sp-art) { grid-area: art; width: 38px; height: 38px; border-radius: 999px !important; aspect-ratio: 1; }
-    .os-chrome-spotify #sp-fallback { width: 22px; height: 22px; }
+    .os-chrome-spotify .os-sp-art { grid-area: art; width: 38px; height: 38px; border-radius: 999px !important; aspect-ratio: 1; }
+    .os-chrome-spotify .os-sp-art svg { width: 22px; height: 22px; }
     .os-chrome-spotify .os-sp-title { grid-area: text; margin: 0 !important; font-size: 12.5px !important; }
     .os-chrome-spotify .os-sp-sub { grid-column: 2; grid-row: 2; margin: 1px 0 0 !important; font-size: 11px !important; }
     .os-chrome-spotify .os-sp-wave { grid-area: wave; display: flex; }
@@ -659,15 +659,19 @@
     <img src="assets/profile/paint-2-water.jpg" alt="" decoding="async" style="--i:1">
   </div>
 
-  <a class="os-chrome-spotify" id="sp-card" href="https://open.spotify.com/user/gwvwbaulbyy3n7jzbiyjtp0hv" target="_blank" rel="noreferrer" style="position:absolute;display:block;border:1px solid var(--glass-line);border-radius:20px;background:var(--glass);box-shadow:var(--shadow);-webkit-backdrop-filter:blur(30px) saturate(170%);backdrop-filter:blur(30px) saturate(170%);padding:14px;color:inherit">
-    <p class="os-sp-label" id="sp-label" style="display:flex;align-items:center;gap:6px;margin:0 0 11px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:0.17em;text-transform:uppercase">Last Played</p>
-    <div style="position:relative;display:grid;place-items:center;aspect-ratio:1;overflow:hidden;border:1px solid var(--hair);border-radius:13px;background:var(--chip)">
-      <svg id="sp-fallback" width="44" height="44" viewBox="0 0 24 24" aria-hidden="true" style="opacity:0.22"><path fill="currentColor" d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
-      <img id="sp-art" alt="" style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+  <a class="os-chrome-spotify" href="{{ spotifyUrl }}" target="_blank" rel="noreferrer" style="position:absolute;display:block;border:1px solid var(--glass-line);border-radius:20px;background:var(--glass);box-shadow:var(--shadow);-webkit-backdrop-filter:blur(30px) saturate(170%);backdrop-filter:blur(30px) saturate(170%);padding:14px;color:inherit">
+    <p class="os-sp-label" style="display:flex;align-items:center;gap:6px;margin:0 0 11px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:0.17em;text-transform:uppercase"><sc-if value="{{ spIsPlaying }}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="width:6px;height:6px;border-radius:999px;background:#1DB954;box-shadow:0 0 0 3px rgba(29,185,84,0.20);animation:sp-pulse 1.8s ease-in-out infinite"></span></sc-if>{{ spLabel }}</p>
+    <div class="os-sp-art" style="position:relative;display:grid;place-items:center;aspect-ratio:1;overflow:hidden;border:1px solid var(--hair);border-radius:13px;background:var(--chip)">
+      <sc-if value="{{ spNoArt }}" hint-placeholder-val="{{ true }}">
+      <svg width="44" height="44" viewBox="0 0 24 24" aria-hidden="true" style="opacity:0.22"><path fill="currentColor" d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+      </sc-if>
+      <sc-if value="{{ spHasArt }}" hint-placeholder-val="{{ false }}">
+        <img src="{{ spArt }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+      </sc-if>
     </div>
     <div class="os-sp-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-    <p class="os-sp-title" id="sp-title" style="margin:12px 0 0;color:var(--ink);font-size:13px;font-weight:620;line-height:1.3;letter-spacing:-0.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">On repeat while I work</p>
-    <p class="os-sp-sub" id="sp-artist" style="margin:4px 0 0;color:var(--ink-faint);font-size:11.5px;line-height:1.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Mozart, mostly</p>
+    <p class="os-sp-title" style="margin:12px 0 0;color:var(--ink);font-size:13px;font-weight:620;line-height:1.3;letter-spacing:-0.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ spTitle }}</p>
+    <p class="os-sp-sub" style="margin:4px 0 0;color:var(--ink-faint);font-size:11.5px;line-height:1.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ spArtist }}</p>
   </a>
 
   <button type="button" class="os-chrome-theme" onClick="{{ toggleTheme }}" aria-label="{{ themeAria }}" title="{{ themeAria }}">
@@ -1185,15 +1189,25 @@
         </sc-if>
 
         <sc-if value="{{ win.isSpotify }}" hint-placeholder-val="{{ false }}">
-          <div style="display:flex;flex-direction:column;gap:16px;min-height:100%">
-            <div style="position:relative;display:grid;place-items:center;aspect-ratio:1;overflow:hidden;border:1px solid var(--hair);border-radius:14px;background:var(--chip)">
-              <svg width="56" height="56" viewBox="0 0 24 24" aria-hidden="true" style="opacity:0.28"><path fill="currentColor" d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
-            </div>
+          <div style="display:flex;flex-direction:column;gap:15px;min-height:100%">
             <div>
               <p style="margin:0 0 8px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">Music</p>
-              <h2 style="margin:0;color:var(--ink);font-size:19px;font-weight:700;line-height:1.15;letter-spacing:-0.024em">What’s usually playing while I work.</h2>
+              <h2 style="margin:0;color:var(--ink);font-size:19px;font-weight:700;line-height:1.15;letter-spacing:-0.024em">What&#8217;s usually playing while I work.</h2>
+              <p style="margin:9px 0 0;color:var(--ink-soft);font-size:12.5px;line-height:1.55">Mostly classical &#8212; Mozart, and whatever else holds attention without lyrics.</p>
             </div>
-            <p style="margin:0;color:var(--ink-soft);font-size:12.5px;line-height:1.55">Mostly classical — Mozart, and whatever else keeps focus without lyrics.</p>
+
+            <!-- Spotify's official embed. It plays a preview for anyone, and the full
+                 track for a visitor already signed in to Spotify in this browser. -->
+            <sc-if value="{{ spHasEmbed }}" hint-placeholder-val="{{ false }}">
+              <iframe title="Spotify player" style="border-radius:12px;border:0;width:100%;height:152px;flex:0 0 auto"
+                      src="{{ spEmbed }}" loading="lazy"
+                      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+              <p style="margin:0;color:var(--ink-faint);font-size:11.5px;line-height:1.5">Press play. Spotify serves a preview to everyone, and the whole track if you&#8217;re signed in.</p>
+            </sc-if>
+            <sc-if value="{{ spNoEmbed }}" hint-placeholder-val="{{ true }}">
+              <p style="margin:0;color:var(--ink-faint);font-size:11.5px;line-height:1.5">The player appears here once a track is playing.</p>
+            </sc-if>
+
             <a href="{{ spotifyUrl }}" target="_blank" rel="noreferrer" class="os-spotify-cta">
               <svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
               Open my Spotify
@@ -1297,48 +1311,6 @@
 
 </x-dc>
 
-<!-- Live "now playing" from /api/now-playing. The card ships with sensible static
-     text, so if the endpoint is absent or unconfigured nothing changes visually. -->
-<script>
-(function () {
-  var LABEL = document.getElementById('sp-label');
-  var TITLE = document.getElementById('sp-title');
-  var ARTIST = document.getElementById('sp-artist');
-  var ART = document.getElementById('sp-art');
-  var FALLBACK = document.getElementById('sp-fallback');
-  var CARD = document.getElementById('sp-card');
-  if (!LABEL || !TITLE || !ARTIST) return;
-
-  var DOT = '<span aria-hidden="true" style="width:6px;height:6px;border-radius:999px;background:#1DB954;box-shadow:0 0 0 3px rgba(29,185,84,0.20);animation:sp-pulse 1.8s ease-in-out infinite"></span>';
-
-  function paint(d) {
-    if (!d || !d.ok || !d.title) return;
-    LABEL.innerHTML = d.isPlaying ? DOT + 'Now playing' : 'Last played';
-    TITLE.textContent = d.title;
-    ARTIST.textContent = d.artist || '';
-    if (d.url && CARD) CARD.href = d.url;
-    if (d.albumArt && ART) {
-      ART.src = d.albumArt;
-      ART.onload = function () {
-        ART.style.display = 'block';
-        if (FALLBACK) FALLBACK.style.display = 'none';
-      };
-    }
-  }
-
-  function poll() {
-    fetch('/api/now-playing', { cache: 'no-store' })
-      .then(function (r) { return r.ok ? r.json() : null; })
-      .then(paint)
-      .catch(function () { /* offline or endpoint absent — keep the static text */ });
-  }
-
-  poll();
-  // Only poll while the tab is visible, so a background tab costs nothing.
-  setInterval(function () { if (!document.hidden) poll(); }, 30000);
-  document.addEventListener('visibilitychange', function () { if (!document.hidden) poll(); });
-})();
-</script>
 <script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Appearance&quot;}}">
 const L = {
   github: "https://github.com/thribhuvan003",
@@ -1597,7 +1569,7 @@ class Component extends DCLogic {
     const w = {};
     Object.keys(GEOM).forEach((id, i) => { w[id] = { ...GEOM[id], open: false, minimized: false, maximized: false, z: 200 + i }; });
     const vp = this.viewport();
-    this.state = { theme: initialTheme(props), windows: w, folder: null, zTop: 220, typed: "", vp, dockX: null, dockCenters: null, lightbox: null };
+    this.state = { theme: initialTheme(props), windows: w, folder: null, zTop: 220, typed: "", vp, dockX: null, dockCenters: null, lightbox: null, np: null };
     this._dockRaf = 0;
     this._phrase = 0;
     this._char = 0;
@@ -1642,6 +1614,20 @@ class Component extends DCLogic {
       else if (e.key === "ArrowRight") this.setState((st) => ({ lightbox: (st.lightbox + 1) % GALLERY.length }));
     };
     window.addEventListener("keydown", this._onKey);
+
+    // Now playing. The card is inside the component tree, so this has to flow
+    // through state — mutating the DOM directly gets overwritten on re-render.
+    this._pollNP = () => {
+      if (typeof document !== "undefined" && document.hidden) return;
+      fetch("/api/now-playing", { cache: "no-store" })
+        .then((r) => (r.ok ? r.json() : null))
+        .then((d) => { if (d && d.ok && d.title) this.setState({ np: d }); })
+        .catch(() => { /* offline or endpoint absent — keep the static text */ });
+    };
+    this._pollNP();
+    this._npTimer = setInterval(this._pollNP, 30000);
+    this._onVis = () => { if (!document.hidden) this._pollNP(); };
+    document.addEventListener("visibilitychange", this._onVis);
     this.setState({ vp: this.viewport() });
     if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       this.setState({ typed: PHRASES[0] });
@@ -1655,6 +1641,8 @@ class Component extends DCLogic {
     window.clearTimeout(this._timer);
     if (this._onResize) window.removeEventListener("resize", this._onResize);
     if (this._onKey) window.removeEventListener("keydown", this._onKey);
+    if (this._npTimer) clearInterval(this._npTimer);
+    if (this._onVis) document.removeEventListener("visibilitychange", this._onVis);
   }
 
   type() {
@@ -2015,7 +2003,22 @@ class Component extends DCLogic {
         background: "transparent", color: atRoot ? "var(--ink-faint)" : "var(--ink)",
         opacity: atRoot ? 0.4 : 1, cursor: "default",
       },
-      spotifyUrl: L.spotify,
+      spotifyUrl: (s.np && s.np.url) || L.spotify,
+      spLabel: s.np ? (s.np.isPlaying ? "Now playing" : "Last played") : "Last played",
+      spTitle: (s.np && s.np.title) || "On repeat while I work",
+      spArtist: (s.np && s.np.artist) || "Mozart, mostly",
+      spArt: (s.np && s.np.albumArt) || null,
+      spHasArt: !!(s.np && s.np.albumArt),
+      spNoArt: !(s.np && s.np.albumArt),
+      spIsPlaying: !!(s.np && s.np.isPlaying),
+      spEmbed: (() => {
+        var u = s.np && s.np.url;
+        if (!u) return null;
+        var m = String(u).match(/spotify\.com\/(track|album|playlist|artist)\/([A-Za-z0-9]+)/);
+        return m ? "https://open.spotify.com/embed/" + m[1] + "/" + m[2] + "?utm_source=generator" : null;
+      })(),
+      spHasEmbed: !!(s.np && s.np.url),
+      spNoEmbed: !(s.np && s.np.url),
       toggleTheme: () => {
         var next = dark ? "light" : "dark";
         try { window.localStorage.setItem(THEME_KEY, next); } catch (e) { /* private mode */ }
