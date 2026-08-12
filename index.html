@@ -139,6 +139,11 @@
     animation: portrait-dissolve 18s cubic-bezier(0.45, 0, 0.55, 1) infinite;
     animation-delay: calc(var(--i) * 9s);
   }
+  [data-os-theme="dark"] .os-hero-subject img {
+    -webkit-mask-image: radial-gradient(ellipse 52% 60% at 50% 54%, #000 12%, rgba(0,0,0,0.86) 32%, rgba(0,0,0,0.52) 50%, rgba(0,0,0,0.20) 68%, rgba(0,0,0,0.05) 84%, transparent 96%);
+    mask-image: radial-gradient(ellipse 52% 60% at 50% 54%, #000 12%, rgba(0,0,0,0.86) 32%, rgba(0,0,0,0.52) 50%, rgba(0,0,0,0.20) 68%, rgba(0,0,0,0.05) 84%, transparent 96%);
+    filter: brightness(0.86) saturate(1.04);
+  }
   @keyframes portrait-dissolve {
     0%   { opacity: 0; }
     9%   { opacity: 1; }
@@ -187,7 +192,7 @@
   }
   .os-chrome-email {
     left: max(12px, var(--safe-l));
-    bottom: max(12px, calc(var(--dock-h) + 8px + var(--safe-b)));
+    bottom: calc(max(6px, var(--safe-b)) + 19px);
     z-index: 40;
   }
   /* When any app window is open: keep theme out of the traffic-light corner */
@@ -1367,10 +1372,10 @@ const APPS = [
 ];
 
 const GEOM = {
-  about:   { w: 800, h: 520, x: 150, y: 110, label: "About Me" },
-  skills:  { w: 900, h: 600, x: 160, y: 96,  label: "Education & Experience" },
-  work:    { w: 980, h: 640, x: 130, y: 84,  label: "Workspace" },
-  images:  { w: 960, h: 620, x: 180, y: 92,  label: "Photos" },
+  about:   { w: 720, h: 470, x: 150, y: 110, label: "About Me" },
+  skills:  { w: 800, h: 540, x: 160, y: 96,  label: "Education & Experience" },
+  work:    { w: 820, h: 545, x: 130, y: 84,  label: "Workspace" },
+  images:  { w: 800, h: 540, x: 180, y: 92,  label: "Photos" },
   spotify: { w: 340, h: 452, x: 940, y: 130, label: "Spotify" },
   contact: { w: 600, h: 430, x: 420, y: 150, label: "Contact" },
 };
@@ -1834,7 +1839,7 @@ class Component extends DCLogic {
           background: "transparent", zIndex: 10,
         } : {
           position: "relative", flex: 1, minHeight: 0, overflow: "auto",
-          padding: w.id === "work" ? 0 : (phone ? 16 : 26),
+          padding: w.id === "work" ? 0 : (phone ? 15 : 22),
           background: "var(--sheet)", scrollbarWidth: "thin",
         },
         isAbout: w.id === "about", isWorkspace: w.id === "work",
@@ -1992,13 +1997,13 @@ class Component extends DCLogic {
       windows, dock, folders, atRoot, notRoot: !atRoot,
       splitStyle: {
         display: "grid",
-        gridTemplateColumns: (atRoot || phone) ? "minmax(0,1fr)" : "194px minmax(0,1fr)",
+        gridTemplateColumns: (atRoot || phone) ? "minmax(0,1fr)" : "172px minmax(0,1fr)",
         flex: 1, minHeight: 0,
       },
       contentStyle: {
         minWidth: 0, overflow: atRoot ? "hidden" : "auto",
         background: atRoot ? "transparent" : "var(--sheet)",
-        padding: atRoot ? "8px 4px" : (phone ? "14px" : "20px"),
+        padding: atRoot ? "8px 4px" : (phone ? "13px" : "17px"),
         display: atRoot ? "grid" : "block",
         alignContent: atRoot ? "center" : "start",
         justifyContent: atRoot ? "center" : "stretch",
