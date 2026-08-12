@@ -26,9 +26,9 @@
   a:hover { color:var(--accent); }
   [data-os-theme="light"] {
     --ink:#10233d; --ink-soft:rgba(16,35,61,0.60); --ink-faint:rgba(16,35,61,0.38); --wordmark:#5b544c; --wm-glow:rgba(140,128,110,0.55);
-    --hair:rgba(16,35,61,0.10); --glass:rgba(255,255,255,0.52); --glass-2:rgba(255,255,255,0.46);
-    --glass-line:rgba(255,255,255,0.72); --titlebar:rgba(246,246,244,0.55); --pane:rgba(255,255,255,0.42);
-    --sheet:rgba(252,252,251,0.52); --chip:rgba(255,255,255,0.60); --btn-face:rgba(255,255,255,0.92); --btn-face-hover:#ffffff; --btn-line:rgba(16,35,61,0.16); --accent:#0a68c9; --accent-soft:rgba(10,104,201,0.12);
+    --hair:rgba(16,35,61,0.10); --glass:rgba(255,255,255,0.62); --glass-2:rgba(255,255,255,0.78);
+    --glass-line:rgba(255,255,255,0.72); --titlebar:rgba(246,246,244,0.80); --pane:rgba(255,255,255,0.60);
+    --sheet:rgba(252,252,251,0.80); --chip:rgba(255,255,255,0.60); --btn-face:rgba(255,255,255,0.92); --btn-face-hover:#ffffff; --btn-line:rgba(16,35,61,0.16); --accent:#0a68c9; --accent-soft:rgba(10,104,201,0.12);
     --shadow:0 34px 88px rgba(18,45,80,0.18), 0 12px 30px rgba(18,45,80,0.10), 0 1px 0 rgba(255,255,255,0.95) inset, 0 0 0 1px rgba(18,45,80,0.05) inset;
     --dock:rgba(255,255,255,0.42); --dock-line:rgba(255,255,255,0.75);
     --menubar:rgba(255,255,255,0.34); --menubar-ink:rgba(14,30,52,0.86);
@@ -37,9 +37,9 @@
   }
   [data-os-theme="dark"] {
     --ink:#eaf2fd; --ink-soft:rgba(226,238,252,0.62); --ink-faint:rgba(226,238,252,0.38); --wordmark:#dbe6f4; --wm-glow:rgba(150,200,250,0.6);
-    --hair:rgba(175,210,246,0.16); --glass:rgba(34,64,104,0.52); --glass-2:rgba(20,42,72,0.46);
-    --glass-line:rgba(190,220,250,0.20); --titlebar:rgba(33,58,92,0.55); --pane:rgba(14,32,56,0.42);
-    --sheet:rgba(16,32,54,0.52); --chip:rgba(170,208,248,0.18); --btn-face:rgba(72,96,132,0.55); --btn-face-hover:rgba(88,116,156,0.72); --btn-line:rgba(190,220,250,0.26); --accent:#6fb7f5; --accent-soft:rgba(111,183,245,0.16);
+    --hair:rgba(175,210,246,0.16); --glass:rgba(34,64,104,0.62); --glass-2:rgba(20,42,72,0.78);
+    --glass-line:rgba(190,220,250,0.20); --titlebar:rgba(33,58,92,0.80); --pane:rgba(14,32,56,0.60);
+    --sheet:rgba(16,32,54,0.80); --chip:rgba(170,208,248,0.18); --btn-face:rgba(72,96,132,0.55); --btn-face-hover:rgba(88,116,156,0.72); --btn-line:rgba(190,220,250,0.26); --accent:#6fb7f5; --accent-soft:rgba(111,183,245,0.16);
     --shadow:0 34px 88px rgba(1,6,14,0.60), 0 12px 30px rgba(1,6,14,0.38), 0 1px 0 rgba(190,220,250,0.14) inset, 0 0 0 1px rgba(0,0,0,0.30) inset;
     --dock:rgba(22,45,76,0.46); --dock-line:rgba(190,220,250,0.18);
     --menubar:rgba(8,20,38,0.40); --menubar-ink:rgba(233,242,253,0.88);
@@ -120,20 +120,22 @@
     display: block;
     object-fit: contain;
     object-position: bottom center;
-    -webkit-mask-image: radial-gradient(ellipse 60% 66% at 50% 58%, #000 52%, rgba(0,0,0,0.72) 70%, rgba(0,0,0,0.22) 86%, transparent 100%);
-    mask-image: radial-gradient(ellipse 60% 66% at 50% 58%, #000 52%, rgba(0,0,0,0.72) 70%, rgba(0,0,0,0.22) 86%, transparent 100%);
-    /* Four painted studies of the same portrait dissolve into one another —
-       sketch, watercolour, oil, vector. 4 x 7s, with a 1.6s cross-fade. */
+    /* Very gradual falloff — the artwork has dissolved long before the bitmap's
+       edge, so no square is ever perceptible. */
+    -webkit-mask-image: radial-gradient(ellipse 62% 70% at 50% 55%, #000 28%, rgba(0,0,0,0.94) 44%, rgba(0,0,0,0.70) 58%, rgba(0,0,0,0.38) 71%, rgba(0,0,0,0.14) 84%, rgba(0,0,0,0.03) 93%, transparent 100%);
+    mask-image: radial-gradient(ellipse 62% 70% at 50% 55%, #000 28%, rgba(0,0,0,0.94) 44%, rgba(0,0,0,0.70) 58%, rgba(0,0,0,0.38) 71%, rgba(0,0,0,0.14) 84%, rgba(0,0,0,0.03) 93%, transparent 100%);
+    /* Two painted studies of one portrait breathe into each other:
+       ink sketch and watercolour. 2 x 9s, with a long 3s cross-fade. */
     opacity: 0;
-    animation: portrait-dissolve 28s ease-in-out infinite;
-    animation-delay: calc(var(--i) * 7s);
+    animation: portrait-dissolve 18s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+    animation-delay: calc(var(--i) * 9s);
   }
   @keyframes portrait-dissolve {
-    0%     { opacity: 0; }
-    2%     { opacity: 1; }
-    23%    { opacity: 1; }
-    27%    { opacity: 0; }
-    100%   { opacity: 0; }
+    0%   { opacity: 0; }
+    9%   { opacity: 1; }
+    41%  { opacity: 1; }
+    50%  { opacity: 0; }
+    100% { opacity: 0; }
   }
   @media (prefers-reduced-motion: reduce) {
     .os-hero-subject img { animation: none; opacity: 0; }
@@ -269,7 +271,7 @@
   .os-folder-tile:hover .os-folder-label { filter: brightness(1.08); }
   .os-folder-tile:active .os-folder-icon { transform: scale(0.96); }
   /* Education & Experience (Skills & Exp window) */
-  .os-skills-split { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px; align-items: start; }
+  .os-skills-split { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px; align-items: stretch; }
   .os-card { border: 1px solid var(--hair); border-radius: 14px; background: var(--glass); padding: 16px; }
   .os-card-head { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--hair); color: var(--accent); }
   .os-card-head h3 { margin: 0; color: var(--ink); font-size: 12.5px; font-weight: 700; letter-spacing: -0.01em; }
@@ -353,6 +355,12 @@
   .os-life-row svg { margin-top: 2px; }
   .os-life-row p { margin: 0; color: var(--ink-soft); font-size: 13px; line-height: 1.6; }
   .os-life-row strong { color: var(--ink); font-weight: 640; }
+  .os-about-stats { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; margin-top: 20px; }
+  .os-about-stat { display: grid; gap: 2px; border: 1px solid var(--hair); border-radius: 11px; background: var(--chip); padding: 11px 13px; }
+  .os-about-stat strong { color: var(--ink); font-size: 20px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; }
+  .os-about-stat span { color: var(--ink-soft); font-size: 10.5px; font-weight: 540; line-height: 1.35; }
+  .os-spotify-cta { display: flex; align-items: center; gap: 9px; margin-top: auto; min-height: 40px; border: 1px solid transparent; border-radius: 999px; background: #1DB954; padding: 10px 15px; color: #fff; font-size: 12.5px; font-weight: 640; transition: filter 140ms ease, transform 140ms ease; }
+  .os-spotify-cta:hover { filter: brightness(1.06); transform: translateY(-1px); color: #fff; }
   .os-contact-row { display: flex; flex-wrap: wrap; gap: 8px; }
   .os-contact-pill { display: inline-flex; align-items: center; gap: 8px; min-height: 34px; border: 1px solid var(--btn-line); border-radius: 999px; background: var(--btn-face); padding: 8px 14px; color: var(--ink); font-size: 12.5px; font-weight: 560; transition: background 140ms ease, transform 140ms ease; }
   .os-contact-pill:hover { background: var(--btn-face-hover); transform: translateY(-1px); color: var(--ink); }
@@ -415,6 +423,29 @@
     .os-root { --dock-h: 70px; }
     .os-hero { padding: 64px 28px 120px; }
     .os-chrome-spotify { width: 188px; padding: 12px !important; }
+    /* Tablet and below: primary actions move to the free top-left corner so they
+       never sit on the dock or the portrait. Theme toggle drops to bottom-left. */
+    .os-chrome-email {
+      left: max(12px, var(--safe-l));
+      right: auto;
+      top: max(12px, var(--safe-t));
+      bottom: auto;
+      transform: none;
+      justify-content: flex-start;
+      flex-wrap: nowrap;
+      padding: 0;
+      z-index: 45;
+    }
+    .os-chrome-theme {
+      left: max(12px, var(--safe-l));
+      right: auto;
+      top: auto;
+      bottom: max(12px, calc(var(--dock-h) + 10px + var(--safe-b)));
+      transform-origin: bottom left;
+    }
+    .os-root[data-has-win="1"] .os-chrome-theme { left: max(12px, var(--safe-l)); right: auto; top: auto; }
+    /* The stat block sat on the dock at these heights; it is decorative, so drop it. */
+    .os-chrome-stats { display: none !important; }
     .os-about-grid { grid-template-columns: minmax(0,1fr) 200px; gap: 22px; }
     .os-about-photo { height: 280px; }
     .os-about-h { font-size: 32px; }
@@ -441,26 +472,49 @@
     .os-hero-title { font-size: min(18vw, 16vh, 92px) !important; }
     .os-hero-sub { font-size: 13.5px !important; max-width: 34ch !important; }
     .os-hero-eyebrow { font-size: 10.5px !important; letter-spacing: 0.32em !important; }
-    .os-chrome-spotify { display: none !important; }
-    .os-chrome-stats { display: none !important; }
-    .os-chrome-theme {
-      left: auto;
+    /* Phone corners: Resume/Email top-left, Last played top-right (as on the
+       reference site), theme toggle bottom-left. Nothing overlaps. */
+    .os-chrome-spotify {
+      display: block !important;
+      width: 148px;
       right: max(10px, var(--safe-r));
       top: max(10px, var(--safe-t));
+      padding: 10px !important;
+      border-radius: 16px;
+    }
+    .os-chrome-spotify .os-sp-label { font-size: 8.5px !important; margin-bottom: 8px !important; }
+    .os-chrome-spotify .os-sp-title { font-size: 11.5px !important; }
+    .os-chrome-spotify .os-sp-sub { font-size: 10px !important; }
+    .os-chrome-stats { display: none !important; }
+    .os-chrome-theme {
+      left: max(10px, var(--safe-l));
+      right: auto;
+      top: auto;
+      bottom: max(10px, calc(var(--dock-h) + 10px + var(--safe-b)));
       transform: scale(0.92);
-      transform-origin: top right;
+      transform-origin: bottom left;
     }
-    .os-root[data-has-win="1"] .os-chrome-theme {
-      /* stay top-right, never over traffic lights (top-left) */
-      opacity: 0.95;
-    }
+    .os-root[data-has-win="1"] .os-chrome-theme { opacity: 0.95; }
+    .os-root[data-has-win="1"] .os-chrome-spotify { opacity: 0; pointer-events: none; }
     .os-root[data-has-win="1"] .os-chrome-email {
       opacity: 0;
       pointer-events: none;
     }
-    /* Full-width row + centred content: left:50% alone leaves only half the width, which
-       forced the two chips onto separate lines over the subject’s face. */
-    .os-chrome-email { left: 0; right: 0; transform: none; bottom: max(10px, calc(var(--dock-h) + 10px + var(--safe-b))); justify-content: center; flex-wrap: nowrap; gap: 8px; padding: 0 12px; }
+    /* Phone/tablet: the bottom strip is occupied by the portrait and the dock, so the
+       two primary actions move to the free top-left corner. The theme toggle lives
+       top-right at these widths, so there is no collision. */
+    .os-chrome-email {
+      left: max(12px, var(--safe-l));
+      right: auto;
+      top: max(12px, var(--safe-t));
+      bottom: auto;
+      transform: none;
+      justify-content: flex-start;
+      flex-wrap: nowrap;
+      gap: 8px;
+      padding: 0;
+      z-index: 45;
+    }
     .os-chip-btn { min-height: 38px; padding: 0 14px; font-size: 12px; }
     .os-traffic {
       width: 13px;
@@ -518,6 +572,16 @@
     .os-sidebar { display: none !important; }
   }
 
+  /* Narrow phones: the top row carries both the action chips (left) and the
+     Last played card (right). Shrink both so they cannot meet in the middle. */
+  @media (max-width: 430px) {
+    .os-chrome-spotify { width: 116px; padding: 8px !important; border-radius: 14px; }
+    .os-chrome-spotify .os-sp-title { font-size: 10.5px !important; margin-top: 8px !important; }
+    .os-chrome-spotify .os-sp-sub { font-size: 9.5px !important; }
+    .os-chip-btn { min-height: 34px !important; padding: 0 11px !important; font-size: 11.5px !important; gap: 6px !important; }
+    .os-chrome-email { gap: 6px !important; }
+  }
+
   @media (max-width: 380px) {
     .os-dock-btn { width: 40px; height: 40px; }
     .os-dock-icon { width: 36px !important; height: 36px !important; }
@@ -548,18 +612,16 @@
 
   <div class="os-hero-subject" aria-hidden="true">
     <img src="assets/profile/paint-1-sketch.jpg" alt="" decoding="async" fetchpriority="high" style="--i:0">
-    <img src="assets/profile/paint-2-water.jpg" alt="" decoding="async" loading="lazy" style="--i:1">
-    <img src="assets/profile/paint-3-oil.jpg" alt="" decoding="async" loading="lazy" style="--i:2">
-    <img src="assets/profile/paint-4-vector.jpg" alt="" decoding="async" loading="lazy" style="--i:3">
+    <img src="assets/profile/paint-2-water.jpg" alt="" decoding="async" style="--i:1">
   </div>
 
   <aside class="os-chrome-spotify" style="position:absolute;border:1px solid var(--glass-line);border-radius:20px;background:var(--glass);box-shadow:var(--shadow);-webkit-backdrop-filter:blur(30px) saturate(170%);backdrop-filter:blur(30px) saturate(170%);padding:14px">
-    <p style="margin:0 0 11px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:0.17em;text-transform:uppercase">Last Played</p>
+    <p class="os-sp-label" style="margin:0 0 11px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:0.17em;text-transform:uppercase">Last Played</p>
     <div style="position:relative;display:grid;place-items:center;aspect-ratio:1;overflow:hidden;border:1px solid var(--hair);border-radius:13px;background:var(--chip)">
       <svg width="44" height="44" viewBox="0 0 24 24" aria-hidden="true" style="opacity:0.22"><path fill="currentColor" d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
     </div>
-    <p style="margin:12px 0 0;color:var(--ink);font-size:13px;font-weight:620;line-height:1.3;letter-spacing:-0.01em">On repeat while I work</p>
-    <p style="margin:4px 0 0;color:var(--ink-faint);font-size:11.5px;line-height:1.4">Mozart, mostly</p>
+    <p class="os-sp-title" style="margin:12px 0 0;color:var(--ink);font-size:13px;font-weight:620;line-height:1.3;letter-spacing:-0.01em">On repeat while I work</p>
+    <p class="os-sp-sub" style="margin:4px 0 0;color:var(--ink-faint);font-size:11.5px;line-height:1.4">Mozart, mostly</p>
   </aside>
 
   <div class="os-chrome-theme" style="position:absolute;display:flex;align-items:center;gap:2px;border:1px solid var(--glass-line);border-radius:999px;background:var(--glass);box-shadow:var(--shadow);-webkit-backdrop-filter:blur(28px) saturate(170%);backdrop-filter:blur(28px) saturate(170%);padding:4px">
@@ -604,14 +666,37 @@
         <sc-if value="{{ win.isAbout }}" hint-placeholder-val="{{ false }}">
           <div class="os-about-grid">
             <div>
-              <p style="margin:0 0 10px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">Full-stack engineer</p>
-              <h2 class="os-about-h" style="margin:0;max-width:18ch;color:var(--ink);font-weight:700;line-height:1.05;letter-spacing:-0.03em;text-wrap:pretty">I ship whole products — and send fixes back into the frameworks they run on.</h2>
-              <p style="max-width:52ch;margin:16px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.65">I’m <strong style="color:var(--ink);font-weight:650">Thribhuvan</strong> (<a href="mailto:thribhuvan003@gmail.com" style="color:var(--accent);font-weight:600">thribhuvan003@gmail.com</a>). I design, build, and operate full-stack systems: multi-tenant SaaS, payments, auth, and AI-assisted workflows.</p>
-              <p style="max-width:52ch;margin:12px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.65">I also contribute focused patches to tools I use daily — Svelte, Prisma, Supabase, SolidJS, Nitro, and more. Small diffs. Real production bugs. Merged upstream.</p>
-              <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:22px">
-                <span style="display:inline-flex;align-items:center;gap:8px;border:1px solid var(--hair);border-radius:999px;background:var(--chip);padding:9px 14px;color:var(--ink-soft);font-size:12px;font-weight:560">4 public products</span>
-                <span style="display:inline-flex;align-items:center;gap:8px;border:1px solid var(--hair);border-radius:999px;background:var(--chip);padding:9px 14px;color:var(--ink-soft);font-size:12px;font-weight:560">Merged OSS contributions</span>
-                <span style="display:inline-flex;align-items:center;gap:8px;border:1px solid var(--hair);border-radius:999px;background:var(--chip);padding:9px 14px;color:var(--ink-soft);font-size:12px;font-weight:560">TypeScript · Postgres · React</span>
+              <p class="os-eyebrow">Full-stack engineer · Bengaluru</p>
+              <h2 class="os-about-h" style="margin:0;max-width:19ch;color:var(--ink);font-weight:700;line-height:1.06;letter-spacing:-0.03em;text-wrap:pretty">I ship whole products — and send fixes back into the frameworks they run on.</h2>
+              <p style="max-width:54ch;margin:15px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.68">I'm <strong style="color:var(--ink);font-weight:650">Thribhuvan</strong>. I design, build and operate full-stack systems end to end: multi-tenant SaaS with row-level tenant isolation, verified payment flows, authentication, and AI-assisted workflows that keep a human in the loop.</p>
+              <p style="max-width:54ch;margin:12px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.68">When a dependency breaks in production, I read its source and fix it there. That has become <strong style="color:var(--ink);font-weight:650">{{ ossCount }} merged pull requests</strong> across {{ ossRepoCount }} upstream repositories — Svelte, Prisma, SvelteKit, SolidJS, Nitro and Supabase among them. Small, specific diffs against real bugs.</p>
+              <p style="max-width:54ch;margin:12px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.68">Away from the editor I read Vedanta — slowly, and mostly out of order — and I work to Mozart and the classical canon. Both have taught me more about patience and structure than any framework has.</p>
+
+              <div class="os-about-stats">
+                <div class="os-about-stat"><strong>{{ ossCount }}</strong><span>Merged upstream PRs</span></div>
+                <div class="os-about-stat"><strong>{{ ossRepoCount }}</strong><span>Open-source repositories</span></div>
+                <div class="os-about-stat"><strong>4</strong><span>Products shipped publicly</span></div>
+              </div>
+
+              <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:16px">
+                <span class="os-skill-chip">TypeScript</span>
+                <span class="os-skill-chip">React / Next.js</span>
+                <span class="os-skill-chip">Node.js</span>
+                <span class="os-skill-chip">PostgreSQL + RLS</span>
+                <span class="os-skill-chip">Supabase</span>
+                <span class="os-skill-chip">Python</span>
+                <span class="os-skill-chip">Docker</span>
+              </div>
+
+              <div class="os-contact-row" style="margin-top:18px">
+                <a href="mailto:thribhuvan003@gmail.com" class="os-contact-pill">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+                  thribhuvan003@gmail.com
+                </a>
+                <a href="https://github.com/thribhuvan003" target="_blank" rel="noreferrer" class="os-contact-pill">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .8a11.2 11.2 0 0 0-3.54 21.82c.56.1.76-.24.76-.54v-2.1c-3.1.68-3.75-1.32-3.75-1.32-.5-1.28-1.24-1.62-1.24-1.62-1.02-.7.08-.69.08-.69 1.12.08 1.7 1.16 1.7 1.16 1 .1.55 2.62 3.16 1.86.1-.73.39-1.23.71-1.51-2.47-.28-5.06-1.24-5.06-5.5 0-1.22.43-2.21 1.15-2.99-.12-.28-.5-1.42.1-2.95 0 0 .95-.3 3.08 1.14a10.6 10.6 0 0 1 5.6 0c2.13-1.44 3.07-1.14 3.07-1.14.6 1.53.22 2.67.11 2.95.72.78 1.15 1.77 1.15 2.99 0 4.27-2.6 5.21-5.08 5.49.4.34.76 1.02.76 2.06v3.06c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"></path></svg>
+                  github.com/thribhuvan003
+                </a>
               </div>
             </div>
             <div class="os-about-photo" style="position:relative;overflow:hidden;border:1px solid var(--glass-line);border-radius:16px;background:var(--pane);box-shadow:0 18px 42px rgba(10,30,56,0.18)">
@@ -966,7 +1051,7 @@
                   </div>
                 </sc-if>
                 <sc-if value="{{ noExperience }}" hint-placeholder-val="{{ true }}">
-                  <p class="os-card-empty">No salaried role yet — I’m in my final year. The closest thing I have to a work history is code running in other people’s production repositories: <strong style="color:var(--ink);font-weight:640">Svelte, SvelteKit, Prisma, Supabase, SolidJS and Nitro</strong>.</p>
+                  <p class="os-card-empty">Details available on request.</p>
                 </sc-if>
               </section>
             </div>
@@ -1068,6 +1153,11 @@
               <h2 style="margin:0;color:var(--ink);font-size:19px;font-weight:700;line-height:1.15;letter-spacing:-0.024em">What’s usually playing while I work.</h2>
             </div>
             <p style="margin:0;color:var(--ink-soft);font-size:12.5px;line-height:1.55">Mostly classical — Mozart, and whatever else keeps focus without lyrics.</p>
+            <a href="{{ spotifyUrl }}" target="_blank" rel="noreferrer" class="os-spotify-cta">
+              <svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+              Open my Spotify
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:auto"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+            </a>
           </div>
         </sc-if>
 
@@ -1176,6 +1266,7 @@ const L = {
   tabmindRepo: "https://github.com/thribhuvan003/tabmind",
   aquaRepo: "https://github.com/thribhuvan003/AquaVision-Web",
   aquaLive: "https://huggingface.co/spaces/mark2423432/AquaVision",
+  spotify: "https://open.spotify.com/user/gwvwbaulbyy3n7jzbiyjtp0hv",
 };
 
 const SQUIRCLE = 13;
@@ -1305,11 +1396,45 @@ const EDUCATION = [
     title: "B.Tech, Computer Science and Engineering",
     org: "Jawaharlal Nehru Technological University Anantapur (JNTUA)",
     when: "Aug 2022 – May 2026",
-    notes: ["CGPA 8.0/10.0.", "Final year — based in Bengaluru, India."],
+    notes: [
+      "Graduating May 2026 with a CGPA of 8.0 out of 10.",
+      "The database theory stopped being theory the day Tray had to guarantee that one food stall could never see another stall's orders, on the same server, with no way to get it wrong.",
+      "Four years of coursework I have actually had to use: how data is stored, how it is queried quickly, and how a system behaves when too many people arrive at once.",
+    ],
+  },
+  {
+    title: "How I learn",
+    org: "Self-directed, and usually started by something breaking",
+    when: "Ongoing",
+    notes: [
+      "I learn a tool by building something real with it, then reading its source when it does not behave the way I expected.",
+      "A component crashed in one of my projects, so I read the Svelte compiler until I found why. The fix I sent is now part of the framework.",
+      "A page in Tray was loading slowly. I learned how databases plan a query, and fixed it with an index instead of a rewrite.",
+    ],
   },
 ];
-// No salaried roles yet; the open-source record stands in its place rather than padding.
-const EXPERIENCE = [];
+const EXPERIENCE = [
+  {
+    title: "Open-source contributor",
+    org: "Svelte · Prisma · Supabase · SolidJS · Nitro · WXT",
+    when: "2026 – present",
+    notes: [
+      "13 pull requests merged into 11 upstream repositories, including a compiler fix in Svelte (88k stars) and a data-correctness fix in the Prisma client (47.6k stars).",
+      "Work is diagnostic: reproduce the failure, read the library source, and send the smallest correct diff — several fixes addressed cross-row data leakage, broken type generation, and sessions surviving sign-out.",
+      "Every change reviewed and landed by the project's own maintainers.",
+    ],
+  },
+  {
+    title: "Independent product engineering",
+    org: "Tray · Unhold · AquaVision",
+    when: "2025 – present",
+    notes: [
+      "Designed, built and operated three products end to end — multi-tenant Postgres with row-level security, server-verified payments, realtime order flow, and a CPU-only inference service.",
+      "Owned the whole path: schema and auth through CI, deployment and production debugging.",
+      "70+ Vitest tests on Tray and a 16-test pytest suite on AquaVision, because the bugs I care about are the ones users never see.",
+    ],
+  },
+];
 
 const GALLERY = [
   { src: "assets/photos/clip.mp4", poster: "assets/photos/clip-poster.jpg", title: "Playing guitar", kind: "Video", video: true, featured: true },
@@ -1826,6 +1951,7 @@ class Component extends DCLogic {
         background: "transparent", color: atRoot ? "var(--ink-faint)" : "var(--ink)",
         opacity: atRoot ? 0.4 : 1, cursor: "default",
       },
+      spotifyUrl: L.spotify,
       toggleTheme: () => this.setState({ theme: dark ? "light" : "dark" }),
       folderIsProjects: s.folder === "projects",
       folderIsAbout: s.folder === "about",
