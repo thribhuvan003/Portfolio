@@ -25,26 +25,32 @@
   a { color:inherit; text-decoration:none; }
   a:hover { color:var(--accent); }
   [data-os-theme="light"] {
-    --ink:#10233d; --ink-soft:rgba(16,35,61,0.60); --ink-faint:rgba(16,35,61,0.38); --wordmark:#5b544c; --wm-glow:rgba(140,128,110,0.55);
-    --hair:rgba(16,35,61,0.10); --glass:rgba(255,255,255,0.62); --glass-2:rgba(255,255,255,0.78);
-    --glass-line:rgba(255,255,255,0.72); --titlebar:rgba(246,246,244,0.80); --pane:rgba(255,255,255,0.60);
-    --sheet:rgba(252,252,251,0.80); --chip:rgba(255,255,255,0.60); --btn-face:rgba(255,255,255,0.92); --btn-face-hover:#ffffff; --btn-line:rgba(16,35,61,0.16); --accent:#0a68c9; --accent-soft:rgba(10,104,201,0.12);
-    --shadow:0 34px 88px rgba(18,45,80,0.18), 0 12px 30px rgba(18,45,80,0.10), 0 1px 0 rgba(255,255,255,0.95) inset, 0 0 0 1px rgba(18,45,80,0.05) inset;
+    /* macOS light: labelColor 85%, secondaryLabel 55%, tertiaryLabel 25% on a
+       neutral ground; separator 10%; systemBlue #007AFF. */
+    --ink:rgba(0,0,0,0.85); --ink-soft:rgba(0,0,0,0.55); --ink-faint:rgba(0,0,0,0.25); --wordmark:#5b544c; --wm-glow:rgba(140,128,110,0.55);
+    --hair:rgba(0,0,0,0.10); --glass:rgba(246,246,246,0.72); --glass-2:rgba(255,255,255,0.80);
+    --glass-line:rgba(255,255,255,0.70); --titlebar:rgba(236,236,236,0.82); --pane:rgba(246,246,246,0.66);
+    --sheet:rgba(255,255,255,0.78); --chip:rgba(0,0,0,0.05); --btn-face:rgba(255,255,255,0.92); --btn-face-hover:#ffffff; --btn-line:rgba(0,0,0,0.12);
+    --accent:#007AFF; --accent-soft:rgba(0,122,255,0.12);
+    --shadow:0 34px 88px rgba(0,0,0,0.18), 0 12px 30px rgba(0,0,0,0.10), 0 1px 0 rgba(255,255,255,0.95) inset, 0 0 0 1px rgba(0,0,0,0.05) inset;
     --dock:rgba(255,255,255,0.42); --dock-line:rgba(255,255,255,0.75);
-    --menubar:rgba(255,255,255,0.34); --menubar-ink:rgba(14,30,52,0.86);
+    --menubar:rgba(255,255,255,0.34); --menubar-ink:rgba(0,0,0,0.85);
     --chrome:linear-gradient(177deg,#9a9083 2%,#6b6155 18%,#332d26 42%,#7d7264 56%,#413a31 76%,#241f1a 100%);
     --chrome-glow:drop-shadow(0 18px 30px rgba(58,44,26,0.20)) drop-shadow(0 1px 0 rgba(255,255,255,0.75));
   }
   [data-os-theme="dark"] {
-    --ink:#eaf2fd; --ink-soft:rgba(226,238,252,0.62); --ink-faint:rgba(226,238,252,0.38); --wordmark:#dbe6f4; --wm-glow:rgba(150,200,250,0.6);
-    --hair:rgba(175,210,246,0.16); --glass:rgba(34,64,104,0.62); --glass-2:rgba(20,42,72,0.78);
-    --glass-line:rgba(190,220,250,0.20); --titlebar:rgba(33,58,92,0.80); --pane:rgba(14,32,56,0.60);
-    --sheet:rgba(16,32,54,0.80); --chip:rgba(170,208,248,0.18); --btn-face:rgba(72,96,132,0.55); --btn-face-hover:rgba(88,116,156,0.72); --btn-line:rgba(190,220,250,0.26); --accent:#6fb7f5; --accent-soft:rgba(111,183,245,0.16);
-    --shadow:0 34px 88px rgba(1,6,14,0.60), 0 12px 30px rgba(1,6,14,0.38), 0 1px 0 rgba(190,220,250,0.14) inset, 0 0 0 1px rgba(0,0,0,0.30) inset;
-    --dock:rgba(22,45,76,0.46); --dock-line:rgba(190,220,250,0.18);
-    --menubar:rgba(8,20,38,0.40); --menubar-ink:rgba(233,242,253,0.88);
-    --chrome:linear-gradient(177deg,#ffffff 3%,#d3e6f8 22%,#6d95bd 44%,#ffffff 58%,#94b8d8 74%,#48699093 100%);
-    --chrome-glow:drop-shadow(0 22px 36px rgba(0,0,0,0.55)) drop-shadow(0 1px 0 rgba(255,255,255,0.35));
+    /* macOS dark: windowBackground #323232, controlBackground #1E1E1E,
+       labelColor 85% white, separator 15%; systemBlue #0A84FF. */
+    --ink:rgba(255,255,255,0.85); --ink-soft:rgba(255,255,255,0.55); --ink-faint:rgba(255,255,255,0.25); --wordmark:#e8e8ea; --wm-glow:rgba(190,190,196,0.5);
+    --hair:rgba(255,255,255,0.15); --glass:rgba(50,50,50,0.72); --glass-2:rgba(30,30,30,0.80);
+    --glass-line:rgba(255,255,255,0.12); --titlebar:rgba(58,58,58,0.82); --pane:rgba(40,40,40,0.66);
+    --sheet:rgba(30,30,30,0.78); --chip:rgba(255,255,255,0.08); --btn-face:rgba(255,255,255,0.14); --btn-face-hover:rgba(255,255,255,0.22); --btn-line:rgba(255,255,255,0.16);
+    --accent:#0A84FF; --accent-soft:rgba(10,132,255,0.18);
+    --shadow:0 34px 88px rgba(0,0,0,0.62), 0 12px 30px rgba(0,0,0,0.40), 0 1px 0 rgba(255,255,255,0.10) inset, 0 0 0 1px rgba(0,0,0,0.40) inset;
+    --dock:rgba(58,58,58,0.52); --dock-line:rgba(255,255,255,0.14);
+    --menubar:rgba(28,28,28,0.44); --menubar-ink:rgba(255,255,255,0.85);
+    --chrome:linear-gradient(177deg,#ffffff 3%,#d8d8dc 22%,#8e8e93 44%,#ffffff 58%,#b8b8bd 74%,#636366 100%);
+    --chrome-glow:drop-shadow(0 22px 36px rgba(0,0,0,0.55)) drop-shadow(0 1px 0 rgba(255,255,255,0.28));
   }
   @keyframes wm-draw {
     from { -webkit-mask-position:112% 0; mask-position:112% 0; }
@@ -89,7 +95,7 @@
     background-position: -1px -1px;
   }
   [data-os-theme="light"] .os-dotgrid { color: rgba(74, 62, 46, 0.13); }
-  [data-os-theme="dark"]  .os-dotgrid { color: rgba(180, 214, 250, 0.09); }
+  [data-os-theme="dark"]  .os-dotgrid { color: rgba(255, 255, 255, 0.07); }
   /* Hero subject: cutout bleeds off the bottom edge, in front of the wordmark (Miller composition) */
   .os-hero-subject {
     position: absolute;
@@ -281,7 +287,7 @@
      visible the moment the window opens and stays there. */
   .os-about-grid { display: grid; grid-template-columns: minmax(0,1fr) 236px; gap: 32px; align-items: start; }
   .os-about-photo { height: 300px; position: sticky; top: 0; }
-  .os-about-h { font-size: 40px; }
+  .os-about-h { font-size: 27px; }
   .os-projects-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 16px; }
   .os-oss-layout { display: grid; grid-template-columns: 250px 1fr; gap: 24px; }
   .os-oss-row { display: grid; grid-template-columns: 150px 1fr 16px; align-items: center; gap: 12px; }
@@ -483,7 +489,7 @@
     .os-root[data-has-win="1"] .os-chrome-theme { left: max(12px, var(--safe-l)); right: auto; top: auto; }
     .os-about-grid { grid-template-columns: minmax(0,1fr) 200px; gap: 22px; }
     .os-about-photo { height: 260px; position: sticky; top: 0; }
-    .os-about-h { font-size: 32px; }
+    .os-about-h { font-size: 24px; }
     .os-oss-layout { grid-template-columns: 1fr; gap: 16px; }
     .os-resume-split { grid-template-columns: 1fr; }
     .os-gallery-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
@@ -712,7 +718,7 @@
           <div class="os-about-grid">
             <div>
               <p class="os-eyebrow">Full-stack engineer · Bengaluru</p>
-              <h2 class="os-about-h" style="margin:0;max-width:19ch;color:var(--ink);font-weight:700;line-height:1.06;letter-spacing:-0.03em;text-wrap:pretty">I ship whole products — and send fixes back into the frameworks they run on.</h2>
+              <h2 class="os-about-h" style="margin:0;max-width:24ch;color:var(--ink);font-weight:700;line-height:1.06;letter-spacing:-0.03em;text-wrap:pretty">I ship whole products — and send fixes back into the frameworks they run on.</h2>
               <p style="max-width:54ch;margin:15px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.68">I'm <strong style="color:var(--ink);font-weight:650">Thribhuvan</strong>. I design, build and operate full-stack systems end to end: multi-tenant SaaS with row-level tenant isolation, verified payment flows, authentication, and AI-assisted workflows that keep a human in the loop.</p>
               <p style="max-width:54ch;margin:12px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.68">When a dependency breaks in production, I read its source and fix it there. Those fixes now ship inside <strong style="color:var(--ink);font-weight:650">Svelte, Prisma, SvelteKit, SolidJS, Nitro and Supabase</strong> — {{ ossRepoCount }} upstream projects, every diff read and merged by the maintainers who own that code.</p>
               <p style="max-width:54ch;margin:12px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.68">Away from the editor I read Vedanta and work to Mozart.</p>
@@ -1325,7 +1331,7 @@ const APPS = [
 ];
 
 const GEOM = {
-  about:   { w: 660, h: 430, x: 150, y: 110, label: "About Me" },
+  about:   { w: 700, h: 468, x: 150, y: 110, label: "About Me" },
   skills:  { w: 740, h: 500, x: 160, y: 96,  label: "Background" },
   work:    { w: 748, h: 498, x: 130, y: 84,  label: "Workspace" },
   images:  { w: 730, h: 500, x: 180, y: 92,  label: "Photos" },
@@ -1730,14 +1736,14 @@ class Component extends DCLogic {
     const wallpaper = {
       position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none",
       background: dark
-        ? "radial-gradient(112% 86% at 50% -14%, #1f4671 0%, #143459 36%, #0a2040 66%, #050e1c 100%)"
+        ? "radial-gradient(112% 86% at 50% -14%, #3a3a3c 0%, #2c2c2e 38%, #1c1c1e 68%, #101012 100%)"
         : "radial-gradient(108% 84% at 50% -16%, #fffefc 0%, #f7f4ef 40%, #ece7de 100%)",
       transition: "background 500ms ease",
     };
     const wallpaperWave = {
       position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none",
       background: dark
-        ? "radial-gradient(64% 40% at 50% 116%, rgba(3,10,20,0.66), transparent 74%)"
+        ? "radial-gradient(64% 40% at 50% 116%, rgba(0,0,0,0.55), transparent 74%)"
         : "radial-gradient(64% 40% at 50% 116%, rgba(150,136,116,0.32), transparent 74%)",
       transition: "background 500ms ease",
     };
