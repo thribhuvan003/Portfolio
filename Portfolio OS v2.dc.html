@@ -834,7 +834,7 @@
                 <div style="display:grid;gap:14px">
                   <section class="os-card os-about-hero">
                     <div class="os-about-portrait">
-                      <img src="assets/profile/thribhuvan-portrait.jpg" alt="Thribhuvan P" width="560" height="560" loading="lazy" decoding="async">
+                      <img src="assets/profile/paint-3-oil.jpg" alt="Thribhuvan P" width="560" height="560" loading="lazy" decoding="async">
                     </div>
                     <div style="min-width:0">
                       <p class="os-eyebrow">About Me</p>
@@ -1344,10 +1344,10 @@ const APPS = [
 ];
 
 const GEOM = {
-  about:   { w: 720, h: 470, x: 150, y: 110, label: "About Me" },
-  skills:  { w: 800, h: 540, x: 160, y: 96,  label: "Education & Experience" },
-  work:    { w: 820, h: 545, x: 130, y: 84,  label: "Workspace" },
-  images:  { w: 800, h: 540, x: 180, y: 92,  label: "Photos" },
+  about:   { w: 660, h: 430, x: 150, y: 110, label: "About Me" },
+  skills:  { w: 740, h: 500, x: 160, y: 96,  label: "Education & Experience" },
+  work:    { w: 748, h: 498, x: 130, y: 84,  label: "Workspace" },
+  images:  { w: 730, h: 500, x: 180, y: 92,  label: "Photos" },
   spotify: { w: 340, h: 452, x: 940, y: 130, label: "Spotify" },
   contact: { w: 600, h: 430, x: 420, y: 150, label: "Contact" },
 };
@@ -1827,7 +1827,7 @@ class Component extends DCLogic {
           background: "transparent", zIndex: 10,
         } : {
           position: "relative", flex: 1, minHeight: 0, overflow: "auto",
-          padding: w.id === "work" ? 0 : (phone ? 15 : 22),
+          padding: w.id === "work" ? 0 : (phone ? 14 : 19),
           background: "var(--sheet)", scrollbarWidth: "thin",
         },
         isAbout: w.id === "about", isWorkspace: w.id === "work",
@@ -1985,13 +1985,13 @@ class Component extends DCLogic {
       windows, dock, folders, atRoot, notRoot: !atRoot,
       splitStyle: {
         display: "grid",
-        gridTemplateColumns: (atRoot || phone) ? "minmax(0,1fr)" : "172px minmax(0,1fr)",
+        gridTemplateColumns: (atRoot || phone) ? "minmax(0,1fr)" : "158px minmax(0,1fr)",
         flex: 1, minHeight: 0,
       },
       contentStyle: {
         minWidth: 0, overflow: atRoot ? "hidden" : "auto",
         background: atRoot ? "transparent" : "var(--sheet)",
-        padding: atRoot ? "8px 4px" : (phone ? "13px" : "17px"),
+        padding: atRoot ? "8px 4px" : (phone ? "12px" : "15px"),
         display: atRoot ? "grid" : "block",
         alignContent: atRoot ? "center" : "start",
         justifyContent: atRoot ? "center" : "stretch",
