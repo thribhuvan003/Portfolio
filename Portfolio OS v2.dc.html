@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -27,11 +27,11 @@
   [data-os-theme="light"] {
     /* macOS light: labelColor 85%, secondaryLabel 55%, tertiaryLabel 25% on a
        neutral ground; separator 10%; systemBlue #007AFF. */
-    --ink:rgba(0,0,0,0.85); --ink-soft:rgba(0,0,0,0.55); --ink-faint:rgba(0,0,0,0.25); --wordmark:#5b544c; --wm-glow:rgba(140,128,110,0.55);
+    --ink:rgba(0,0,0,0.85); --ink-soft:rgba(0,0,0,0.55); --ink-faint:rgba(0,0,0,0.55); --wordmark:#5b544c; --wm-glow:rgba(140,128,110,0.55);
     --hair:rgba(0,0,0,0.10); --glass:rgba(246,246,246,0.72); --glass-2:rgba(255,255,255,0.80);
     --glass-line:rgba(255,255,255,0.70); --titlebar:rgba(236,236,236,0.82); --pane:rgba(246,246,246,0.66);
     --sheet:rgba(255,255,255,0.78); --chip:rgba(0,0,0,0.05); --btn-face:rgba(255,255,255,0.92); --btn-face-hover:#ffffff; --btn-line:rgba(0,0,0,0.12);
-    --accent:#007AFF; --accent-soft:rgba(0,122,255,0.12);
+    --accent:#007AFF; --accent-soft:rgba(0,122,255,0.12); --accent-solid:#0063D1;
     --shadow:0 34px 88px rgba(0,0,0,0.18), 0 12px 30px rgba(0,0,0,0.10), 0 1px 0 rgba(255,255,255,0.95) inset, 0 0 0 1px rgba(0,0,0,0.05) inset;
     --dock:rgba(255,255,255,0.42); --dock-line:rgba(255,255,255,0.75);
     --menubar:rgba(255,255,255,0.34); --menubar-ink:rgba(0,0,0,0.85);
@@ -41,11 +41,11 @@
   [data-os-theme="dark"] {
     /* macOS dark: windowBackground #323232, controlBackground #1E1E1E,
        labelColor 85% white, separator 15%; systemBlue #0A84FF. */
-    --ink:rgba(255,255,255,0.85); --ink-soft:rgba(255,255,255,0.55); --ink-faint:rgba(255,255,255,0.25); --wordmark:#e8e8ea; --wm-glow:rgba(190,190,196,0.5);
+    --ink:rgba(255,255,255,0.85); --ink-soft:rgba(255,255,255,0.55); --ink-faint:rgba(255,255,255,0.60); --wordmark:#e8e8ea; --wm-glow:rgba(190,190,196,0.5);
     --hair:rgba(255,255,255,0.15); --glass:rgba(50,50,50,0.72); --glass-2:rgba(30,30,30,0.80);
-    --glass-line:rgba(255,255,255,0.12); --titlebar:rgba(58,58,58,0.82); --pane:rgba(40,40,40,0.66);
+    --glass-line:rgba(255,255,255,0.22); --titlebar:rgba(58,58,58,0.82); --pane:rgba(40,40,40,0.66);
     --sheet:rgba(30,30,30,0.78); --chip:rgba(255,255,255,0.08); --btn-face:rgba(255,255,255,0.14); --btn-face-hover:rgba(255,255,255,0.22); --btn-line:rgba(255,255,255,0.16);
-    --accent:#0A84FF; --accent-soft:rgba(10,132,255,0.18);
+    --accent:#0A84FF; --accent-soft:rgba(10,132,255,0.18); --accent-solid:#0B5FCC;
     --shadow:0 34px 88px rgba(0,0,0,0.62), 0 12px 30px rgba(0,0,0,0.40), 0 1px 0 rgba(255,255,255,0.10) inset, 0 0 0 1px rgba(0,0,0,0.40) inset;
     --dock:rgba(58,58,58,0.52); --dock-line:rgba(255,255,255,0.14);
     --menubar:rgba(28,28,28,0.44); --menubar-ink:rgba(255,255,255,0.85);
@@ -150,6 +150,10 @@
     mask-image: radial-gradient(ellipse 52% 60% at 50% 54%, #000 12%, rgba(0,0,0,0.86) 32%, rgba(0,0,0,0.52) 50%, rgba(0,0,0,0.20) 68%, rgba(0,0,0,0.05) 84%, transparent 96%);
     filter: brightness(0.86) saturate(1.04);
   }
+  [data-os-theme="dark"] .os-about-photo img,
+  [data-os-theme="dark"] .os-about-portrait img {
+    filter: brightness(0.82) saturate(1.02);
+  }
   @keyframes portrait-dissolve {
     0%   { opacity: 0; }
     9%   { opacity: 1; }
@@ -213,7 +217,7 @@
   }
   .os-win-frame {
     z-index: 200;
-    animation: win-open 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation: win-open 260ms cubic-bezier(0.22, 1, 0.36, 1);
   }
   @keyframes win-open {
     from { opacity: 0; transform: translateY(10px) scale(0.965); }
@@ -390,7 +394,8 @@
   .os-about-stats { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; margin-top: 20px; }
   .os-about-stat { display: grid; gap: 2px; border: 1px solid var(--hair); border-radius: 11px; background: var(--chip); padding: 11px 13px; }
   .os-about-stat strong { color: var(--ink); font-size: 20px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; }
-  .os-about-stat span { color: var(--ink-soft); font-size: 10.5px; font-weight: 540; line-height: 1.35; }
+  .os-about-stat > span { color: var(--ink-soft); font-size: 10.5px; font-weight: 540; line-height: 1.35; }
+  .os-about-stat strong span { font: inherit; color: inherit; letter-spacing: inherit; }
   .os-spotify-cta { display: flex; align-items: center; gap: 9px; margin-top: auto; min-height: 40px; border: 1px solid transparent; border-radius: 999px; background: #1DB954; padding: 10px 15px; color: #fff; font-size: 12.5px; font-weight: 640; transition: filter 140ms ease, transform 140ms ease; }
   .os-spotify-cta:hover { filter: brightness(1.06); transform: translateY(-1px); color: #fff; }
   .os-contact-row { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -411,7 +416,7 @@
      stray border on a filled button, so give it its own shadow. */
   .os-chip-btn.is-primary {
     border-color: transparent;
-    background: var(--accent);
+    background: var(--accent-solid);
     color: #fff;
     box-shadow: 0 10px 24px rgba(10, 104, 201, 0.32), 0 2px 6px rgba(10, 104, 201, 0.22);
     -webkit-backdrop-filter: none;
@@ -424,6 +429,19 @@
   .os-win-body-pad.is-launcher { padding: 0 !important; background: transparent !important; }
   .os-project-row { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 12px; }
   /* Visible 12–14px dots, but large touch hit-area so mobile can close */
+  .os-traffic { position: relative; }
+  .os-traffic::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 44px;
+    height: 44px;
+    transform: translate(-50%, -50%);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .os-traffic::after { width: 22px; height: 22px; }
+  }
   .os-traffic {
     position: relative;
     width: 12px;
@@ -540,8 +558,8 @@
       right: max(10px, var(--safe-r));
       top: max(10px, var(--safe-t));
       bottom: auto;
-      transform: scale(0.92);
-      transform-origin: top right;
+      width: 44px;
+      height: 44px;
     }
     .os-root[data-has-win="1"] .os-chrome-theme { opacity: 0.95; }
     .os-root[data-has-win="1"] .os-chrome-spotify { opacity: 0; pointer-events: none; }
@@ -564,7 +582,7 @@
       padding: 0;
       z-index: 45;
     }
-    .os-chip-btn { min-height: 38px; padding: 0 14px; font-size: 12px; }
+    .os-chip-btn { min-height: 44px; padding: 0 15px; font-size: 12.5px; }
     .os-traffic {
       width: 13px;
       height: 13px;
@@ -628,7 +646,7 @@
     .os-chrome-spotify .os-sp-title { font-size: 11.5px !important; }
     .os-chrome-spotify .os-sp-sub { font-size: 10px !important; }
     .os-sp-wave { width: 38px; overflow: hidden; }
-    .os-chip-btn { min-height: 34px !important; padding: 0 11px !important; font-size: 11.5px !important; gap: 6px !important; }
+    .os-chip-btn { min-height: 44px !important; padding: 0 14px !important; font-size: 12px !important; gap: 7px !important; }
     .os-chrome-email { gap: 6px !important; }
   }
 
@@ -651,14 +669,14 @@
   <div aria-hidden="true" style="position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0.035;mix-blend-mode:overlay;background-image:url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;);background-size:180px 180px"></div>
   <div aria-hidden="true" class="os-dotgrid"></div>
 
-  <section data-screen-label="Desktop hero" class="os-hero" style="position:absolute;z-index:2;inset:0;display:grid;align-content:center;justify-content:stretch;justify-items:stretch;pointer-events:none">
+  <main><section data-screen-label="Desktop hero" class="os-hero" style="position:absolute;z-index:2;inset:0;display:grid;align-content:center;justify-content:stretch;justify-items:stretch;pointer-events:none">
     <div style="display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;container-type:inline-size">
       <p data-wm-eyebrow="true" class="os-hero-eyebrow" style="margin:0;color:var(--ink-soft);font-family:'Geist Mono',monospace;font-size:12px;font-weight:600;letter-spacing:0.5em;text-transform:uppercase;text-indent:0.5em;animation:wm-rise 0.7s cubic-bezier(0.16,1,0.3,1) 0.1s both">Hi, I’m</p>
       <h1 data-wm="true" class="os-hero-title" style="display:block;width:100%;margin:0;font-family:'Grand Hotel',cursive;text-align:center;font-weight:400;letter-spacing:0.006em;line-height:1;color:var(--wordmark);-webkit-mask-image:linear-gradient(90deg,#000 0%,#000 28%,rgba(0,0,0,0.55) 36%,rgba(0,0,0,0.18) 43%,transparent 50%);mask-image:linear-gradient(90deg,#000 0%,#000 28%,rgba(0,0,0,0.55) 36%,rgba(0,0,0,0.18) 43%,transparent 50%);-webkit-mask-size:300% 100%;mask-size:300% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;animation:wm-draw 1.9s cubic-bezier(0.32,0.02,0.18,1) 0.4s both, wm-glow 3.2s ease-out 0.4s both">Thribhuvan</h1>
       <p data-wm-sub="true" class="os-hero-sub" style="display:flex;align-items:center;justify-content:center;gap:1px;min-height:24px;margin:0;max-width:56ch;text-align:center;color:var(--ink-soft);font-size:15.5px;font-weight:500;line-height:1.5;letter-spacing:-0.008em;animation:wm-rise 0.8s cubic-bezier(0.16,1,0.3,1) 2.2s both"><span>{{ typed }}</span><span aria-hidden="true" style="display:inline-block;width:1.5px;height:17px;margin-left:2px;background:var(--ink-faint);animation:caret-blink 1.06s step-end infinite"></span></p>
     </div>
     <span></span>
-  </section>
+  </section></main>
 
   <div class="os-hero-subject" aria-hidden="true">
     <img src="assets/profile/paint-1-sketch.jpg" alt="" decoding="async" fetchpriority="high" style="--i:0">
@@ -1192,7 +1210,7 @@
             <!-- Spotify's official embed. It plays a preview for anyone, and the full
                  track for a visitor already signed in to Spotify in this browser. -->
             <iframe title="Spotify player" style="border-radius:12px;border:0;width:100%;height:352px;flex:1 1 auto;min-height:232px"
-                    src="{{ spEmbed }}" loading="lazy"
+                    src="{{ spEmbed }}"
                     allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
 
             <a href="{{ spotifyUrl }}" target="_blank" rel="noreferrer" class="os-spotify-cta">
@@ -1335,7 +1353,7 @@ const GEOM = {
   skills:  { w: 740, h: 500, x: 160, y: 96,  label: "Background" },
   work:    { w: 748, h: 498, x: 130, y: 84,  label: "Workspace" },
   images:  { w: 730, h: 500, x: 180, y: 92,  label: "Photos" },
-  spotify: { w: 340, h: 452, x: 940, y: 130, label: "Spotify" },
+  spotify: { w: 400, h: 560, x: 900, y: 120, label: "Spotify" },
   contact: { w: 600, h: 430, x: 420, y: 150, label: "Contact" },
 };
 
