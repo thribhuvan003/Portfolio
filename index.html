@@ -84,6 +84,20 @@
   .os-root { --dock-h: 76px; --safe-t: env(safe-area-inset-top, 0px); --safe-b: env(safe-area-inset-bottom, 0px); --safe-l: env(safe-area-inset-left, 0px); --safe-r: env(safe-area-inset-right, 0px); }
   .os-hero { padding: clamp(24px, 4vh, 48px) clamp(20px, 5vw, 132px) clamp(400px, 62vh, 620px); }
   .os-hero-title { font-size: min(19cqw, 30vh, 258px); }
+  /* Static role line. The typewriter below rotates; this never moves, so the
+     role and availability are legible in the first second. */
+  .os-hero-role {
+    margin: 4px 0 0;
+    max-width: 78ch;
+    text-align: center;
+    color: var(--ink);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    line-height: 1.5;
+    animation: wm-rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.45s both;
+  }
+  @media (prefers-reduced-motion: reduce) { .os-hero-role { animation: none; } }
   /* Subtle dot grid over the wallpaper */
   .os-dotgrid {
     position: absolute;
@@ -530,6 +544,7 @@
     .os-gallery-grid { grid-template-columns: repeat(2, minmax(0,1fr)) !important; }
     .os-hero-title { font-size: min(18vw, 16vh, 92px) !important; }
     .os-hero-sub { font-size: 13.5px !important; max-width: 34ch !important; }
+    .os-hero-role { font-size: 12px; max-width: 38ch; }
     .os-hero-eyebrow { font-size: 10.5px !important; letter-spacing: 0.32em !important; }
     /* Phone corners: Resume/Email top-left, Last played top-right (as on the
        reference site), theme toggle bottom-left. Nothing overlaps. */
@@ -673,7 +688,8 @@
     <div style="display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;container-type:inline-size">
       <p data-wm-eyebrow="true" class="os-hero-eyebrow" style="margin:0;color:var(--ink-soft);font-family:'Geist Mono',monospace;font-size:12px;font-weight:600;letter-spacing:0.5em;text-transform:uppercase;text-indent:0.5em;animation:wm-rise 0.7s cubic-bezier(0.16,1,0.3,1) 0.1s both">Hi, I’m</p>
       <h1 data-wm="true" class="os-hero-title" style="display:block;width:100%;margin:0;font-family:'Grand Hotel',cursive;text-align:center;font-weight:400;letter-spacing:0.006em;line-height:1;color:var(--wordmark);-webkit-mask-image:linear-gradient(90deg,#000 0%,#000 28%,rgba(0,0,0,0.55) 36%,rgba(0,0,0,0.18) 43%,transparent 50%);mask-image:linear-gradient(90deg,#000 0%,#000 28%,rgba(0,0,0,0.55) 36%,rgba(0,0,0,0.18) 43%,transparent 50%);-webkit-mask-size:300% 100%;mask-size:300% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;animation:wm-draw 1.9s cubic-bezier(0.32,0.02,0.18,1) 0.4s both, wm-glow 3.2s ease-out 0.4s both">Thribhuvan</h1>
-      <p data-wm-sub="true" class="os-hero-sub" style="display:flex;align-items:center;justify-content:center;gap:1px;min-height:24px;margin:0;max-width:56ch;text-align:center;color:var(--ink-soft);font-size:15.5px;font-weight:500;line-height:1.5;letter-spacing:-0.008em;animation:wm-rise 0.8s cubic-bezier(0.16,1,0.3,1) 2.2s both"><span>{{ typed }}</span><span aria-hidden="true" style="display:inline-block;width:1.5px;height:17px;margin-left:2px;background:var(--ink-faint);animation:caret-blink 1.06s step-end infinite"></span></p>
+      <p class="os-hero-role">Final-year CS in Bengaluru · Open to new-grad engineering roles from 2026</p>
+      <p data-wm-sub="true" class="os-hero-sub" style="display:flex;align-items:center;justify-content:center;gap:1px;min-height:24px;margin:0;max-width:56ch;text-align:center;color:var(--ink-soft);font-size:15.5px;font-weight:500;line-height:1.5;letter-spacing:-0.008em;animation:wm-rise 0.8s cubic-bezier(0.16,1,0.3,1) 0.7s both"><span>{{ typed }}</span><span aria-hidden="true" style="display:inline-block;width:1.5px;height:17px;margin-left:2px;background:var(--ink-faint);animation:caret-blink 1.06s step-end infinite"></span></p>
     </div>
     <span></span>
   </section></main>
@@ -737,9 +753,9 @@
             <div>
               <p class="os-eyebrow">Full-stack engineer · Bengaluru</p>
               <h2 class="os-about-h" style="margin:0;max-width:24ch;color:var(--ink);font-weight:700;line-height:1.06;letter-spacing:-0.03em;text-wrap:pretty">I ship whole products — and send fixes back into the frameworks they run on.</h2>
-              <p style="max-width:54ch;margin:15px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.68">I'm <strong style="color:var(--ink);font-weight:650">Thribhuvan</strong>. I design, build and operate full-stack systems end to end: multi-tenant SaaS with row-level tenant isolation, verified payment flows, authentication, and AI-assisted workflows that keep a human in the loop.</p>
-              <p style="max-width:54ch;margin:12px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.68">When a dependency breaks in production, I read its source and fix it there. Those fixes now ship inside <strong style="color:var(--ink);font-weight:650">Svelte, Prisma, SvelteKit, SolidJS, Nitro and Supabase</strong> — {{ ossRepoCount }} upstream projects, every diff read and merged by the maintainers who own that code.</p>
-              <p style="max-width:54ch;margin:12px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.68">Away from the editor I read Vedanta and work to Mozart.</p>
+              <p style="max-width:54ch;margin:15px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.68">I'm <strong style="color:var(--ink);font-weight:650">Thribhuvan</strong>. I build full-stack systems end to end: multi-tenant SaaS with row-level tenant isolation, server-verified payment flows, and drafting pipelines that stop for human review before anything is sent.</p>
+              <p style="max-width:54ch;margin:12px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.68">When a dependency breaks in production, I read its source and fix it there. Those fixes now ship inside <strong style="color:var(--ink);font-weight:650">Svelte, Prisma, SvelteKit, SolidJS, Nitro and Supabase</strong> — eleven repositories in total, every diff read and merged by the maintainers who own that code.</p>
+              <p style="max-width:54ch;margin:12px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.68"></p>
 
               <div class="os-about-stats">
                 <div class="os-about-stat"><strong>{{ ossCount }}</strong><span>Merged upstream PRs</span></div>
@@ -1225,7 +1241,7 @@
           <div style="display:grid;gap:14px">
             <div>
               <p style="margin:0 0 8px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">Contact</p>
-              <h2 style="margin:0;color:var(--ink);font-size:31px;font-weight:700;line-height:1.06;letter-spacing:-0.03em">Have something thoughtful to build or fix?</h2>
+              <h2 style="margin:0;color:var(--ink);font-size:31px;font-weight:700;line-height:1.06;letter-spacing:-0.03em">Looking for a new-grad software engineering role, from 2026.</h2>
               <p style="margin:12px 0 0;color:var(--ink-soft);font-size:13.5px;line-height:1.55">Email is the clearest way to reach me. GitHub and LinkedIn are here for more context.</p>
             </div>
             <a href="mailto:thribhuvan003@gmail.com" style="display:grid;grid-template-columns:20px 1fr 15px;align-items:center;gap:12px;border:1px solid var(--hair);border-radius:12px;background:var(--glass);padding:14px;color:var(--ink);font-size:13px;font-weight:560">
@@ -1333,9 +1349,9 @@ const L = {
 const SQUIRCLE = 13;
 
 const PHRASES = [
+  "Thirteen of my patches are merged into Svelte, Prisma, SvelteKit and Supabase.",
+  "I built a multi-tenant ordering system on Postgres row-level security.",
   "I read the source before I trust the library.",
-  "My fixes are running inside Svelte, SvelteKit, Prisma and Supabase.",
-  "I build multi-tenant systems that take real payments on real Postgres.",
 ];
 
 const APPS = [
@@ -1367,7 +1383,7 @@ const PROJECTS = [
     bullets: [
       "Built a full-stack case workspace with Next.js, TypeScript, Supabase and Express that records what the bank actually said and organises the user’s evidence into a reviewable case file.",
       "Designed a 4-agent drafting pipeline on a deterministic state machine that produces a case-aware letter draft. The tool never contacts a bank and never sends anything — the user reviews, signs and sends it themselves, and escalation is gated on proof the previous letter went out.",
-      "Secured document handling with multimodal scan checks, PII redaction, forgery-risk scoring, and append-only consent and audit logs in Postgres.",
+      "Handled uploaded documents with PII redaction and append-only consent and audit logs in Postgres, plus heuristic checks that flag a scan for manual review rather than judging it.",
     ],
     stack: "Next.js 16, TypeScript, React, Node.js, Express, Supabase, REST APIs",
   },
@@ -1377,14 +1393,14 @@ const PROJECTS = [
     image: "assets/shots/tray-1.png", live: L.trayLive, repo: L.trayRepo,
     bullets: [
       "Delivered multi-tenant isolation with PostgreSQL row-level security on a single Next.js deployment, preventing cross-tenant data access across stalls and canteens.",
-      "Established dual payment infrastructure with P2P UPI (no platform fee) and HMAC-verified Razorpay webhooks, resulting in zero duplicate order settlements.",
-      "Accelerated order visibility to under 1 second across customer, kitchen and admin clients via Supabase Realtime, with Redis rate limits and 70+ Vitest tests.",
+      "Built two payment paths — P2P UPI with no platform fee, and Razorpay webhooks verified by HMAC and made idempotent so the same webhook cannot settle an order twice.",
+      "Pushed order state to the customer, kitchen and admin clients over Supabase Realtime with a polling fallback, behind Redis rate limits and a 70-test Vitest suite.",
     ],
     stack: "Next.js 15, TypeScript, PostgreSQL, Supabase, Razorpay, Redis, Vercel, CI",
   },
   {
     name: "AquaVision", summary: "Underwater image restoration that runs on CPU alone.",
-    detail: "A MobileNetV2 router across 9 degradation types, about 0.8s per image on CPU. Scored on a 48-image before/after benchmark rather than cherry-picked demos. The hosted demo takes ~30s to wake on first request.",
+    detail: "A MobileNetV2 router across 9 degradation types, about 0.8s per image on CPU. Scored on a 48-image before/after benchmark rather than cherry-picked demos.",
     image: "assets/shots/aqua-grid.png", live: L.aquaLive, repo: L.aquaRepo,
     bullets: [
       "Deployed a CPU-only enhancement service with Flask, PyTorch and OpenCV, processing images in about 0.8 s without GPU or paid inference cost.",
@@ -1445,7 +1461,7 @@ const TOOL_GROUPS = [
 // syllabus, and this section sits on the page a recruiter skims for proof.
 const LEARNING = [
   { title: "Compilers and language tooling", note: "Reading Svelte and SvelteKit internals is where the merged compiler and type-generation fixes came from.", slug: "svelte" },
-  { title: "Postgres at scale — indexes, RLS, query plans", note: "Row-level security and partial indexes as they behave under a real multi-tenant load, not as coursework.", slug: "postgresql" },
+  { title: "Postgres under multi-tenant load — RLS, indexes, query plans", note: "Row-level security and partial indexes as they behave under multi-tenant load.", slug: "postgresql" },
   { title: "Idempotency and retry safety", note: "Razorpay webhook handling verified by HMAC, built so an order can never settle twice.", slug: "redis" },
 ];
 
@@ -1455,11 +1471,11 @@ const EDUCATION = [
   {
     title: "B.Tech, Computer Science and Engineering",
     org: "Jawaharlal Nehru Technological University Anantapur (JNTUA)",
-    when: "Aug 2022 – May 2026",
+    when: "Aug 2022 – 2026",
     notes: [
-      "Graduating May 2026 with a CGPA of 8.0 out of 10.",
+      "Graduating in 2026 with a CGPA of 8.0 out of 10.",
       "The database theory stopped being theory the day Tray had to guarantee that one food stall could never see another stall’s orders, on the same server, with no way to get it wrong.",
-      "Four years of material I have actually had to use: how data is stored, how it is queried quickly, and how a system behaves when too many people arrive at once.",
+      
     ],
   },
 ];
@@ -1470,9 +1486,9 @@ const EXPERIENCE = [
     org: "Svelte · Prisma · Supabase · SolidJS · Nitro · WXT",
     when: "2026",
     notes: [
-      "My code runs inside Svelte, Prisma, SvelteKit, SolidJS, Nitro and Supabase. Thirteen patches so far.",
+      "Thirteen patches merged across eleven repositories, including Svelte, Prisma, SvelteKit, SolidJS, Nitro and Supabase.",
       "One fix stopped a database driver from returning another row’s data. Another stopped a login session from surviving after sign-out.",
-      "No paid job yet. The closest thing is open source — my code gets reviewed and merged by maintainers who have never met me.",
+      "No employer has reviewed my code yet — maintainers at Svelte, Prisma and Supabase have. Every patch was argued through in public before it merged.",
     ],
   },
 ];
@@ -1519,7 +1535,7 @@ const REPO_META = {
   "nitrojs/nitro": { stars: "11.1k", what: "Server toolkit" },
   "wxt-dev/wxt": { stars: "10.3k", what: "Web extension framework" },
   "supabase/supabase-js": { stars: "4.5k", what: "Official Supabase client" },
-  "sugarlabs/musicblocks": { stars: "860", what: "Sugar Labs · GSoC org" },
+  "sugarlabs/musicblocks": { stars: "860", what: "Educational music programming" },
   "supabase/ssr": { stars: "202", what: "Supabase SSR auth" },
 };
 
@@ -1643,7 +1659,7 @@ class Component extends DCLogic {
       return;
     }
     // Starts just as the subtitle finishes rising in (2.2s delay + 0.8s duration).
-    this._timer = window.setTimeout(() => this.type(), 2600);
+    this._timer = window.setTimeout(() => this.type(), 900);
   }
 
   componentWillUnmount() {
