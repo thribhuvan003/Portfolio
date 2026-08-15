@@ -1772,8 +1772,6 @@ class Component extends DCLogic {
         const launcher = w.id === "work" && s.folder === null && !w.maximized;
         const lw = Math.min(340, Math.max(292, vp.w - 32));
         const lh = phone ? Math.min(356, Math.max(316, vp.h - 140)) : 336;
-        const vw = vp.w;
-        const vh = vp.h;
         const sheet = !!w.maximized;
         return {
         // Finder shows the open folder’s name in the title bar, not the app’s.
@@ -1784,14 +1782,20 @@ class Component extends DCLogic {
           position: "absolute",
           // Always above desktop chrome (theme/spotify z:40) so red/yellow/green stay clickable
           zIndex: Math.max(200, w.z),
-          left: sheet ? (phone ? 8 : 8) : (launcher ? Math.round((vw - lw) / 2) : w.x),
+          left: sheet ? 8 : (launcher ? "50%" : w.x),
           // Leave room under top chrome on desktop; on phone top-left is free (theme moved to right)
-          top: sheet ? (phone ? 8 : 36) : (launcher ? Math.round((vh - lh) / 2) - 18 : Math.max(w.y, phone ? 8 : 48)),
+          top: sheet ? (phone ? 8 : 36) : (launcher ? "50%" : Math.max(w.y, phone ? 8 : 48)),
           width: sheet ? (phone ? "calc(100% - 16px)" : "calc(100% - 16px)") : (launcher ? lw : w.w),
           height: sheet ? (phone ? "calc(100% - 86px)" : "calc(100% - 120px)") : (launcher ? lh : w.h),
           maxWidth: launcher && !sheet ? 340 : undefined,
           opacity: w.minimized ? 0 : 1,
-          transform: w.minimized ? "translateY(280px) scale(0.8)" : "none",
+          // The launcher is centred with a transform, so the minimize transform
+          // has to be composed onto it rather than replacing it.
+          transform: (launcher && !sheet)
+            ? (w.minimized
+                ? "translate(-50%, calc(-50% - 18px)) translateY(280px) scale(0.8)"
+                : "translate(-50%, calc(-50% - 18px))")
+            : (w.minimized ? "translateY(280px) scale(0.8)" : "none"),
           pointerEvents: w.minimized ? "none" : "auto",
           transition: "opacity 220ms ease, transform 260ms cubic-bezier(0.22,1,0.36,1), width 320ms cubic-bezier(0.22,1,0.36,1), height 320ms cubic-bezier(0.22,1,0.36,1), left 320ms cubic-bezier(0.22,1,0.36,1), top 320ms cubic-bezier(0.22,1,0.36,1)",
         },
