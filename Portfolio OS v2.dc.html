@@ -27,7 +27,7 @@
   [data-os-theme="light"] {
     /* macOS light: labelColor 85%, secondaryLabel 55%, tertiaryLabel 25% on a
        neutral ground; separator 10%; systemBlue #007AFF. */
-    --ink:rgba(0,0,0,0.85); --ink-soft:rgba(0,0,0,0.55); --ink-faint:rgba(0,0,0,0.55); --wordmark:#5b544c; --wm-glow:rgba(140,128,110,0.55);
+    --ink:rgba(0,0,0,0.85); --ink-soft:rgba(0,0,0,0.55); --ink-faint:rgba(0,0,0,0.55); --wordmark:#5b544c; --wm-glow:rgba(146,128,102,0.62); --wm-rest:rgba(150,132,104,0.34);
     --hair:rgba(0,0,0,0.10); --glass:rgba(246,246,246,0.72); --glass-2:rgba(255,255,255,0.80);
     --glass-line:rgba(255,255,255,0.70); --titlebar:rgba(236,236,236,0.82); --pane:rgba(246,246,246,0.66);
     --sheet:rgba(255,255,255,0.78); --chip:rgba(0,0,0,0.05); --btn-face:rgba(255,255,255,0.92); --btn-face-hover:#ffffff; --btn-line:rgba(0,0,0,0.12);
@@ -41,7 +41,7 @@
   [data-os-theme="dark"] {
     /* macOS dark: windowBackground #323232, controlBackground #1E1E1E,
        labelColor 85% white, separator 15%; systemBlue #0A84FF. */
-    --ink:rgba(255,255,255,0.85); --ink-soft:rgba(255,255,255,0.55); --ink-faint:rgba(255,255,255,0.60); --wordmark:#e8e8ea; --wm-glow:rgba(190,190,196,0.5);
+    --ink:rgba(255,255,255,0.85); --ink-soft:rgba(255,255,255,0.55); --ink-faint:rgba(255,255,255,0.60); --wordmark:#f2f2f5; --wm-glow:rgba(198,214,246,0.62); --wm-rest:rgba(184,205,244,0.40);
     --hair:rgba(255,255,255,0.15); --glass:rgba(50,50,50,0.72); --glass-2:rgba(30,30,30,0.80);
     --glass-line:rgba(255,255,255,0.22); --titlebar:rgba(58,58,58,0.82); --pane:rgba(40,40,40,0.66);
     --sheet:rgba(30,30,30,0.78); --chip:rgba(255,255,255,0.08); --btn-face:rgba(255,255,255,0.14); --btn-face-hover:rgba(255,255,255,0.22); --btn-line:rgba(255,255,255,0.16);
@@ -57,10 +57,16 @@
     to   { -webkit-mask-position:0% 0; mask-position:0% 0; }
   }
   @keyframes wm-glow {
-    0%   { text-shadow:0 0 42px var(--wm-glow), 0 0 14px var(--wm-glow); }
-    55%  { text-shadow:0 0 34px var(--wm-glow), 0 0 11px var(--wm-glow); }
-    82%  { text-shadow:0 0 20px var(--wm-glow), 0 0 6px var(--wm-glow); }
-    100% { text-shadow:0 0 0 transparent; }
+    0%   { text-shadow:0 0 46px var(--wm-glow), 0 0 16px var(--wm-glow); }
+    55%  { text-shadow:0 0 36px var(--wm-glow), 0 0 12px var(--wm-glow); }
+    82%  { text-shadow:0 0 26px var(--wm-glow), 0 0 9px var(--wm-glow); }
+    100% { text-shadow:0 0 30px var(--wm-rest), 0 0 10px var(--wm-rest); }
+  }
+  /* Slow breathe once the entrance bloom has settled, so the wordmark stays
+     alive without pulling attention. */
+  @keyframes wm-breathe {
+    0%, 100% { text-shadow:0 0 30px var(--wm-rest), 0 0 10px var(--wm-rest); }
+    50%      { text-shadow:0 0 42px var(--wm-glow), 0 0 14px var(--wm-rest); }
   }
   .os-sp-wave { display: none; align-items: flex-end; gap: 2px; height: 16px; flex: 0 0 auto; margin-left: auto; }
   .os-sp-wave i { display: block; width: 2px; border-radius: 1px; background: var(--ink-faint); height: 30%; animation: sp-wave 1.1s ease-in-out infinite; }
@@ -75,6 +81,8 @@
   @keyframes wm-rise { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
   @media (prefers-reduced-motion: reduce) {
     [data-wm], [data-wm-sub] { animation:none !important; clip-path:none !important; filter:none !important; opacity:1 !important; transform:none !important; }
+    /* The glow lives in a keyframe, so restore it statically when animation is off. */
+    [data-wm] { text-shadow:0 0 30px var(--wm-rest), 0 0 10px var(--wm-rest) !important; -webkit-mask-image:none !important; mask-image:none !important; }
   }
   .os-scroll::-webkit-scrollbar { width:9px; height:9px; }
   .os-scroll::-webkit-scrollbar-thumb { background:var(--hair); border-radius:9px; border:2px solid transparent; background-clip:padding-box; }
@@ -723,7 +731,7 @@
 
   <main><section data-screen-label="Desktop hero" class="os-hero" style="position:absolute;z-index:2;inset:0;display:grid;align-content:center;justify-content:stretch;justify-items:stretch;pointer-events:none">
     <div style="display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;container-type:inline-size">
-      <h1 data-wm="true" class="os-hero-title" style="display:block;width:100%;margin:0;font-family:'Grand Hotel',cursive;text-align:center;font-weight:400;letter-spacing:0.006em;line-height:1;color:var(--wordmark);-webkit-mask-image:linear-gradient(90deg,#000 0%,#000 28%,rgba(0,0,0,0.55) 36%,rgba(0,0,0,0.18) 43%,transparent 50%);mask-image:linear-gradient(90deg,#000 0%,#000 28%,rgba(0,0,0,0.55) 36%,rgba(0,0,0,0.18) 43%,transparent 50%);-webkit-mask-size:300% 100%;mask-size:300% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;animation:wm-draw 1.9s cubic-bezier(0.32,0.02,0.18,1) 0.4s both, wm-glow 3.2s ease-out 0.4s both">Thribhuvan</h1>
+      <h1 data-wm="true" class="os-hero-title" style="display:block;width:100%;margin:0;font-family:'Grand Hotel',cursive;text-align:center;font-weight:400;letter-spacing:0.006em;line-height:1;color:var(--wordmark);-webkit-mask-image:linear-gradient(90deg,#000 0%,#000 28%,rgba(0,0,0,0.55) 36%,rgba(0,0,0,0.18) 43%,transparent 50%);mask-image:linear-gradient(90deg,#000 0%,#000 28%,rgba(0,0,0,0.55) 36%,rgba(0,0,0,0.18) 43%,transparent 50%);-webkit-mask-size:300% 100%;mask-size:300% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;animation:wm-draw 1.9s cubic-bezier(0.32,0.02,0.18,1) 0.4s both, wm-glow 3.2s ease-out 0.4s both, wm-breathe 6s ease-in-out 3.6s infinite">Thribhuvan</h1>
       <p data-wm-sub="true" class="os-hero-sub" style="display:flex;align-items:center;justify-content:center;gap:1px;min-height:24px;margin:0;max-width:56ch;text-align:center;color:var(--ink-soft);font-size:15.5px;font-weight:500;line-height:1.5;letter-spacing:-0.008em;animation:wm-rise 0.8s cubic-bezier(0.16,1,0.3,1) 0.7s both"><span>{{ typed }}</span><span aria-hidden="true" style="display:inline-block;width:1.5px;height:17px;margin-left:2px;background:var(--ink-faint);animation:caret-blink 1.06s step-end infinite"></span></p>
     </div>
     <span></span>
