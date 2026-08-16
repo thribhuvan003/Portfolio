@@ -74,7 +74,7 @@
   @keyframes caret-blink { 0%,49% { opacity:1; } 50%,100% { opacity:0; } }
   @keyframes wm-rise { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
   @media (prefers-reduced-motion: reduce) {
-    [data-wm], [data-wm-eyebrow], [data-wm-sub] { animation:none !important; clip-path:none !important; filter:none !important; opacity:1 !important; transform:none !important; }
+    [data-wm], [data-wm-sub] { animation:none !important; clip-path:none !important; filter:none !important; opacity:1 !important; transform:none !important; }
   }
   .os-scroll::-webkit-scrollbar { width:9px; height:9px; }
   .os-scroll::-webkit-scrollbar-thumb { background:var(--hair); border-radius:9px; border:2px solid transparent; background-clip:padding-box; }
@@ -84,20 +84,6 @@
   .os-root { --dock-h: 76px; --safe-t: env(safe-area-inset-top, 0px); --safe-b: env(safe-area-inset-bottom, 0px); --safe-l: env(safe-area-inset-left, 0px); --safe-r: env(safe-area-inset-right, 0px); }
   .os-hero { padding: clamp(24px, 4vh, 48px) clamp(20px, 5vw, 132px) clamp(400px, 62vh, 620px); }
   .os-hero-title { font-size: min(19cqw, 30vh, 258px); }
-  /* Static role line. The typewriter below rotates; this never moves, so the
-     role and availability are legible in the first second. */
-  .os-hero-role {
-    margin: 4px 0 0;
-    max-width: 78ch;
-    text-align: center;
-    color: var(--ink);
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: -0.005em;
-    line-height: 1.5;
-    animation: wm-rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.45s both;
-  }
-  @media (prefers-reduced-motion: reduce) { .os-hero-role { animation: none; } }
   /* Subtle dot grid over the wallpaper */
   .os-dotgrid {
     position: absolute;
@@ -339,6 +325,59 @@
   .os-play-badge { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); display: grid; place-items: center; width: 54px; height: 54px; border-radius: 999px; background: rgba(12,16,24,0.62); color: #fff; padding-left: 3px; box-shadow: 0 8px 22px rgba(0,0,0,0.35); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); pointer-events: none; }
 
   /* Lightbox */
+  /* First-visit guide. Shown once, then never again. */
+  .os-coach {
+    position: fixed;
+    inset: 0;
+    z-index: 8000;
+    display: grid;
+    place-items: center;
+    padding: clamp(16px, 4vw, 48px);
+    background: rgba(10, 12, 16, 0.52);
+    -webkit-backdrop-filter: blur(10px) saturate(120%);
+    backdrop-filter: blur(10px) saturate(120%);
+    animation: lb-in 200ms ease both;
+  }
+  .os-coach-card {
+    width: min(430px, 100%);
+    max-height: 100%;
+    overflow: auto;
+    border: 1px solid var(--glass-line);
+    border-radius: 20px;
+    background: var(--glass-2);
+    box-shadow: var(--shadow);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    backdrop-filter: blur(40px) saturate(180%);
+    padding: 22px;
+    animation: lb-pop 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .os-coach-eyebrow { margin: 0 0 8px; color: var(--ink-faint); font-family: 'Geist Mono', monospace; font-size: 9.5px; font-weight: 700; letter-spacing: 0.17em; text-transform: uppercase; }
+  .os-coach-title { margin: 0; color: var(--ink); font-size: 21px; font-weight: 700; letter-spacing: -0.025em; line-height: 1.15; }
+  .os-coach-body { margin: 9px 0 0; color: var(--ink-soft); font-size: 13px; line-height: 1.55; }
+  .os-coach-list { display: grid; gap: 9px; margin: 16px 0 0; padding: 0; list-style: none; }
+  .os-coach-list li { display: grid; grid-template-columns: 28px minmax(0, 1fr); align-items: center; gap: 11px; }
+  .os-coach-icon { display: grid; place-items: center; width: 28px; height: 28px; overflow: hidden; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+  .os-coach-icon img { width: 100%; height: 100%; object-fit: cover; }
+  .os-coach-mark { font-size: 11px; font-weight: 700; letter-spacing: -0.02em; }
+  .os-coach-text { color: var(--ink-soft); font-size: 12.5px; line-height: 1.45; }
+  .os-coach-text strong { color: var(--ink); font-weight: 650; }
+  .os-coach-btn {
+    width: 100%;
+    margin-top: 18px;
+    min-height: 44px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--accent-solid);
+    color: #fff;
+    font-size: 13.5px;
+    font-weight: 640;
+    cursor: pointer;
+    transition: filter 140ms ease;
+  }
+  .os-coach-btn:hover { filter: brightness(1.07); }
+  @media (prefers-reduced-motion: reduce) {
+    .os-coach, .os-coach-card { animation: none; }
+  }
   .os-lightbox { position: fixed; inset: 0; z-index: 9000; display: grid; place-items: center; padding: clamp(16px, 4vw, 56px); background: rgba(8,10,16,0.82); -webkit-backdrop-filter: blur(18px) saturate(130%); backdrop-filter: blur(18px) saturate(130%); animation: lb-in 180ms ease both; }
   @keyframes lb-in { from { opacity: 0; } to { opacity: 1; } }
   .os-lb-stage { position: relative; display: flex; flex-direction: column; align-items: center; gap: 12px; margin: 0; max-width: 100%; max-height: 100%; animation: lb-pop 220ms cubic-bezier(0.22,1,0.36,1) both; }
@@ -544,8 +583,6 @@
     .os-gallery-grid { grid-template-columns: repeat(2, minmax(0,1fr)) !important; }
     .os-hero-title { font-size: min(18vw, 16vh, 92px) !important; }
     .os-hero-sub { font-size: 13.5px !important; max-width: 34ch !important; }
-    .os-hero-role { font-size: 12px; max-width: 38ch; }
-    .os-hero-eyebrow { font-size: 10.5px !important; letter-spacing: 0.32em !important; }
     /* Phone corners: Resume/Email top-left, Last played top-right (as on the
        reference site), theme toggle bottom-left. Nothing overlaps. */
     /* Horizontal now-playing bar, tucked under the action chips. */
@@ -686,9 +723,7 @@
 
   <main><section data-screen-label="Desktop hero" class="os-hero" style="position:absolute;z-index:2;inset:0;display:grid;align-content:center;justify-content:stretch;justify-items:stretch;pointer-events:none">
     <div style="display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;container-type:inline-size">
-      <p data-wm-eyebrow="true" class="os-hero-eyebrow" style="margin:0;color:var(--ink-soft);font-family:'Geist Mono',monospace;font-size:12px;font-weight:600;letter-spacing:0.5em;text-transform:uppercase;text-indent:0.5em;animation:wm-rise 0.7s cubic-bezier(0.16,1,0.3,1) 0.1s both">Hi, I’m</p>
       <h1 data-wm="true" class="os-hero-title" style="display:block;width:100%;margin:0;font-family:'Grand Hotel',cursive;text-align:center;font-weight:400;letter-spacing:0.006em;line-height:1;color:var(--wordmark);-webkit-mask-image:linear-gradient(90deg,#000 0%,#000 28%,rgba(0,0,0,0.55) 36%,rgba(0,0,0,0.18) 43%,transparent 50%);mask-image:linear-gradient(90deg,#000 0%,#000 28%,rgba(0,0,0,0.55) 36%,rgba(0,0,0,0.18) 43%,transparent 50%);-webkit-mask-size:300% 100%;mask-size:300% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;animation:wm-draw 1.9s cubic-bezier(0.32,0.02,0.18,1) 0.4s both, wm-glow 3.2s ease-out 0.4s both">Thribhuvan</h1>
-      <p class="os-hero-role">Final-year CS in Bengaluru · Open to new-grad engineering roles from 2026</p>
       <p data-wm-sub="true" class="os-hero-sub" style="display:flex;align-items:center;justify-content:center;gap:1px;min-height:24px;margin:0;max-width:56ch;text-align:center;color:var(--ink-soft);font-size:15.5px;font-weight:500;line-height:1.5;letter-spacing:-0.008em;animation:wm-rise 0.8s cubic-bezier(0.16,1,0.3,1) 0.7s both"><span>{{ typed }}</span><span aria-hidden="true" style="display:inline-block;width:1.5px;height:17px;margin-left:2px;background:var(--ink-faint);animation:caret-blink 1.06s step-end infinite"></span></p>
     </div>
     <span></span>
@@ -862,7 +897,12 @@
                           <sc-if value="{{ p.live }}" hint-placeholder-val="{{ true }}">
                             <a href="{{ p.live }}" target="_blank" rel="noreferrer" style="display:inline-flex;align-items:center;gap:6px;min-height:32px;border:1px solid var(--hair);border-radius:999px;background:var(--chip);padding:7px 13px;color:var(--ink);font-size:11.5px;font-weight:620">Live <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a>
                           </sc-if>
+                          <sc-if value="{{ p.repo }}" hint-placeholder-val="{{ true }}">
                           <a href="{{ p.repo }}" target="_blank" rel="noreferrer" style="display:inline-flex;align-items:center;gap:6px;min-height:32px;border:1px solid var(--hair);border-radius:999px;background:var(--chip);padding:7px 13px;color:var(--ink);font-size:11.5px;font-weight:620">Code <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .8a11.2 11.2 0 0 0-3.54 21.82c.56.1.76-.24.76-.54v-2.1c-3.1.68-3.75-1.32-3.75-1.32-.5-1.28-1.24-1.62-1.24-1.62-1.02-.7.08-.69.08-.69 1.12.08 1.7 1.16 1.7 1.16 1 .1.55 2.62 3.16 1.86.1-.73.39-1.23.71-1.51-2.47-.28-5.06-1.24-5.06-5.5 0-1.22.43-2.21 1.15-2.99-.12-.28-.5-1.42.1-2.95 0 0 .95-.3 3.08 1.14a10.6 10.6 0 0 1 5.6 0c2.13-1.44 3.07-1.14 3.07-1.14.6 1.53.22 2.67.11 2.95.72.78 1.15 1.77 1.15 2.99 0 4.27-2.6 5.21-5.08 5.49.4.34.76 1.02.76 2.06v3.06c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"></path></svg></a>
+                          </sc-if>
+                          <sc-if value="{{ p.repoNote }}" hint-placeholder-val="{{ false }}">
+                            <span style="display:inline-flex;align-items:center;gap:6px;min-height:32px;border:1px solid var(--hair);border-radius:999px;background:var(--chip);padding:7px 13px;color:var(--ink-faint);font-size:11.5px;font-weight:620">{{ p.repoNote }}</span>
+                          </sc-if>
                         </div>
                       </div>
                     </article>
@@ -916,11 +956,11 @@
                     <div style="display:grid;gap:10px">
                       <div class="os-life-row">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a2.5 2.5 0 0 1 0-5H20"></path></svg>
-                        <p><strong>I read Vedanta.</strong> It trained me to sit with a hard idea until it resolves, rather than reaching for the first answer that looks right.</p>
+                        <p><strong>I read Vedanta.</strong> A page a day, most days, for about three years. It is the slowest thing I do, and the only reading where being fast is no advantage at all.</p>
                       </div>
                       <div class="os-life-row is-sep">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="18" r="4"></circle><path d="M12 18V2l7 4"></path></svg>
-                        <p><strong>Mozart is usually playing.</strong> Structure without lyrics, which is what a long refactor needs.</p>
+                        <p><strong>Mozart is usually playing.</strong> The late symphonies, mostly. I put one on when a problem needs more patience than I currently have.</p>
                       </div>
                       <div class="os-life-row is-sep">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><circle cx="12" cy="12" r="3"></circle></svg>
@@ -1220,7 +1260,7 @@
             <div>
               <p style="margin:0 0 8px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">Music</p>
               <h2 style="margin:0;color:var(--ink);font-size:19px;font-weight:700;line-height:1.15;letter-spacing:-0.024em">What&#8217;s usually playing while I work.</h2>
-              <p style="margin:9px 0 0;color:var(--ink-soft);font-size:12.5px;line-height:1.55">Mostly classical &#8212; Mozart, and whatever else holds attention without lyrics.</p>
+              <p style="margin:9px 0 0;color:var(--ink-soft);font-size:12.5px;line-height:1.55">Mostly Mozart. The late symphonies get the most replays.</p>
             </div>
 
             <!-- Spotify's official embed. It plays a preview for anyone, and the full
@@ -1266,6 +1306,32 @@
     </section>
   </div>
   </sc-for>
+
+  <sc-if value="{{ coachOpen }}" hint-placeholder-val="{{ false }}">
+  <div class="os-coach" onClick="{{ dismissCoach }}">
+    <div class="os-coach-card" onClick="{{ stopBubble }}">
+      <p class="os-coach-eyebrow">First time here</p>
+      <h2 class="os-coach-title">This works like a desktop.</h2>
+      <p class="os-coach-body">Everything lives behind the icons along the bottom. Open one, drag it, close it with the red dot.</p>
+      <ul class="os-coach-list">
+        <sc-for list="{{ coachItems }}" as="c" hint-placeholder-count="7">
+          <li>
+            <span class="os-coach-icon" style="{{ c.iconStyle }}">
+              <sc-if value="{{ c.artwork }}" hint-placeholder-val="{{ true }}">
+                <img src="{{ c.artwork }}" alt="" aria-hidden="true">
+              </sc-if>
+              <sc-if value="{{ c.mark }}" hint-placeholder-val="{{ false }}">
+                <span class="os-coach-mark">{{ c.mark }}</span>
+              </sc-if>
+            </span>
+            <span class="os-coach-text"><strong>{{ c.label }}</strong>{{ c.note }}</span>
+          </li>
+        </sc-for>
+      </ul>
+      <button type="button" class="os-coach-btn" onClick="{{ dismissCoach }}">Got it</button>
+    </div>
+  </div>
+  </sc-if>
 
   <sc-if value="{{ lightboxOpen }}" hint-placeholder-val="{{ false }}">
   <div class="os-lightbox" role="dialog" aria-modal="true" aria-label="{{ lb.title }}" onClick="{{ closeLightbox }}">
@@ -1341,6 +1407,7 @@ const L = {
   unholdRepo: "https://github.com/thribhuvan003/unhold",
   unholdLive: "https://unhold.live",
   tabmindRepo: "https://github.com/thribhuvan003/tabmind",
+  gateosLive: "https://gateeee.vercel.app",
   aquaRepo: "https://github.com/thribhuvan003/AquaVision-Web",
   aquaLive: "https://huggingface.co/spaces/mark2423432/AquaVision",
   spotify: "https://open.spotify.com/user/gwvwbaulbyy3n7jzbiyjtp0hv",
@@ -1397,6 +1464,17 @@ const PROJECTS = [
       "Pushed order state to the customer, kitchen and admin clients over Supabase Realtime with a polling fallback, behind Redis rate limits and a 70-test Vitest suite.",
     ],
     stack: "Next.js 15, TypeScript, PostgreSQL, Supabase, Razorpay, Redis, Vercel, CI",
+  },
+  {
+    name: "GATE OS", summary: "A preparation workspace for GATE CS and IT aspirants.",
+    detail: "Focus timer, syllabus tracker, PDF vault, notes, revision queue and small private study circles in one place. Every table is scoped by user with row-level security, and PDF storage is namespaced per user with matching policies, so a user can only ever reach their own rows and files.",
+    image: null, live: L.gateosLive, repo: null, repoNote: "Source is private",
+    bullets: [
+      "Built on Next.js 16 with the App Router, React 19 and Tailwind v4, with Supabase Postgres, Auth and Storage behind it.",
+      "Enforced isolation in the database rather than the application: row-level security on every table, per-user path prefixes on storage, and a cross-device test that proves one account cannot read another's rows or files.",
+      "Four themes plus accent, font, density and motion options, all driven by CSS custom properties and applied before first paint so the page never flashes the wrong theme.",
+    ],
+    stack: "Next.js 16, React 19, TypeScript, Tailwind v4, Supabase, Vitest, Playwright",
   },
   {
     name: "AquaVision", summary: "Underwater image restoration that runs on CPU alone.",
@@ -1577,6 +1655,11 @@ const FOLDER_META = {
 
 // Remember the chosen appearance, and honour the OS setting on a first visit.
 const THEME_KEY = "os-theme";
+// Shown once. A returning visitor should never see the guide again.
+const SEEN_KEY = "os-seen-guide";
+function firstVisit() {
+  try { return window.localStorage.getItem(SEEN_KEY) !== "1"; } catch (e) { return false; }
+}
 function initialTheme(props) {
   try {
     const saved = window.localStorage.getItem(THEME_KEY);
@@ -1594,7 +1677,7 @@ class Component extends DCLogic {
     const w = {};
     Object.keys(GEOM).forEach((id, i) => { w[id] = { ...GEOM[id], open: false, minimized: false, maximized: false, z: 200 + i }; });
     const vp = this.viewport();
-    this.state = { theme: initialTheme(props), windows: w, folder: null, zTop: 220, typed: "", vp, dockX: null, dockCenters: null, lightbox: null, np: null };
+    this.state = { theme: initialTheme(props), windows: w, folder: null, zTop: 220, typed: "", vp, dockX: null, dockCenters: null, lightbox: null, np: null, coach: firstVisit() };
     this._dockRaf = 0;
     this._phrase = 0;
     this._char = 0;
@@ -1633,6 +1716,11 @@ class Component extends DCLogic {
     };
     window.addEventListener("resize", this._onResize);
     this._onKey = (e) => {
+      if (this.state.coach && e.key === "Escape") {
+        try { window.localStorage.setItem(SEEN_KEY, "1"); } catch (err) { /* private mode */ }
+        this.setState({ coach: false });
+        return;
+      }
       if (this.state.lightbox === null) return;
       if (e.key === "Escape") this.setState({ lightbox: null });
       else if (e.key === "ArrowLeft") this.setState((st) => ({ lightbox: (st.lightbox - 1 + GALLERY.length) % GALLERY.length }));
@@ -2120,6 +2208,31 @@ class Component extends DCLogic {
           padding: i === 0 ? "8px 0 11px" : "11px 0",
         },
       })),
+      coachOpen: !!s.coach,
+      coachItems: [
+        { id: "about",   label: "About Me",   note: " — who I am, in one screen." },
+        { id: "skills",  label: "Background", note: " — education, open source, the stack I use." },
+        { id: "work",    label: "Workspace",  note: " — projects, merged patches and my resume." },
+        { id: "images",  label: "Photos",     note: " — travel shots and a guitar clip." },
+        { id: "github",  label: "GitHub",     note: " — the code behind all of it." },
+        { id: "linkedin",label: "LinkedIn",   note: " — the formal version." },
+        { id: "spotify", label: "Spotify",    note: " — what I work to. It plays." },
+      ].map((c) => {
+        const app = APPS.filter((a) => a.id === c.id)[0] || {};
+        return {
+          label: c.label, note: c.note,
+          artwork: app.artwork || null,
+          mark: app.artwork ? null : (c.id === "github" ? "GH" : c.id === "linkedin" ? "in" : "♪"),
+          iconStyle: {
+            background: app.artwork ? "transparent" : (app.plate || "var(--chip)"),
+            color: "#fff",
+          },
+        };
+      }),
+      dismissCoach: () => {
+        try { window.localStorage.setItem(SEEN_KEY, "1"); } catch (e) { /* private mode */ }
+        this.setState({ coach: false });
+      },
       lightboxOpen: s.lightbox !== null,
       lb: (() => {
         const g = s.lightbox === null ? null : GALLERY[s.lightbox];
