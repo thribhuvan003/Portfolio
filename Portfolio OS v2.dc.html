@@ -973,10 +973,7 @@
                           <span style="display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 9px;min-width:0">
                             <strong style="color:var(--ink);font-size:12.5px;font-weight:680;letter-spacing:-0.01em">{{ o.repo }}</strong>
                             <span style="color:var(--ink-faint);font-size:11px">{{ o.what }}</span>
-                            <span style="display:inline-flex;align-items:center;gap:3px;color:var(--ink-soft);font-family:'Geist Mono',monospace;font-size:10.5px;font-weight:650">
-                              <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2 2.9 6.2 6.6.9-4.8 4.7 1.2 6.7L12 17.3 6.1 20.5l1.2-6.7-4.8-4.7 6.6-.9z"/></svg>
-                              {{ o.stars }}
-                            </span>
+
                           </span>
                           <span style="flex:0 0 auto;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10.5px;font-weight:600">{{ o.num }}</span>
                           <span style="grid-column:1 / -1;min-width:0;color:var(--ink-soft);font-size:12px;line-height:1.55">{{ o.did }}</span>
@@ -987,10 +984,7 @@
                           <span style="display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 9px;min-width:0">
                             <strong style="color:var(--ink);font-size:12.5px;font-weight:680;letter-spacing:-0.01em">{{ o.repo }}</strong>
                             <span style="color:var(--ink-faint);font-size:11px">{{ o.what }}</span>
-                            <span style="display:inline-flex;align-items:center;gap:3px;color:var(--ink-soft);font-family:'Geist Mono',monospace;font-size:10.5px;font-weight:650">
-                              <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2 2.9 6.2 6.6.9-4.8 4.7 1.2 6.7L12 17.3 6.1 20.5l1.2-6.7-4.8-4.7 6.6-.9z"/></svg>
-                              {{ o.stars }}
-                            </span>
+
                           </span>
                           <span style="flex:0 0 auto;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10.5px;font-weight:600">{{ o.num }}</span>
                           <span style="grid-column:1 / -1;min-width:0;color:var(--ink-soft);font-size:12px;line-height:1.55">{{ o.did }}</span>
@@ -1385,8 +1379,7 @@ const GEOM = {
   contact: { w: 600, h: 430, x: 420, y: 150, label: "Contact" },
 };
 
-// `bullets` and `stack` mirror the résumé in assets/docs so the Resume view and the
-// Projects folder read from one source and cannot drift apart.
+// Shared content for the project cards and résumé view.
 const PROJECTS = [
   {
     name: "Unhold", summary: "A workspace for bank-account and UPI freeze cases.",
@@ -1506,7 +1499,7 @@ const GALLERY = [
 
 const FOLDERS = [
   { id: "about", label: "About Me", note: "Profile and current focus" },
-  { id: "projects", label: "Projects", note: "Tray, Unhold, TabMind & AquaVision" },
+  { id: "projects", label: "Projects", note: "Selected products and engineering work" },
   { id: "oss", label: "Open Source", note: "Merged fixes to tools I use daily" },
   { id: "resume", label: "Resume", note: "One page, PDF" },
 ];
