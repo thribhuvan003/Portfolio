@@ -702,8 +702,10 @@
     .os-win-titlebar:not(.is-launcher) { grid-template-columns: 112px 1fr 0 !important; }
   }
   @media (max-height: 620px) {
-    .os-hero { padding-top: 55px; padding-bottom: 100px; }
-    .os-hero-title { font-size: min(15vw, 100px) !important; }
+    .os-root { min-height: 100dvh !important; }
+    .os-chrome-spotify, .os-chrome-email { display: none !important; }
+    .os-hero { padding-top: 16px; padding-bottom: 110px; }
+    .os-hero-title { font-size: min(15vw, 18vh, 100px) !important; }
     .os-hero > div { gap: 8px !important; }
     .os-hero-subject { display: none; }
   }
