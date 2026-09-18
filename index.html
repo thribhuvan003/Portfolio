@@ -1643,7 +1643,7 @@ const FOLDER_META = {
 const THEME_KEY = "os-theme";
 const SEEN_KEY = "os-seen-guide";
 function firstVisit() {
-  try { return window.localStorage.getItem(SEEN_KEY) !== "1"; } catch (e) { return false; }
+  try { return window.localStorage.getItem(SEEN_KEY) !== "1"; } catch (e) { return true; }
 }
 function initialTheme(props) {
   try {

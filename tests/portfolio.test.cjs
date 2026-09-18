@@ -73,3 +73,11 @@ test('first-visit guide stays dismissed on return visits', () => {
   assert.equal(app.renderVals().coachOpen, false);
   assert.equal(setup(1366, storage).app.renderVals().coachOpen, false);
 });
+
+test('guide remains usable when browser storage is blocked', () => {
+  const storage = { get() { throw new Error('Storage blocked'); }, set() { throw new Error('Storage blocked'); } };
+  const { app } = setup(390, storage);
+  assert.equal(app.renderVals().coachOpen, true);
+  assert.doesNotThrow(() => app.renderVals().dismissCoach());
+  assert.equal(app.renderVals().coachOpen, false);
+});
