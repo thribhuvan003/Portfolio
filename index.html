@@ -760,7 +760,8 @@
   }
   .os-coach-btn:hover { filter: brightness(1.07); }
   .os-hero-title { text-shadow: none !important; filter: none !important; }
-  .os-resume-shortcut { z-index: 100; top: max(16px, var(--safe-t)); left: max(16px, var(--safe-l)); }
+  .os-resume-shortcut { z-index: 100; top: max(12px, var(--safe-t)); left: max(66px, var(--safe-l)); }
+  @media (max-width: 699px) { .os-resume-shortcut { left: max(16px, var(--safe-l)); } }
   .os-root[data-has-win="1"] .os-resume-shortcut { visibility: hidden; }
   @media (prefers-reduced-motion: reduce) { .os-coach, .os-coach-card { animation: none; } }
 </style>
