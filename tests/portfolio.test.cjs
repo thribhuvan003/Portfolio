@@ -5,13 +5,13 @@ const { test } = require('node:test');
 const html = readFileSync('index.html', 'utf8');
 const code = html.match(/<script type="text\/x-dc"[^>]*>([\s\S]*?)<\/script>/)[1];
 
-function setup(width = 1366) {
+function setup(width = 1366, storage = new Map()) {
   const events = {};
   const window = {
     innerWidth: width, innerHeight: 900,
     location: { hash: '', pathname: '/', search: '' },
     history: { pushState(_state, _title, url) { window.location.hash = url.startsWith('#') ? url : ''; } },
-    localStorage: { getItem() { return null; }, setItem() {} },
+    localStorage: { getItem(key) { return storage.get(key) ?? null; }, setItem(key, value) { storage.set(key, value); } },
     matchMedia() { return { matches: false }; },
     addEventListener(name, handler) { events[name] = handler; }, removeEventListener() {},
   };
@@ -25,7 +25,7 @@ function setup(width = 1366) {
   return { app: new ctx.App({}), window, document, events };
 }
 
-test('primary navigation opens projects directly and creates a shareable URL', () => {
+test('project navigation creates a shareable URL', () => {
   const { app, window } = setup(); app.renderVals().showProjects();
   assert.equal(app.state.folder, 'projects'); assert.equal(window.location.hash, '#projects');
   assert.equal(app.renderVals().windows[0].label, 'Projects');
@@ -63,4 +63,13 @@ test('gallery close returns focus to the opener', () => {
   document.activeElement = { focus() { focused = true; } };
   app.renderVals().gallery[1].open(); assert.equal(app.state.lightbox, 1);
   app.closeLightbox(); assert.equal(app.state.lightbox, null); assert.equal(focused, true);
+});
+
+test('first-visit guide stays dismissed on return visits', () => {
+  const storage = new Map();
+  const { app } = setup(1366, storage);
+  assert.equal(app.renderVals().coachOpen, true);
+  app.renderVals().dismissCoach();
+  assert.equal(app.renderVals().coachOpen, false);
+  assert.equal(setup(1366, storage).app.renderVals().coachOpen, false);
 });
