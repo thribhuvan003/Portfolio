@@ -680,8 +680,8 @@
   .os-primary-nav { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; pointer-events: auto; margin-top: 4px; }
   .os-primary-nav button { cursor: pointer; }
   .os-root[data-has-win="1"] .os-primary-nav { visibility: hidden; }
-  .os-hero { padding: 60px 24px min(38vh, 360px); }
-  .os-hero-title { font-size: min(15cqw, 21vh, 200px); }
+  .os-hero { padding: 24px 24px calc(min(52vh, 490px) + 32px); }
+  .os-hero-title { font-size: min(15cqw, 18vh, 180px); }
   .os-gallery-tile { display: block; width: 100%; padding: 0; text-align: left; font: inherit; }
   .os-projects-grid article h3 { font-size: 19px !important; }
   .os-projects-grid article p { font-size: 14px !important; line-height: 1.6 !important; }
@@ -728,7 +728,7 @@
       <nav class="os-primary-nav" aria-label="Main navigation">
         <button type="button" class="os-chip-btn is-primary" onClick="{{ showProjects }}">Projects</button>
         <button type="button" class="os-chip-btn" onClick="{{ showOss }}">Open Source</button>
-        <a class="os-chip-btn" href="{{ resumePdf }}" target="_blank" rel="noreferrer">Résumé</a>
+        <a class="os-chip-btn" href="{{ resumePdf }}" target="_blank" rel="noreferrer">Resume</a>
         <a class="os-chip-btn" href="mailto:thribhuvan003@gmail.com">Contact</a>
       </nav>
     </div>
@@ -2120,7 +2120,7 @@ class Component extends DCLogic {
         names: g.tools.map(([name]) => name).join(", "),
         tools: g.tools.map(([name, slug]) => ({ name, icon: slug ? ICON(slug) : null })),
       })),
-      // Résumé view: one row per upstream repo, PRs collapsed together.
+      // Resume view: one row per upstream repo, PRs collapsed together.
       ossGroups: (() => {
         const order = [];
         const by = {};
