@@ -730,9 +730,11 @@
   .os-quote-body.q-in-b { animation: q-in-b 620ms cubic-bezier(0.2, 0.8, 0.2, 1) both; }
   @keyframes q-in-a { from { opacity: 0; transform: translateY(6px); filter: blur(3px); } to { opacity: 1; transform: none; filter: none; } }
   @keyframes q-in-b { from { opacity: 0; transform: translateY(6px); filter: blur(3px); } to { opacity: 1; transform: none; filter: none; } }
-  @media (max-width: 1023px) {
-    .os-quote { width: 268px; min-width: 0; padding: 15px 17px 14px; }
-    .os-quote blockquote { font-size: 18px; }
+  /* Below ~1180px the wordmark reaches the top-right corner, so the card moves to the
+     free space at the bottom-left, above the dock. */
+  @media (max-width: 1180px) and (min-width: 700px) {
+    .os-quote { top: auto; right: auto; left: max(16px, var(--safe-l)); bottom: calc(var(--dock-h) + 30px + var(--safe-b)); width: min(270px, 29vw); min-width: 220px; padding: 15px 17px 14px; }
+    .os-quote blockquote { font-size: 18px; min-height: 0; }
   }
   @media (max-width: 699px) {
     .os-quote { position: relative; top: auto; right: auto; width: calc(100% - 36px); max-width: 380px; margin: 22px auto 118px; }
@@ -831,7 +833,7 @@
     <div style="display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;container-type:inline-size">
       <h1 data-wm="true" class="os-hero-title" style="display:block;width:100%;margin:0;font-family:'Grand Hotel',cursive;text-align:center;font-weight:400;letter-spacing:0.006em;line-height:1;color:var(--wordmark);-webkit-mask-image:linear-gradient(90deg,#000 0%,#000 28%,rgba(0,0,0,0.55) 36%,rgba(0,0,0,0.18) 43%,transparent 50%);mask-image:linear-gradient(90deg,#000 0%,#000 28%,rgba(0,0,0,0.55) 36%,rgba(0,0,0,0.18) 43%,transparent 50%);-webkit-mask-size:300% 100%;mask-size:300% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;animation:wm-draw 1.9s cubic-bezier(0.32,0.02,0.18,1) 0.4s both">Thribhuvan</h1>
       <p class="os-hero-role">Software Engineering Intern at Rhino Stream Technologies</p>
-      <p class="os-hero-intro">{{ ossCount }} fixes merged into Svelte, Prisma, SolidJS and Supabase.<br>{{ liveCount }} products of my own, live.</p>
+      <p class="os-hero-intro">{{ ossCount }} fixes merged into Svelte, Prisma, SolidJS and Supabase.<br>{{ projectCount }} products of my own, {{ liveCount }} live.</p>
     </div>
     <span></span>
   </section></main>
@@ -995,11 +997,11 @@
                     </div>
                   </header>
 
-                  <p class="os-ab-lead">At Rhino Stream I turn game-streaming telemetry into answers: why a WebRTC session dropped, where latency and jitter spiked. Outside work I ship my own products, like Tray and Unhold. When a tool I rely on breaks, I fix it upstream. That’s {{ ossCount }} merged fixes so far, in Svelte, Prisma and Supabase.</p>
+                  <p class="os-ab-lead">At Rhino Stream I turn game-streaming telemetry into answers: why a WebRTC session dropped, where latency and jitter spiked. Outside work I ship my own products, like Tray and Unhold. When a tool I rely on breaks, I fix it upstream. That’s {{ ossCount }} merged fixes so far, in Svelte, Prisma, SolidJS and Supabase.</p>
 
                   <dl class="os-ab-stats">
                     <div><dt>Merged upstream PRs</dt><dd>{{ ossCount }}</dd></div>
-                    <div><dt>Open-source repos</dt><dd>{{ ossRepoCount }}</dd></div>
+                    <div><dt>Upstream repos</dt><dd>{{ ossRepoCount }}</dd></div>
                     <div><dt>Live products</dt><dd>{{ liveCount }}</dd></div>
                   </dl>
 
@@ -1908,12 +1910,18 @@ class Component extends DCLogic {
   showFolder(folder, updateUrl = true) {
     const vp = this.viewport();
     const wasOpen = this.state.windows.work.open && !this.state.windows.work.minimized;
+    const prevFolder = this.state.folder;
     const run = (done) => this.setState((s) => {
       const previous = s.windows.work;
       const z = s.zTop + 1;
       const fit = !previous.open || s.folder === null ? this.fitGeom("work", vp) : {};
       return { folder, zTop: z, windows: { ...s.windows, work: { ...previous, ...fit, open: true, minimized: false, maximized: vp.phone || (previous.open && previous.maximized), z } } };
-    }, () => { if (done) done(); this.focusWindow(); });
+    }, () => {
+      if (done) done();
+      const pane = document.querySelector('.os-win-frame[data-window-id="work"] section.os-scroll');
+      if (pane && folder !== prevFolder) pane.scrollTop = 0;
+      this.focusWindow();
+    });
     if (wasOpen && this.state.folder === null) this.morph("work", run);
     else run();
     if (updateUrl && window.location.hash !== "#" + folder) {
@@ -2266,6 +2274,7 @@ class Component extends DCLogic {
       showResume: () => this.showFolder("resume"),
       showPhotos: () => this.open(APPS.find((a) => a.id === "images")),
       liveCount: PROJECTS.filter((p) => p.live).length,
+      projectCount: PROJECTS.length,
       showOss: () => this.showFolder("oss"),
       windows, dock, folders, atRoot, notRoot: !atRoot,
       splitStyle: {
