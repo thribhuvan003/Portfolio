@@ -116,33 +116,42 @@ test('dragging tracks the pointer without easing and cleans up on cancellation',
   assert.notEqual(app.renderVals().windows[0].frame.transition, 'none');
 });
 
-test('quotes rotate only on the visible desktop and can be paused or advanced', () => {
+test('quotes advance when the reading line completes, only on the visible desktop', () => {
   const { app, document, timers } = setup(); app.componentDidMount();
   const initial = app.renderVals().quoteText;
   assert.equal(typeof initial, 'string');
+  app.renderVals().quoteTick(); assert.equal(app.renderVals().quoteText, initial, 'guide is open');
   app.renderVals().dismissCoach();
-  timers.get(10000)();
-  assert.notEqual(app.renderVals().quoteText, initial);
-  app.renderVals().toggleQuotes(); const paused = app.renderVals().quoteText;
-  timers.get(10000)(); assert.equal(app.renderVals().quoteText, paused);
-  app.renderVals().nextQuote(); assert.notEqual(app.renderVals().quoteText, paused);
-  app.renderVals().toggleQuotes();
+  app.renderVals().quoteTick(); assert.notEqual(app.renderVals().quoteText, initial);
+  assert.equal(app.renderVals().quoteToggle, undefined);
   app.renderVals().showProjects(); const folderQuote = app.renderVals().quoteText;
-  timers.get(10000)(); assert.equal(app.renderVals().quoteText, folderQuote);
+  assert.equal(app.renderVals().quoteBarStyle.animationPlayState, 'paused');
+  app.renderVals().quoteTick(); assert.equal(app.renderVals().quoteText, folderQuote);
   app.renderVals().windows[0].close(); document.hidden = true;
-  timers.get(10000)(); assert.equal(app.renderVals().quoteText, folderQuote);
+  app.renderVals().quoteTick(); assert.equal(app.renderVals().quoteText, folderQuote);
+  timers.get(12000)(); assert.equal(app.renderVals().quoteText, folderQuote, 'timer only drives reduced motion');
   app.componentWillUnmount(); assert.equal(timers.size, 0);
 });
 
-test('reduced motion disables window transitions and automatic quote rotation', () => {
+test('reduced motion disables window transitions and swaps quotes without animation', () => {
   const { app, timers } = setup(390, new Map(), true); app.componentDidMount();
-  assert.equal(app.renderVals().quotesPaused, true);
+  app.renderVals().dismissCoach();
+  assert.equal(app.renderVals().quoteAnimClass, '');
+  assert.equal(app.renderVals().quoteBarClass, '');
+  const quote = app.renderVals().quoteText;
+  timers.get(12000)(); assert.notEqual(app.renderVals().quoteText, quote);
   app.renderVals().showProjects();
   assert.equal(app.renderVals().windows[0].frame.transition, 'none');
-  const quote = app.renderVals().quoteText;
-  timers.get(10000)(); assert.equal(app.renderVals().quoteText, quote);
-  app.renderVals().nextQuote(); assert.notEqual(app.renderVals().quoteText, quote);
+  const open = app.renderVals().quoteText;
+  timers.get(12000)(); assert.equal(app.renderVals().quoteText, open);
   app.componentWillUnmount();
+});
+
+test('longer quotes stay on screen longer', () => {
+  const { app } = setup();
+  const short = app.quoteSeconds({ text: 'Do nothing which is of no use.' });
+  const long = app.quoteSeconds({ text: 'Yesterday is history, tomorrow is a mystery, but today is a gift. That is why it is called the present.' });
+  assert.ok(long > short); assert.ok(short >= 7 && long <= 15);
 });
 
 test('focusing a window changes stacking without moving its content in the DOM', () => {
@@ -157,13 +166,14 @@ test('focusing a window changes stacking without moving its content in the DOM',
 
 test('all quotes have distinct text, clear attribution and a source', () => {
   const { app } = setup(); const quotes = [];
-  for (let i = 0; i < 4; i++) {
-    const vals = app.renderVals();
+  let vals = app.renderVals();
+  do {
     assert.ok(vals.quoteAuthor.length > 0);
     assert.ok(vals.quoteWork.length > 0);
     assert.match(vals.quoteSource, /^https:\/\//);
-    quotes.push(vals.quoteText); vals.nextQuote();
-  }
-  assert.equal(new Set(quotes).size, 4);
-  assert.equal(app.renderVals().quoteText, quotes[0]);
+    quotes.push(vals.quoteText); vals.nextQuote(); vals = app.renderVals();
+  } while (vals.quoteText !== quotes[0] && quotes.length < 100);
+  assert.ok(quotes.length >= 12);
+  assert.equal(new Set(quotes).size, quotes.length);
+  assert.ok(quotes.includes('As long as I’m alive, there are infinite chances.'));
 });

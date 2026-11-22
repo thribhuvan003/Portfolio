@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#ece7de">
-<meta name="description" content="Software engineer in Hyderabad, open to Bengaluru. Explore my projects, merged open-source contributions, and résumé. Open to software engineering roles.">
+<meta name="description" content="Thribhuvan P, software engineering intern at Rhino Stream Technologies. 13 fixes merged into Svelte, Prisma, SolidJS and Supabase, plus the products I’ve shipped and my résumé.">
 <meta name="author" content="Thribhuvan">
-<title>Thribhuvan | Software engineer</title>
+<title>Thribhuvan | Software Engineering Intern</title>
 <link rel="canonical" href="https://thribhuvan0.vercel.app/">
-<meta property="og:title" content="Thribhuvan | Software engineer">
-<meta property="og:description" content="Full-stack projects, merged open-source contributions, and my résumé. Based in Hyderabad, open to Bengaluru and software engineering roles.">
+<meta property="og:title" content="Thribhuvan | Software Engineering Intern">
+<meta property="og:description" content="Software engineering intern at Rhino Stream Technologies. 13 fixes merged into Svelte, Prisma, SolidJS and Supabase, plus shipped products and my résumé.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://thribhuvan0.vercel.app/">
 <meta property="og:image" content="https://thribhuvan0.vercel.app/assets/profile/thribhuvan-portrait.jpg">
@@ -75,15 +75,6 @@
     0%, 100% { text-shadow:0 0 30px var(--wm-rest), 0 0 10px var(--wm-rest); }
     50%      { text-shadow:0 0 42px var(--wm-glow), 0 0 14px var(--wm-rest); }
   }
-  .os-sp-wave { display: none; align-items: flex-end; gap: 2px; height: 16px; flex: 0 0 auto; margin-left: auto; }
-  .os-sp-wave i { display: block; width: 2px; border-radius: 1px; background: var(--ink-faint); height: 30%; animation: sp-wave 1.1s ease-in-out infinite; }
-  .os-sp-wave i:nth-child(3n)   { animation-delay: .18s; }
-  .os-sp-wave i:nth-child(3n+1) { animation-delay: .36s; }
-  .os-sp-wave i:nth-child(4n)   { animation-delay: .54s; }
-  .os-sp-wave i:nth-child(5n)   { animation-delay: .72s; }
-  @keyframes sp-wave { 0%,100% { height: 22%; } 50% { height: 100%; } }
-  @media (prefers-reduced-motion: reduce) { .os-sp-wave i { animation: none; height: 50%; } }
-  @keyframes sp-pulse { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.45; transform:scale(0.82); } }
   @keyframes caret-blink { 0%,49% { opacity:1; } 50%,100% { opacity:0; } }
   @keyframes wm-rise { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
   @media (prefers-reduced-motion: reduce) {
@@ -165,8 +156,7 @@
     mask-image: radial-gradient(ellipse 52% 60% at 50% 54%, #000 12%, rgba(0,0,0,0.86) 32%, rgba(0,0,0,0.52) 50%, rgba(0,0,0,0.20) 68%, rgba(0,0,0,0.05) 84%, transparent 96%);
     filter: brightness(0.86) saturate(1.04);
   }
-  [data-os-theme="dark"] .os-about-photo img,
-  [data-os-theme="dark"] .os-about-portrait img {
+  [data-os-theme="dark"] .os-ab-portrait img {
     filter: brightness(0.82) saturate(1.02);
   }
   @keyframes portrait-dissolve {
@@ -208,13 +198,6 @@
     z-index: 40;
     transition: opacity 160ms ease, transform 160ms ease;
   }
-  .os-chrome-spotify {
-    right: max(12px, var(--safe-r));
-    top: max(12px, var(--safe-t));
-    width: 196px;
-    z-index: 40;
-    transition: opacity 160ms ease;
-  }
   .os-chrome-email {
     left: max(12px, var(--safe-l));
     bottom: calc(max(6px, var(--safe-b)) + 19px);
@@ -225,10 +208,6 @@
     left: auto;
     right: max(12px, var(--safe-r));
     top: max(12px, var(--safe-t));
-  }
-  .os-root[data-has-win="1"] .os-chrome-spotify {
-    opacity: 0;
-    pointer-events: none;
   }
   .os-win-frame {
     z-index: 200;
@@ -307,10 +286,7 @@
   }
   /* Photo column is pinned: the intro text scrolls past it, so the portrait is
      visible the moment the window opens and stays there. */
-  .os-about-grid { display: grid; grid-template-columns: minmax(0,1fr) 236px; gap: 32px; align-items: start; }
-  .os-about-photo { height: 300px; position: sticky; top: 0; }
-  .os-about-h { font-size: 27px; }
-  .os-projects-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 16px; }
+  .os-projects-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 16px; align-items: start; }
   .os-oss-layout { display: grid; grid-template-columns: 250px 1fr; gap: 24px; }
   .os-oss-row { display: grid; grid-template-columns: 150px 1fr 16px; align-items: center; gap: 12px; }
   .os-oss-finder-row { display: grid; grid-template-columns: 30px minmax(0,0.9fr) minmax(0,1.1fr) 14px; align-items: center; gap: 14px; }
@@ -328,15 +304,16 @@
   .os-skills-split { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px; align-items: stretch; }
   .os-card { border: 1px solid var(--hair); border-radius: 14px; background: var(--glass); padding: 16px; }
   .os-card-head { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--hair); color: var(--accent); }
-  .os-card-head h3 { margin: 0; color: var(--ink); font-size: 12.5px; font-weight: 700; letter-spacing: -0.01em; }
+  .os-card-head h3 { margin: 0; color: var(--ink); font-size: 14px; font-weight: 700; letter-spacing: -0.01em; }
   .os-card-empty { margin: 0; color: var(--ink-soft); font-size: 12.5px; line-height: 1.55; }
-  .os-entry { border: 1px solid var(--hair); border-radius: 10px; background: var(--chip); padding: 12px; }
+  .os-entry { padding: 2px 0 0; }
+  .os-entry + .os-entry { border-top: 1px solid var(--hair); padding-top: 14px; }
   .os-entry-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
-  .os-entry-top strong { color: var(--ink); font-size: 13px; font-weight: 660; line-height: 1.3; letter-spacing: -0.01em; }
-  .os-entry-when { flex: 0 0 auto; color: var(--ink-faint); font-family: 'Geist Mono', monospace; font-size: 10px; font-weight: 600; white-space: nowrap; }
-  .os-entry-org { margin: 3px 0 0; color: var(--ink-soft); font-size: 12px; font-weight: 500; }
+  .os-entry-top strong { color: var(--ink); font-size: 14px; font-weight: 660; line-height: 1.3; letter-spacing: -0.01em; }
+  .os-entry-when { flex: 0 0 auto; color: var(--ink-soft); font-family: 'Geist Mono', monospace; font-size: 11.5px; font-weight: 600; white-space: nowrap; }
+  .os-entry-org { margin: 3px 0 0; color: var(--ink-soft); font-size: 13px; font-weight: 500; }
   .os-entry-list { margin: 9px 0 0; padding-left: 15px; display: grid; gap: 5px; }
-  .os-entry-list li { color: var(--ink-soft); font-size: 12px; line-height: 1.5; }
+  .os-entry-list li { color: var(--ink-soft); font-size: 13px; line-height: 1.55; }
   .os-gallery-tile { cursor: zoom-in; transition: transform 180ms cubic-bezier(0.22,1,0.36,1), box-shadow 180ms ease; }
   .os-gallery-tile:hover { transform: translateY(-2px); box-shadow: 0 16px 34px rgba(10,26,48,0.20); }
   .os-gallery-tile:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
@@ -395,38 +372,9 @@
   .os-cv-skillvals { color: var(--ink-soft); font-size: 12.5px; line-height: 1.6; }
   /* About Me */
   .os-eyebrow { margin: 0 0 9px; color: var(--ink-faint); font-family: 'Geist Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
-  .os-about-hero { display: grid; grid-template-columns: 132px minmax(0,1fr); gap: 20px; align-items: start; }
-  .os-about-portrait { overflow: hidden; border: 1px solid var(--glass-line); border-radius: 14px; background: var(--chip); box-shadow: 0 10px 26px rgba(12,32,58,0.16); }
-  .os-about-portrait img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; }
-  .os-about-title { margin: 0; max-width: 24ch; color: var(--ink); font-size: clamp(20px, 2.6vw, 26px); font-weight: 700; line-height: 1.14; letter-spacing: -0.03em; text-wrap: pretty; }
   .os-about-p { max-width: 60ch; margin: 13px 0 0; color: var(--ink-soft); font-size: 13.5px; line-height: 1.68; }
-  .os-fact-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 8px; }
-  .os-fact { display: grid; gap: 4px; border: 1px solid var(--hair); border-radius: 11px; background: var(--chip); padding: 11px 13px; }
-  .os-fact-k { color: var(--ink-faint); font-family: 'Geist Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; }
-  .os-fact-v { color: var(--ink); font-size: 12.5px; font-weight: 620; letter-spacing: -0.01em; }
-  .os-life-row { display: grid; grid-template-columns: 18px minmax(0,1fr); align-items: start; gap: 12px; }
-  .os-life-row.is-sep { border-top: 1px solid var(--hair); padding-top: 10px; }
-  .os-life-row svg { margin-top: 2px; }
-  .os-life-row p { margin: 0; color: var(--ink-soft); font-size: 13px; line-height: 1.6; }
-  .os-life-row strong { color: var(--ink); font-weight: 640; }
-  .os-about-stats { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; margin-top: 20px; }
-  .os-about-stat { display: grid; gap: 2px; border: 1px solid var(--hair); border-radius: 11px; background: var(--chip); padding: 11px 13px; }
-  .os-about-stat strong { color: var(--ink); font-size: 20px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; }
-  .os-about-stat > span { color: var(--ink-soft); font-size: 10.5px; font-weight: 540; line-height: 1.35; }
-  .os-about-stat strong span { font: inherit; color: inherit; letter-spacing: inherit; }
   .os-spotify-cta { display: flex; align-items: center; gap: 9px; margin-top: auto; min-height: 40px; border: 1px solid transparent; border-radius: 999px; background: #1DB954; padding: 10px 15px; color: #fff; font-size: 12.5px; font-weight: 640; transition: filter 140ms ease, transform 140ms ease; }
   .os-spotify-cta:hover { filter: brightness(1.06); transform: translateY(-1px); color: #fff; }
-  .os-contact-row { display: flex; flex-wrap: wrap; gap: 8px; }
-  .os-contact-pill { display: inline-flex; align-items: center; gap: 8px; min-height: 34px; border: 1px solid var(--btn-line); border-radius: 999px; background: var(--btn-face); padding: 8px 14px; color: var(--ink); font-size: 12.5px; font-weight: 560; transition: background 140ms ease, transform 140ms ease; }
-  .os-contact-pill:hover { background: var(--btn-face-hover); transform: translateY(-1px); color: var(--ink); }
-  @media (max-width: 860px) {
-    .os-about-hero { grid-template-columns: 96px minmax(0,1fr); gap: 15px; }
-    .os-fact-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
-  }
-  @media (max-width: 560px) {
-    .os-about-hero { grid-template-columns: minmax(0,1fr); }
-    .os-about-portrait { width: 104px; }
-  }
   .os-pdf { flex: 1; min-height: 320px; width: 100%; border: 1px solid var(--hair); border-radius: 12px; background: var(--chip); }
   .os-chip-btn { display: inline-flex; align-items: center; gap: 9px; min-height: 42px; border: 1px solid var(--glass-line); border-radius: 999px; background: var(--glass); box-shadow: var(--shadow); -webkit-backdrop-filter: blur(28px) saturate(170%); backdrop-filter: blur(28px) saturate(170%); padding: 0 18px; color: var(--ink); font-size: 13px; font-weight: 600; white-space: nowrap; transition: transform 150ms ease; }
   .os-chip-btn:hover { transform: translateY(-1px); color: inherit; }
@@ -501,7 +449,6 @@
   @media (max-width: 1023px) {
     .os-root { --dock-h: 70px; }
     .os-hero { padding: 64px 28px 120px; }
-    .os-chrome-spotify { width: 188px; padding: 12px !important; }
     /* Tablet and below: primary actions move to the free top-left corner so they
        never sit on the dock or the portrait. Theme toggle drops to bottom-left. */
     .os-chrome-email {
@@ -523,9 +470,6 @@
       transform-origin: bottom left;
     }
     .os-root[data-has-win="1"] .os-chrome-theme { left: max(12px, var(--safe-l)); right: auto; top: auto; }
-    .os-about-grid { grid-template-columns: minmax(0,1fr) 200px; gap: 22px; }
-    .os-about-photo { height: 260px; position: sticky; top: 0; }
-    .os-about-h { font-size: 24px; }
     .os-oss-layout { grid-template-columns: 1fr; gap: 16px; }
     .os-resume-split { grid-template-columns: 1fr; }
     .os-gallery-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
@@ -551,25 +495,6 @@
     /* Phone corners: Resume/Email top-left, Last played top-right (as on the
        reference site), theme toggle bottom-left. Nothing overlaps. */
     /* Horizontal now-playing bar, tucked under the action chips. */
-    .os-chrome-spotify {
-      display: grid !important;
-      grid-template-columns: 38px minmax(0,1fr) auto;
-      grid-template-areas: "art text wave";
-      align-items: center;
-      column-gap: 11px;
-      left: max(12px, var(--safe-l));
-      right: max(12px, var(--safe-r));
-      top: calc(max(12px, var(--safe-t)) + 50px);
-      width: auto;
-      padding: 9px 13px !important;
-      border-radius: 16px;
-    }
-    .os-chrome-spotify .os-sp-label { display: none !important; }
-    .os-chrome-spotify .os-sp-art { grid-area: art; width: 38px; height: 38px; border-radius: 999px !important; aspect-ratio: 1; }
-    .os-chrome-spotify .os-sp-art svg { width: 22px; height: 22px; }
-    .os-chrome-spotify .os-sp-title { grid-area: text; margin: 0 !important; font-size: 12.5px !important; }
-    .os-chrome-spotify .os-sp-sub { grid-column: 2; grid-row: 2; margin: 1px 0 0 !important; font-size: 11px !important; }
-    .os-chrome-spotify .os-sp-wave { grid-area: wave; display: flex; }
     .os-chrome-theme {
       left: auto;
       right: max(10px, var(--safe-r));
@@ -579,7 +504,6 @@
       height: 44px;
     }
     .os-root[data-has-win="1"] .os-chrome-theme { opacity: 0.95; }
-    .os-root[data-has-win="1"] .os-chrome-spotify { opacity: 0; pointer-events: none; }
     .os-root[data-has-win="1"] .os-chrome-email {
       opacity: 0;
       pointer-events: none;
@@ -635,9 +559,6 @@
     .os-dock-btn { width: 44px; height: 44px; }
     .os-dock-icon { width: 40px !important; height: 40px !important; border-radius: 11px !important; }
     .os-dock-icon svg { width: 22px !important; height: 22px !important; }
-    .os-about-grid { grid-template-columns: 1fr; gap: 18px; align-items: start; height: auto; }
-    .os-about-photo { height: 200px; order: -1; position: static; }
-    .os-about-h { font-size: 26px; max-width: none !important; }
     .os-projects-grid { grid-template-columns: 1fr; gap: 12px; }
     .os-oss-row { grid-template-columns: 1fr 16px; gap: 10px; }
     .os-oss-row > span:first-child { grid-column: 1 / -1; }
@@ -652,6 +573,7 @@
     .os-resize-grip { display: none !important; }
     .os-win-body-pad { padding: 16px !important; }
     .os-win-body-pad.is-launcher { padding: 0 !important; }
+    .os-win-frame[data-window-id="work"] .os-win-body-pad { padding: 0 !important; }
     .os-project-row { grid-template-columns: 1fr; gap: 8px; }
     .os-sidebar { display: none !important; }
   }
@@ -659,10 +581,6 @@
   /* Narrow phones: the top row carries both the action chips (left) and the
      Last played card (right). Shrink both so they cannot meet in the middle. */
   @media (max-width: 430px) {
-    .os-chrome-spotify { padding: 8px 11px !important; border-radius: 14px; column-gap: 9px; }
-    .os-chrome-spotify .os-sp-title { font-size: 11.5px !important; }
-    .os-chrome-spotify .os-sp-sub { font-size: 10px !important; }
-    .os-sp-wave { width: 38px; overflow: hidden; }
     .os-chip-btn { min-height: 44px !important; padding: 0 14px !important; font-size: 12px !important; gap: 7px !important; }
     .os-chrome-email { gap: 6px !important; }
   }
@@ -696,7 +614,6 @@
     .os-hero > div { gap: 12px !important; }
     .os-primary-nav { display: grid; grid-template-columns: repeat(2, 1fr); width: min(340px, 100%); gap: 9px; }
     .os-primary-nav .os-chip-btn { justify-content: center; }
-    .os-chrome-spotify { display: none !important; }
     .os-chrome-email { display: none !important; }
     .os-hero-subject { height: min(29vh, 230px); width: min(29vh, 230px); }
     .os-traffic-row { gap: 8px; }
@@ -706,7 +623,7 @@
   }
   @media (max-height: 620px) {
     .os-root { min-height: 100dvh !important; }
-    .os-chrome-spotify, .os-chrome-email { display: none !important; }
+    .os-chrome-email { display: none !important; }
     .os-hero { padding-top: 16px; padding-bottom: 110px; }
     .os-hero-title { font-size: min(15vw, 18vh, 100px) !important; }
     .os-hero > div { gap: 8px !important; }
@@ -766,36 +683,140 @@
   .os-resume-shortcut { z-index: 100; top: max(12px, var(--safe-t)); left: max(66px, var(--safe-l)); }
   @media (max-width: 699px) { .os-resume-shortcut { left: max(16px, var(--safe-l)); } }
   .os-root[data-has-win="1"] .os-resume-shortcut { visibility: hidden; }
-  .os-quote { position: absolute; z-index: 3; left: clamp(20px, 4vw, 64px); bottom: 112px; width: min(310px, 28vw); padding: 18px 20px; border: 1px solid var(--glass-line); border-radius: 18px; background: var(--glass); color: var(--ink); backdrop-filter: blur(20px); }
-  .os-root[data-has-win="1"] .os-quote { visibility: hidden; }
-  .os-quote-label { margin: 0 0 10px; color: var(--ink-soft); font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
-  .os-quote blockquote { margin: 0; min-height: 4.05em; font-family: 'Newsreader', Georgia, serif; font-size: 21px; line-height: 1.35; letter-spacing: -0.01em; text-wrap: pretty; }
-  .os-quote-credit { display: block; margin-top: 10px; font-size: 13px; font-weight: 600; line-height: 1.5; }
-  .os-quote-credit span { display: block; color: var(--ink-soft); font-size: 12px; font-weight: 400; }
-  .os-quote-credit:hover { text-decoration: underline; text-underline-offset: 3px; }
-  .os-quote-controls { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 8px; }
-  .os-quote-controls button { min-height: 40px; padding: 6px 12px; border: 1px solid var(--hair); border-radius: 8px; background: var(--chip); color: var(--ink); font-size: 13px; cursor: pointer; }
-  .os-quote-count { color: var(--ink-soft); font-size: 12px; }
-  .os-quote button:focus-visible, .os-quote a:focus-visible, .os-win-shell a:focus-visible, .os-sidebar button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
   .os-sidebar button { min-height: 36px !important; }
   .os-btn-ghost, .os-btn-solid { min-height: 44px; font-size: 14px; }
   .os-folder-label { font-size: 14px; }
   .os-resume-preview { display: block; overflow: hidden; border: 1px solid var(--hair); border-radius: 12px; background: #fff; }
   .os-resume-preview img { display: block; width: 100%; height: auto; }
-  @media (max-height: 620px) and (min-width: 700px) {
-    .os-hero { padding-right: 300px; }
-    .os-quote { left: auto; right: 20px; bottom: 100px; width: 240px; padding: 12px 16px; }
-    .os-quote blockquote { font-size: 18px; }
-  }
   @media (max-width: 699px) {
     .os-root { overflow-y: auto !important; }
     .os-hero { position: relative !important; inset: auto !important; padding: 84px 18px 0; align-content: start !important; }
-    .os-quote { position: relative; left: auto; bottom: auto; width: calc(100% - 32px); max-width: 360px; margin: 24px auto 110px; padding: 14px 16px; }
-    .os-quote-label { margin-bottom: 6px; }
-    .os-quote blockquote { min-height: 2.7em; font-size: 19px; }
-    .os-quote-controls { margin-top: 4px; }
   }
   @media (prefers-reduced-motion: reduce) { .os-coach, .os-coach-card { animation: none; } }
+
+  /* —— Quotes: top-right corner, one at a time, no controls ——
+     The hairline fills over the reading time; when it completes the next quote fades in.
+     Hovering pauses the line, so the quote never changes while someone is reading it. */
+  .os-quote {
+    --q-dur: 9s;
+    position: absolute; z-index: 40;
+    top: max(14px, var(--safe-t)); right: max(14px, var(--safe-r));
+    width: min(320px, 30vw); min-width: 248px;
+    padding: 18px 20px 16px;
+    border: 1px solid var(--glass-line); border-radius: 20px;
+    background: var(--glass); box-shadow: var(--shadow);
+    -webkit-backdrop-filter: blur(30px) saturate(170%); backdrop-filter: blur(30px) saturate(170%);
+    color: var(--ink);
+    transition: opacity 200ms ease;
+  }
+  .os-root[data-has-win="1"] .os-quote { opacity: 0; pointer-events: none; }
+  .os-quote-mark { display: block; color: var(--wordmark); opacity: 0.38; margin-bottom: 10px; }
+  .os-quote blockquote {
+    margin: 0; min-height: 3.9em;
+    font-family: 'Newsreader', Georgia, serif; font-style: italic; font-weight: 400; font-optical-sizing: auto;
+    font-size: 20px; line-height: 1.32; letter-spacing: -0.01em; text-wrap: balance;
+  }
+  .os-quote-credit { display: grid; gap: 2px; margin: 12px 0 0; }
+  .os-quote-credit strong { font-size: 13.5px; font-weight: 600; letter-spacing: -0.01em; }
+  .os-quote-credit span { color: var(--ink-soft); font-family: 'Geist Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.02em; }
+  .os-quote-track { position: relative; display: block; height: 2px; margin-top: 14px; overflow: hidden; border-radius: 2px; background: var(--hair); }
+  .os-quote-track > span { position: absolute; inset: 0; transform-origin: 0 50%; transform: scaleX(0); background: var(--ink-soft); opacity: 0.55; }
+  .os-quote-track > .q-run-a { animation: q-fill-a var(--q-dur) linear forwards; }
+  .os-quote-track > .q-run-b { animation: q-fill-b var(--q-dur) linear forwards; }
+  .os-quote:hover .os-quote-track > span { animation-play-state: paused; }
+  @keyframes q-fill-a { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  @keyframes q-fill-b { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  .os-quote-body.q-in-a { animation: q-in-a 620ms cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+  .os-quote-body.q-in-b { animation: q-in-b 620ms cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+  @keyframes q-in-a { from { opacity: 0; transform: translateY(6px); filter: blur(3px); } to { opacity: 1; transform: none; filter: none; } }
+  @keyframes q-in-b { from { opacity: 0; transform: translateY(6px); filter: blur(3px); } to { opacity: 1; transform: none; filter: none; } }
+  @media (max-width: 1023px) {
+    .os-quote { width: 268px; min-width: 0; padding: 15px 17px 14px; }
+    .os-quote blockquote { font-size: 18px; }
+  }
+  @media (max-width: 699px) {
+    .os-quote { position: relative; top: auto; right: auto; width: calc(100% - 36px); max-width: 380px; margin: 22px auto 118px; }
+    .os-quote blockquote { min-height: 2.7em; font-size: 19px; }
+  }
+  @media (max-height: 620px) and (min-width: 700px) {
+    .os-quote { width: 250px; padding: 12px 15px; }
+    .os-quote-mark { display: none; }
+    .os-quote blockquote { font-size: 16px; min-height: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .os-quote-body { animation: none !important; }
+    .os-quote-track { display: none; }
+  }
+
+  /* —— Window morph —— */
+  .os-win-shell { transition: box-shadow 220ms ease; }
+  .os-win-frame.is-morphing .os-win-shell { box-shadow: none !important; }
+
+  /* Hero copy steps back while a window is open, so nothing reads through the glass. */
+  .os-hero-role, .os-hero-intro, .os-hero-availability { transition: opacity 220ms ease; }
+  .os-root[data-has-win="1"] .os-hero-role,
+  .os-root[data-has-win="1"] .os-hero-intro,
+  .os-root[data-has-win="1"] .os-hero-availability { opacity: 0; }
+  .os-hero-title { transition: opacity 260ms ease; }
+  .os-root[data-has-win="1"] .os-hero-title { opacity: 0.1; }
+
+  /* —— About Me —— */
+  .os-ab { display: grid; gap: 26px; max-width: 760px; margin: 0 auto; padding: 8px 6px 18px; }
+  .os-ab-head { display: grid; grid-template-columns: 128px minmax(0,1fr); gap: 22px; align-items: center; }
+  .os-ab-portrait { position: relative; overflow: hidden; width: 128px; aspect-ratio: 1; border-radius: 22px; background: var(--chip); box-shadow: 0 14px 32px rgba(40,28,12,0.20), 0 0 0 1px var(--hair); }
+  .os-ab-portrait img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
+  .os-ab-id { min-width: 0; }
+  .os-ab-status { display: inline-flex; align-items: center; gap: 8px; margin: 0; padding: 4px 11px 4px 9px; border-radius: 999px; background: rgba(40,200,64,0.12); color: var(--ink); font-size: 12.5px; font-weight: 560; }
+  .os-ab-status span { width: 7px; height: 7px; border-radius: 999px; background: #28c840; box-shadow: 0 0 0 3px rgba(40,200,64,0.22); }
+  .os-ab-name { margin: 8px 0 0; color: var(--wordmark); font-family: 'Grand Hotel', cursive; font-size: 46px; font-weight: 400; line-height: 1; letter-spacing: 0.005em; }
+  .os-ab-role { margin: 6px 0 0; color: var(--ink-soft); font-size: 14.5px; font-weight: 500; }
+  .os-ab-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .os-ab-actions .os-btn-solid, .os-ab-actions .os-btn-ghost { min-height: 38px; padding: 8px 15px; font-size: 13.5px; cursor: pointer; }
+  .os-ab-actions .os-btn-solid { border: 0; background: var(--accent-solid); }
+  .os-ab-actions .os-btn-solid:hover { color: #fff; filter: brightness(1.07); }
+  .os-btn-ghost.is-icon { width: 38px; padding: 0; justify-content: center; }
+  .os-ab-lead { margin: 0; max-width: 62ch; color: var(--ink); font-size: 16px; line-height: 1.65; letter-spacing: -0.005em; text-wrap: pretty; }
+  .os-ab-stats { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); margin: 0; border-block: 1px solid var(--hair); }
+  .os-ab-stats > div { display: flex; flex-direction: column-reverse; gap: 4px; padding: 14px 16px; }
+  .os-ab-stats > div + div { border-left: 1px solid var(--hair); }
+  .os-ab-stats dt { color: var(--ink-soft); font-size: 12.5px; font-weight: 500; }
+  .os-ab-stats dd { margin: 0; color: var(--ink); font-size: 30px; font-weight: 700; letter-spacing: -0.04em; line-height: 1; font-variant-numeric: tabular-nums; }
+  .os-ab-sec { display: grid; gap: 12px; }
+  .os-ab-h { margin: 0; color: var(--ink-soft); font-family: 'Geist Mono', ui-monospace, monospace; font-size: 11.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+  .os-ab-timeline { position: relative; display: grid; gap: 16px; margin: 0; padding: 0; list-style: none; }
+  .os-ab-timeline::before { content: ""; position: absolute; left: 116px; top: 8px; bottom: 8px; width: 1px; background: var(--hair); }
+  .os-ab-timeline li { position: relative; display: grid; grid-template-columns: 104px minmax(0,1fr); gap: 25px; align-items: baseline; }
+  .os-ab-timeline li::before { content: ""; position: absolute; left: 113px; top: 7px; width: 7px; height: 7px; border-radius: 999px; background: var(--sheet); box-shadow: 0 0 0 1.5px var(--ink-faint); }
+  .os-ab-timeline li:first-child::before { background: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .os-ab-when { color: var(--ink-soft); font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; font-weight: 500; text-align: right; white-space: nowrap; }
+  .os-ab-timeline strong { display: block; color: var(--ink); font-size: 14.5px; font-weight: 620; letter-spacing: -0.01em; line-height: 1.35; }
+  .os-ab-timeline p { margin: 3px 0 0; color: var(--ink-soft); font-size: 13.5px; line-height: 1.55; }
+  .os-ab-chips { display: flex; flex-wrap: wrap; gap: 7px; margin: 0; padding: 0; list-style: none; }
+  .os-ab-chips li { padding: 6px 12px; border: 1px solid var(--hair); border-radius: 999px; background: var(--chip); color: var(--ink); font-size: 13px; font-weight: 520; }
+  .os-ab-life { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; }
+  .os-ab-life > * { display: grid; align-content: start; gap: 4px; margin: 0; padding: 14px; border: 1px solid var(--hair); border-radius: 14px; background: var(--chip); color: var(--ink); font: inherit; text-align: left; }
+  .os-ab-life svg { margin-bottom: 6px; color: var(--accent); }
+  .os-ab-life strong { font-size: 14px; font-weight: 620; }
+  .os-ab-life p { margin: 0; color: var(--ink-soft); font-size: 13px; line-height: 1.5; }
+  .os-ab-life button { cursor: pointer; transition: background 140ms ease, transform 140ms ease; }
+  .os-ab-life button:hover { background: var(--accent-soft); transform: translateY(-1px); }
+  .os-ab-life button span { color: var(--accent); font-weight: 560; white-space: nowrap; }
+  .os-ab button:focus-visible, .os-ab a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  @media (max-width: 699px) {
+    .os-ab { gap: 22px; padding: 2px 0 12px; }
+    .os-ab-head { grid-template-columns: 1fr; gap: 14px; }
+    .os-ab-portrait { width: 96px; border-radius: 18px; }
+    .os-ab-name { font-size: 40px; }
+    .os-ab-lead { font-size: 15px; }
+    .os-ab-stats dd { font-size: 24px; }
+    .os-ab-stats > div { padding: 12px 10px; }
+    .os-ab-timeline::before, .os-ab-timeline li::before { display: none; }
+    .os-ab-timeline li { grid-template-columns: 1fr; gap: 2px; }
+    .os-ab-when { text-align: left; }
+    .os-ab-life { grid-template-columns: 1fr; gap: 8px; }
+    .os-ab-life > * { grid-template-columns: 22px minmax(0,1fr); column-gap: 12px; row-gap: 2px; padding: 12px 14px; }
+    .os-ab-life svg { grid-row: span 2; margin: 1px 0 0; }
+  }
 </style>
 </helmet>
 
@@ -809,22 +830,19 @@
   <main><section data-screen-label="Desktop hero" class="os-hero" style="position:absolute;z-index:2;inset:0;display:grid;align-content:center;justify-content:stretch;justify-items:stretch;pointer-events:none">
     <div style="display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;container-type:inline-size">
       <h1 data-wm="true" class="os-hero-title" style="display:block;width:100%;margin:0;font-family:'Grand Hotel',cursive;text-align:center;font-weight:400;letter-spacing:0.006em;line-height:1;color:var(--wordmark);-webkit-mask-image:linear-gradient(90deg,#000 0%,#000 28%,rgba(0,0,0,0.55) 36%,rgba(0,0,0,0.18) 43%,transparent 50%);mask-image:linear-gradient(90deg,#000 0%,#000 28%,rgba(0,0,0,0.55) 36%,rgba(0,0,0,0.18) 43%,transparent 50%);-webkit-mask-size:300% 100%;mask-size:300% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;animation:wm-draw 1.9s cubic-bezier(0.32,0.02,0.18,1) 0.4s both">Thribhuvan</h1>
-      <p class="os-hero-role">Software engineer · Hyderabad</p>
-      <p class="os-hero-intro">I build web products, Python tools and LLM workflows.</p>
-      <p class="os-hero-availability">Open to software engineering roles and internships.</p>
+      <p class="os-hero-role">Software Engineering Intern at Rhino Stream Technologies</p>
+      <p class="os-hero-intro">{{ ossCount }} fixes merged into Svelte, Prisma, SolidJS and Supabase.<br>{{ liveCount }} products of my own, live.</p>
     </div>
     <span></span>
   </section></main>
 
-  <aside class="os-quote" aria-label="Rotating thoughts" onMouseEnter="{{ holdQuotes }}" onMouseLeave="{{ releaseQuotes }}" onFocusCapture="{{ holdQuotes }}" onBlurCapture="{{ releaseQuotes }}">
-    <p class="os-quote-label">Words to build by</p>
-    <blockquote aria-live="off">“{{ quoteText }}”</blockquote>
-    <a class="os-quote-credit" href="{{ quoteSource }}" target="_blank" rel="noreferrer" aria-label="{{ quoteSourceAria }}">{{ quoteAuthor }}<span>{{ quoteWork }}</span></a>
-    <div class="os-quote-controls">
-      <button type="button" onClick="{{ toggleQuotes }}" aria-label="{{ quotePauseAria }}">{{ quotePauseLabel }}</button>
-      <span class="os-quote-count">{{ quotePosition }}</span>
-      <button type="button" onClick="{{ nextQuote }}" aria-label="Next quote">Next</button>
+  <aside class="os-quote" aria-label="Quotes I keep near">
+    <div class="os-quote-body {{ quoteAnimClass }}" aria-live="off">
+      <svg class="os-quote-mark" width="26" height="20" viewBox="0 0 26 20" aria-hidden="true"><path fill="currentColor" d="M0 20V12.2C0 5.6 3.2 1.5 9.6 0l1.3 2.6C7.6 3.8 6 6 5.8 9.4H10.6V20H0Zm15.2 0V12.2C15.2 5.6 18.4 1.5 24.8 0l1.2 2.6c-3.3 1.2-4.9 3.4-5.1 6.8h4.8V20H15.2Z"/></svg>
+      <blockquote>{{ quoteText }}</blockquote>
+      <p class="os-quote-credit"><strong>{{ quoteAuthor }}</strong><span>{{ quoteWork }}</span></p>
     </div>
+    <span class="os-quote-track" aria-hidden="true"><span class="{{ quoteBarClass }}" style="{{ quoteBarStyle }}" onAnimationEnd="{{ quoteTick }}"></span></span>
   </aside>
 
   <div class="os-hero-subject" aria-hidden="true">
@@ -832,20 +850,6 @@
     <img src="assets/profile/paint-2-water.jpg" alt="" decoding="async" style="--i:1">
   </div>
 
-  <a class="os-chrome-spotify" href="{{ spotifyUrl }}" target="_blank" rel="noreferrer" style="position:absolute;display:block;border:1px solid var(--glass-line);border-radius:20px;background:var(--glass);box-shadow:var(--shadow);-webkit-backdrop-filter:blur(30px) saturate(170%);backdrop-filter:blur(30px) saturate(170%);padding:14px;color:inherit">
-    <p class="os-sp-label" style="display:flex;align-items:center;gap:6px;margin:0 0 11px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.17em;text-transform:uppercase"><sc-if value="{{ spIsPlaying }}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="width:6px;height:6px;border-radius:999px;background:#1DB954;box-shadow:0 0 0 3px rgba(29,185,84,0.20);animation:sp-pulse 1.8s ease-in-out infinite"></span></sc-if>{{ spLabel }}</p>
-    <div class="os-sp-art" style="position:relative;display:grid;place-items:center;aspect-ratio:1;overflow:hidden;border:1px solid var(--hair);border-radius:13px;background:var(--chip)">
-      <sc-if value="{{ spNoArt }}" hint-placeholder-val="{{ true }}">
-      <svg width="44" height="44" viewBox="0 0 24 24" aria-hidden="true" style="opacity:0.22"><path fill="currentColor" d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
-      </sc-if>
-      <sc-if value="{{ spHasArt }}" hint-placeholder-val="{{ false }}">
-        <img src="{{ spArt }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
-      </sc-if>
-    </div>
-    <div class="os-sp-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-    <p class="os-sp-title" style="margin:12px 0 0;color:var(--ink);font-size:13px;font-weight:620;line-height:1.3;letter-spacing:-0.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ spTitle }}</p>
-    <p class="os-sp-sub" style="margin:4px 0 0;color:var(--ink-faint);font-size:13px;line-height:1.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ spArtist }}</p>
-  </a>
 
   <button type="button" class="os-chrome-theme" onClick="{{ toggleTheme }}" aria-label="{{ themeAria }}" title="{{ themeAria }}">
     <sc-if value="{{ isLight }}" hint-placeholder-val="{{ true }}">
@@ -963,85 +967,85 @@
               </sc-if>
 
               <sc-if value="{{ folderIsAbout }}" hint-placeholder-val="{{ false }}">
-                <div style="display:grid;gap:14px">
-                  <section class="os-card os-about-hero">
-                    <div class="os-about-portrait">
-                      <img src="assets/profile/paint-3-oil.jpg" alt="Thribhuvan P" width="560" height="560" loading="lazy" decoding="async">
+                <article class="os-ab">
+                  <header class="os-ab-head">
+                    <div class="os-ab-portrait">
+                      <img src="assets/profile/paint-3-oil.jpg" alt="Painted portrait of Thribhuvan P" width="560" height="560" decoding="async">
                     </div>
-                    <div style="min-width:0">
-                      <p class="os-eyebrow">About Me</p>
-                      <h3 class="os-about-title">I build full-stack products and contribute to open source.</h3>
-                      <p class="os-about-p">I’m Thribhuvan, a software engineer based in Hyderabad, open to opportunities in Bengaluru. I work with Python, SQL and TypeScript, building telemetry tools, LLM workflows and web products.</p>
-                      <p class="os-about-p">I’ve also contributed {{ ossCount }} merged patches across {{ ossRepoCount }} open-source repositories, including Svelte, Prisma and Supabase.</p>
-                    </div>
-                  </section>
-
-                  <div class="os-fact-grid">
-                    <div class="os-fact"><span class="os-fact-k">Based in</span><span class="os-fact-v">Hyderabad, India</span></div>
-                    <div class="os-fact"><span class="os-fact-k">Education</span><span class="os-fact-v">B.Tech CSE · JNTUA</span></div>
-                    <div class="os-fact"><span class="os-fact-k">Class of</span><span class="os-fact-v">2026 · CGPA 7.6</span></div>
-                    <div class="os-fact"><span class="os-fact-k">Shipped</span><span class="os-fact-v">4 live projects</span></div>
-                  </div>
-
-                  <section class="os-card">
-                    <div class="os-card-head">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"></path><path d="m6 8-4 4 4 4"></path><path d="m14.5 4-5 16"></path></svg>
-                      <h3>What I reach for</h3>
-                    </div>
-                    <div style="display:flex;flex-wrap:wrap;gap:7px">
-                      <span class="os-skill-chip">TypeScript</span>
-                      <span class="os-skill-chip">React / Next.js</span>
-                      <span class="os-skill-chip">Node.js</span>
-                      <span class="os-skill-chip">PostgreSQL + RLS</span>
-                      <span class="os-skill-chip">Supabase</span>
-                      <span class="os-skill-chip">Python</span>
-                      <span class="os-skill-chip">Docker</span>
-                      <span class="os-skill-chip">System design</span>
-                    </div>
-                  </section>
-
-                  <section class="os-card">
-                    <div class="os-card-head">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
-                      <h3>Away from the editor</h3>
-                    </div>
-                    <div style="display:grid;gap:10px">
-                      <div class="os-life-row">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a2.5 2.5 0 0 1 0-5H20"></path></svg>
-                        <p><strong>I read Vedanta.</strong> A little each day, usually away from a screen.</p>
-                      </div>
-                      <div class="os-life-row is-sep">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="18" r="4"></circle><path d="M12 18V2l7 4"></path></svg>
-                        <p><strong>Mozart is usually playing.</strong> Mostly the late symphonies while I work.</p>
-                      </div>
-                      <div class="os-life-row is-sep">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                        <p><strong>I photograph where I travel.</strong> Temple architecture in Tamil Nadu, and the hill roads through the Western Ghats.</p>
+                    <div class="os-ab-id">
+                      <p class="os-ab-status"><span aria-hidden="true"></span>Open to software engineering roles</p>
+                      <h3 class="os-ab-name">Thribhuvan P</h3>
+                      <p class="os-ab-role">Software Engineering Intern · Rhino Stream Technologies</p>
+                      <div class="os-ab-actions">
+                        <button type="button" class="os-btn-solid" onClick="{{ showResume }}">
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v6h6"></path></svg>
+                          Resume
+                        </button>
+                        <a href="mailto:thribhuvan003@gmail.com" class="os-btn-ghost">
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+                          Email
+                        </a>
+                        <a href="https://github.com/thribhuvan003" target="_blank" rel="noreferrer" class="os-btn-ghost is-icon" aria-label="GitHub profile">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .8a11.2 11.2 0 0 0-3.54 21.82c.56.1.76-.24.76-.54v-2.1c-3.1.68-3.75-1.32-3.75-1.32-.5-1.28-1.24-1.62-1.24-1.62-1.02-.7.08-.69.08-.69 1.12.08 1.7 1.16 1.7 1.16 1 .1.55 2.62 3.16 1.86.1-.73.39-1.23.71-1.51-2.47-.28-5.06-1.24-5.06-5.5 0-1.22.43-2.21 1.15-2.99-.12-.28-.5-1.42.1-2.95 0 0 .95-.3 3.08 1.14a10.6 10.6 0 0 1 5.6 0c2.13-1.44 3.07-1.14 3.07-1.14.6 1.53.22 2.67.11 2.95.72.78 1.15 1.77 1.15 2.99 0 4.27-2.6 5.21-5.08 5.49.4.34.76 1.02.76 2.06v3.06c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"></path></svg>
+                        </a>
+                        <a href="https://www.linkedin.com/in/thribhuvan003/" target="_blank" rel="noreferrer" class="os-btn-ghost is-icon" aria-label="LinkedIn profile">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.1 9.2H4.05V19H7.1V9.2ZM5.58 4.32a1.77 1.77 0 1 0 0 3.54 1.77 1.77 0 0 0 0-3.54ZM19.95 13.38c0-2.96-1.58-4.34-3.69-4.34-1.7 0-2.46.94-2.88 1.59V9.2h-3.05V19h3.05v-4.86c0-1.28.24-2.52 1.83-2.52 1.57 0 1.59 1.47 1.59 2.6V19h3.05l.1-5.62Z"></path></svg>
+                        </a>
                       </div>
                     </div>
+                  </header>
+
+                  <p class="os-ab-lead">At Rhino Stream I turn game-streaming telemetry into answers: why a WebRTC session dropped, where latency and jitter spiked. Outside work I ship my own products, like Tray and Unhold. When a tool I rely on breaks, I fix it upstream. That’s {{ ossCount }} merged fixes so far, in Svelte, Prisma and Supabase.</p>
+
+                  <dl class="os-ab-stats">
+                    <div><dt>Merged upstream PRs</dt><dd>{{ ossCount }}</dd></div>
+                    <div><dt>Open-source repos</dt><dd>{{ ossRepoCount }}</dd></div>
+                    <div><dt>Live products</dt><dd>{{ liveCount }}</dd></div>
+                  </dl>
+
+                  <section class="os-ab-sec" aria-labelledby="ab-now">
+                    <h4 id="ab-now" class="os-ab-h">Path so far</h4>
+                    <ol class="os-ab-timeline">
+                      <li>
+                        <span class="os-ab-when">Oct 2026 – now</span>
+                        <div><strong>Software Engineering Intern, Rhino Stream Technologies</strong><p>Python and SQL telemetry tooling for GameArena: classifying WebRTC and WebSocket failures, latency, jitter and FPS.</p></div>
+                      </li>
+                      <li>
+                        <span class="os-ab-when">2026</span>
+                        <div><strong>Open-source contributor</strong><p>{{ ossCount }} merged fixes across {{ ossRepoCount }} repositories, including Svelte, Prisma, SolidJS and Supabase.</p></div>
+                      </li>
+                      <li>
+                        <span class="os-ab-when">2022 – 2026</span>
+                        <div><strong>B.Tech, Computer Science and Engineering</strong><p>JNTU Anantapur · CGPA 7.6/10</p></div>
+                      </li>
+                    </ol>
                   </section>
 
-                  <section class="os-card">
-                    <div class="os-card-head">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
-                      <h3>Reach me</h3>
-                    </div>
-                    <div class="os-contact-row">
-                      <a href="mailto:thribhuvan003@gmail.com" class="os-contact-pill">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
-                        thribhuvan003@gmail.com
-                      </a>
-                      <a href="https://github.com/thribhuvan003" target="_blank" rel="noreferrer" class="os-contact-pill">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .8a11.2 11.2 0 0 0-3.54 21.82c.56.1.76-.24.76-.54v-2.1c-3.1.68-3.75-1.32-3.75-1.32-.5-1.28-1.24-1.62-1.24-1.62-1.02-.7.08-.69.08-.69 1.12.08 1.7 1.16 1.7 1.16 1 .1.55 2.62 3.16 1.86.1-.73.39-1.23.71-1.51-2.47-.28-5.06-1.24-5.06-5.5 0-1.22.43-2.21 1.15-2.99-.12-.28-.5-1.42.1-2.95 0 0 .95-.3 3.08 1.14a10.6 10.6 0 0 1 5.6 0c2.13-1.44 3.07-1.14 3.07-1.14.6 1.53.22 2.67.11 2.95.72.78 1.15 1.77 1.15 2.99 0 4.27-2.6 5.21-5.08 5.49.4.34.76 1.02.76 2.06v3.06c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"></path></svg>
-                        github.com/thribhuvan003
-                      </a>
-                      <a href="https://www.linkedin.com/in/thribhuvan003/" target="_blank" rel="noreferrer" class="os-contact-pill">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M7.1 9.2H4.05V19H7.1V9.2ZM5.58 4.32a1.77 1.77 0 1 0 0 3.54 1.77 1.77 0 0 0 0-3.54ZM19.95 13.38c0-2.96-1.58-4.34-3.69-4.34-1.7 0-2.46.94-2.88 1.59V9.2h-3.05V19h3.05v-4.86c0-1.28.24-2.52 1.83-2.52 1.57 0 1.59 1.47 1.59 2.6V19h3.05l.1-5.62Z"></path></svg>
-                        linkedin.com/in/thribhuvan003
-                      </a>
+                  <section class="os-ab-sec" aria-labelledby="ab-stack">
+                    <h4 id="ab-stack" class="os-ab-h">What I reach for</h4>
+                    <ul class="os-ab-chips">
+                      <li>TypeScript</li><li>React · Next.js</li><li>Node.js</li><li>PostgreSQL + RLS</li><li>Supabase</li><li>Python</li><li>Docker</li><li>System design</li>
+                    </ul>
+                  </section>
+
+                  <section class="os-ab-sec" aria-labelledby="ab-life">
+                    <h4 id="ab-life" class="os-ab-h">Away from the editor</h4>
+                    <div class="os-ab-life">
+                      <div>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a2.5 2.5 0 0 1 0-5H20"></path></svg>
+                        <strong>Vedanta</strong><p>A little each day, away from a screen.</p>
+                      </div>
+                      <div>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="18" r="4"></circle><path d="M12 18V2l7 4"></path></svg>
+                        <strong>Mozart</strong><p>The late symphonies, mostly while I work.</p>
+                      </div>
+                      <button type="button" onClick="{{ showPhotos }}">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path><circle cx="12" cy="13" r="3"></circle></svg>
+                        <strong>Photography</strong><p>Temples of Tamil Nadu and Western Ghats roads. <span>See photos →</span></p>
+                      </button>
                     </div>
                   </section>
-                </div>
+                </article>
               </sc-if>
 
               <sc-if value="{{ folderIsOss }}" hint-placeholder-val="{{ false }}">
@@ -1123,7 +1127,7 @@
           <div style="display:grid;gap:18px;align-content:start">
             <div>
               <p style="margin:0 0 8px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">Education &amp; Experience</p>
-              <h2 style="margin:0;color:var(--ink);font-size:clamp(22px,3.4vw,30px);font-weight:700;line-height:1.1;letter-spacing:-0.03em">Education and skills</h2>
+              <h2 style="margin:0;color:var(--ink);font-size:clamp(22px,3.4vw,30px);font-weight:700;line-height:1.1;letter-spacing:-0.03em">Education and experience</h2>
             </div>
 
             <div class="os-skills-split">
@@ -1281,7 +1285,7 @@
             <div>
               <p style="margin:0 0 8px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">Contact</p>
               <h2 style="margin:0;color:var(--ink);font-size:31px;font-weight:700;line-height:1.06;letter-spacing:-0.03em">Let’s talk.</h2>
-              <p style="margin:12px 0 0;color:var(--ink-soft);font-size:15px;line-height:1.55">I’m open to software engineering roles and internships. Email me with the role or project you have in mind.</p>
+              <p style="margin:12px 0 0;color:var(--ink-soft);font-size:15px;line-height:1.55">Email me with the role or project you have in mind.</p>
             </div>
             <a href="mailto:thribhuvan003@gmail.com" style="display:grid;grid-template-columns:20px 1fr 15px;align-items:center;gap:12px;border:1px solid var(--hair);border-radius:12px;background:var(--glass);padding:14px;color:var(--ink);font-size:13px;font-weight:560">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
@@ -1381,9 +1385,6 @@
               <sc-if value="{{ item.isSpotify }}" hint-placeholder-val="{{ false }}">
                 <svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
               </sc-if>
-              <sc-if value="{{ item.glyph }}" hint-placeholder-val="{{ false }}">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="{{ item.glyphStroke }}" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="filter:drop-shadow(0 1px 2px rgba(0,0,0,0.18))"><path d="{{ item.glyph }}"></path><path d="{{ item.glyph2 }}"></path></svg>
-              </sc-if>
             </span>
             <sc-if value="{{ item.active }}" hint-placeholder-val="{{ false }}">
               <span aria-hidden="true" style="position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:999px;background:var(--ink-soft);box-shadow:0 0 0 1px rgba(255,255,255,0.25)"></span>
@@ -1414,11 +1415,26 @@ const L = {
 
 const SQUIRCLE = 13;
 
+// One at a time in the top-right card. Every line here was checked against a script,
+// transcript or the translated text (sources below). Popular lines that turned out to be
+// fan-made or misattributed are deliberately left out. Ordered so sources alternate.
 const QUOTES = [
+  { text: "As long as I’m alive, there are infinite chances.", author: "Monkey D. Luffy", work: "One Piece · ch. 1026", source: "https://onepiece.fandom.com/wiki/Chapter_1026" },
+  { text: "There is no secret ingredient. It’s just you.", author: "Po", work: "Kung Fu Panda · 2008", source: "https://en.wikiquote.org/wiki/Kung_Fu_Panda" },
+  { text: "The victorious strategist only seeks battle after the victory has been won.", author: "Sun Tzu", work: "The Art of War · IV.15", source: "https://standardebooks.org/ebooks/sun-tzu/the-art-of-war/lionel-giles/text/chapter-4" },
+  { text: "If you only do what you can do, you’ll never be more than you are now.", author: "Master Shifu", work: "Kung Fu Panda 3 · 2016", source: "https://www.imdb.com/title/tt2267968/quotes/?item=qt5371088" },
+  { text: "It is a very servile thing to be luxurious, but a very royal thing to toil.", author: "Alexander the Great", work: "Plutarch, Life of Alexander · 40", source: "https://lexundria.com/plut_alex/40/prr" },
+  { text: "The only thing that matters is what you choose to be now.", author: "Po", work: "Kung Fu Panda 2 · 2011", source: "https://en.wikiquote.org/wiki/Kung_Fu_Panda_2" },
+  { text: "You have a right to perform your prescribed duty, but you are not entitled to the fruits of action.", author: "Krishna", work: "Bhagavad Gita · 2.47", source: "https://vedabase.io/en/library/bg/2/47/" },
+  { text: "I don’t wanna conquer anything. I just think the guy with the most freedom on this whole ocean is the Pirate King!", author: "Monkey D. Luffy", work: "One Piece · ch. 507", source: "https://onepiece.fandom.com/wiki/Chapter_507" },
+  { text: "Yesterday is history, tomorrow is a mystery, but today is a gift. That is why it is called the present.", author: "Master Oogway", work: "Kung Fu Panda · 2008", source: "https://www.imdb.com/title/tt0441773/quotes/" },
+  { text: "If you know the enemy and know yourself, you need not fear the result of a hundred battles.", author: "Sun Tzu", work: "The Art of War · III.18", source: "https://standardebooks.org/ebooks/sun-tzu/the-art-of-war/lionel-giles/text/chapter-3" },
+  { text: "I’m not a big fat panda. I’m THE big fat panda.", author: "Po", work: "Kung Fu Panda · 2008", source: "https://www.imdb.com/title/tt0441773/quotes/?item=qt0448705" },
+  { text: "Do nothing which is of no use.", author: "Miyamoto Musashi", work: "The Book of Five Rings", source: "https://www.columbia.edu/~hds2/chushinguranew/Bushido/gorin-no-sho.htm" },
+  { text: "One often meets his destiny on the road he takes to avoid it.", author: "Master Oogway", work: "Kung Fu Panda · 2008", source: "https://www.imdb.com/title/tt0441773/characters/nm0453641/" },
+  { text: "I know I need help from others to survive!", author: "Monkey D. Luffy", work: "One Piece · ch. 90", source: "https://onepiece.fandom.com/wiki/Chapter_90" },
+  { text: "The general who wins a battle makes many calculations in his temple ere the battle is fought.", author: "Sun Tzu", work: "The Art of War · I.26", source: "https://classics.mit.edu/Tzu/artwar.html" },
   { text: "There are no accidents.", author: "Master Oogway", work: "Kung Fu Panda · 2008", source: "https://clip.cafe/kung-fu-panda-2008/there-are-no-accidents-s2/" },
-  { text: "If that’s what you want, I think you should do it. I’ll help you.", author: "Monkey D. Luffy", work: "ONE PIECE · live-action, episode 1", source: "https://jwlfyc-public-us-east-1.s3.amazonaws.com/1708659155016-One%20Piece%20Ep.%20101%20Script.pdf#page=40" },
-  { text: "Ponder and deliberate before you make a move.", author: "Sun Tzu", work: "The Art of War · Lionel Giles translation", source: "https://www.gutenberg.org/cache/epub/17405/pg17405-images.html" },
-  { text: "Do not faint now, but finish the journey", author: "Alexander the Great", work: "As recorded in Plutarch’s Life of Alexander", source: "https://www.yorku.ca/pswarney/Texts/alexander.htm" },
 ];
 
 
@@ -1661,10 +1677,9 @@ class Component extends DCLogic {
     Object.keys(GEOM).forEach((id, i) => { w[id] = { ...GEOM[id], open: false, minimized: false, maximized: false, z: 200 + i }; });
     const vp = this.viewport();
     this._motion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    this.state = { theme: initialTheme(props), windows: w, folder: null, zTop: 220, vp, dockX: null, dockCenters: null, lightbox: null, np: null, coach: firstVisit(), quote: 0, quotesPaused: this._motion.matches, reducedMotion: this._motion.matches };
+    this.state = { theme: initialTheme(props), windows: w, folder: null, zTop: 220, vp, dockX: null, dockCenters: null, lightbox: null, np: null, coach: firstVisit(), quote: 0, reducedMotion: this._motion.matches };
     this._dockRaf = 0;
     this._returnFocus = null;
-    this._quotesHeld = false;
   }
 
   viewport() {
@@ -1683,14 +1698,15 @@ class Component extends DCLogic {
   }
 
   componentDidMount() {
-    this._onMotion = (e) => this.setState({ reducedMotion: e.matches, ...(e.matches ? { quotesPaused: true, dockX: null } : {}) });
+    this._onMotion = (e) => this.setState({ reducedMotion: e.matches, ...(e.matches ? { dockX: null } : {}) });
     this._motion.addEventListener("change", this._onMotion);
+    // With motion on, the progress line's animationend advances the quotes (see quoteTick).
+    // With reduced motion there is no line, so a plain timer swaps them without animation.
     this._quoteTimer = setInterval(() => {
-      const s = this.state;
-      if (document.hidden || s.coach || s.lightbox !== null || s.quotesPaused || this._quotesHeld || document.querySelector('.os-quote')?.contains(document.activeElement)) return;
-      if (Object.values(s.windows).some((w) => w.open && !w.minimized)) return;
+      if (!this.state.reducedMotion || !this.quotesLive()) return;
+      if (document.querySelector('.os-quote:hover')) return;
       this.nextQuote();
-    }, 10000);
+    }, 12000);
     if (this.state.coach) {
       const button = document.querySelector('.os-coach-btn');
       if (button) button.focus();
@@ -1810,6 +1826,18 @@ class Component extends DCLogic {
 
   nextQuote() { this.setState((s) => ({ quote: (s.quote + 1) % QUOTES.length })); }
 
+  // Quotes only move while the desktop itself is in view.
+  quotesLive() {
+    const s = this.state;
+    if (document.hidden || s.coach || s.lightbox !== null) return false;
+    return !Object.values(s.windows).some((w) => w.open && !w.minimized);
+  }
+
+  quoteSeconds(q) {
+    const words = q.text.split(/\s+/).length;
+    return Math.min(15, Math.max(7, 4.5 + words * 0.42));
+  }
+
   open(app) {
     if (app.folder) { this.showFolder(app.folder); return; }
     if (app.external) { window.open(app.external, "_blank", "noopener,noreferrer"); return; }
@@ -1832,18 +1860,62 @@ class Component extends DCLogic {
     });
   }
 
+  frameEl(id) {
+    return typeof document !== "undefined" && document.querySelector ? document.querySelector('.os-win-frame[data-window-id="' + id + '"]') : null;
+  }
+
+  // Runs `apply(done)` (which must call setState and pass `done` as its callback), then
+  // animates the window from its old box to its new one. Growing windows are revealed
+  // with clip-path from the old rectangle, so the content is laid out once at its final
+  // size and never squashes or reflows. Shrinking windows settle in with a short scale.
+  morph(id, apply) {
+    const el = this.frameEl(id);
+    const first = el && el.getBoundingClientRect ? el.getBoundingClientRect() : null;
+    apply(() => {
+      if (!first || !first.width || this.state.reducedMotion) return;
+      const node = this.frameEl(id);
+      if (!node || !node.animate) return;
+      const last = node.getBoundingClientRect();
+      if (!last.width || !last.height) return;
+      const shell = node.querySelector(".os-win-shell");
+      const ease = "cubic-bezier(0.2, 0.9, 0.25, 1)";
+      const grows = last.width * last.height >= first.width * first.height;
+      if (grows) {
+        const top = Math.max(0, first.top - last.top), left = Math.max(0, first.left - last.left);
+        const right = Math.max(0, last.right - first.right), bottom = Math.max(0, last.bottom - first.bottom);
+        const radius = window.getComputedStyle(shell || node).borderRadius || "12px";
+        node.classList.add("is-morphing");
+        const anim = node.animate([
+          { clipPath: "inset(" + top + "px " + right + "px " + bottom + "px " + left + "px round 26px)" },
+          { clipPath: "inset(0px 0px 0px 0px round " + radius + ")" },
+        ], { duration: 380, easing: ease });
+        if (shell) shell.animate([{ opacity: 0.55 }, { opacity: 1 }], { duration: 260, easing: "ease-out" });
+        const done = () => node.classList.remove("is-morphing");
+        anim.onfinish = done; anim.oncancel = done;
+      } else if (shell) {
+        shell.animate([
+          { opacity: 0.4, transform: "scale(1.035)" },
+          { opacity: 1, transform: "scale(1)" },
+        ], { duration: 280, easing: ease });
+      }
+    });
+  }
+
   focusWindow() {
     document.querySelector('.os-win-frame[data-window-id="work"] section[data-screen-label]')?.focus({ preventScroll: true });
   }
 
   showFolder(folder, updateUrl = true) {
     const vp = this.viewport();
-    this.setState((s) => {
+    const wasOpen = this.state.windows.work.open && !this.state.windows.work.minimized;
+    const run = (done) => this.setState((s) => {
       const previous = s.windows.work;
       const z = s.zTop + 1;
       const fit = !previous.open || s.folder === null ? this.fitGeom("work", vp) : {};
       return { folder, zTop: z, windows: { ...s.windows, work: { ...previous, ...fit, open: true, minimized: false, maximized: vp.phone || (previous.open && previous.maximized), z } } };
-    }, () => this.focusWindow());
+    }, () => { if (done) done(); this.focusWindow(); });
+    if (wasOpen && this.state.folder === null) this.morph("work", run);
+    else run();
     if (updateUrl && window.location.hash !== "#" + folder) {
       window.history.pushState(null, "", "#" + folder);
     }
@@ -1949,7 +2021,10 @@ class Component extends DCLogic {
           width: sheet ? "calc(100% - 16px)" : w.w,
           height: sheet ? (phone ? "calc(100% - 86px)" : "calc(100% - 120px)") : w.h,
           transform: "none",
-          transition: w.interacting || s.reducedMotion ? "none" : "width 260ms cubic-bezier(0.22,1,0.36,1), height 260ms cubic-bezier(0.22,1,0.36,1), left 260ms cubic-bezier(0.22,1,0.36,1), top 260ms cubic-bezier(0.22,1,0.36,1)",
+          // Geometry never tweens through width/height/left/top: that re-lays out the
+          // whole window every frame and the content visibly reflows and jumps. Size
+          // changes snap once and morph() animates them on the compositor instead.
+          transition: w.interacting || s.reducedMotion ? "none" : "opacity 200ms ease",
         },
         shellStyle: launcher ? {
           position: "relative", display: "flex", flexDirection: "column", gap: 16,
@@ -2017,7 +2092,9 @@ class Component extends DCLogic {
         zoom: (e) => {
           this.stopDrag(e);
           this.focus(w.id);
-          this.patch(w.id, { maximized: !w.maximized });
+          this.morph(w.id, (done) => this.setState((st) => ({
+            windows: { ...st.windows, [w.id]: { ...st.windows[w.id], maximized: !st.windows[w.id].maximized } },
+          }), done));
         },
         dragStart: (e) => this.drag(w.id, e, "move"),
         resizeStart: (e) => this.drag(w.id, e, "resize"),
@@ -2051,7 +2128,6 @@ class Component extends DCLogic {
         aria: app.external ? "Open " + app.label + " in a new tab" : (st && st.minimized ? "Restore " : st && st.open ? "Focus " : "Open ") + app.label,
         active: !!(st && st.open && !app.external),
         artwork: app.artwork || null,
-        glyph: app.glyph || null, glyph2: app.glyph2 || "", glyphStroke: app.stroke || "#ffffff",
         isGithub: app.id === "github", isLinkedin: app.id === "linkedin", isSpotify,
         iconClass: isSpotify ? "is-spotify" : "",
         wrapStyle: {
@@ -2144,16 +2220,20 @@ class Component extends DCLogic {
     const hasOpenWin = Object.keys(s.windows).some((id) => s.windows[id].open && !s.windows[id].minimized);
     return {
       theme: s.theme, isDark: dark, isLight: !dark, wallpaper, wallpaperWave,
-      quoteText: QUOTES[s.quote].text, quotePosition: (s.quote + 1) + " / " + QUOTES.length,
+      quoteText: QUOTES[s.quote].text,
       quoteAuthor: QUOTES[s.quote].author, quoteWork: QUOTES[s.quote].work, quoteSource: QUOTES[s.quote].source,
-      quoteSourceAria: "Read the source for the quote by " + QUOTES[s.quote].author,
-      quotesPaused: s.quotesPaused,
-      quotePauseLabel: s.quotesPaused ? "Play" : "Pause",
-      quotePauseAria: s.quotesPaused ? "Resume automatic quotes" : "Pause automatic quotes",
-      toggleQuotes: () => this.setState((st) => ({ quotesPaused: !st.quotesPaused })),
+      // Alternating between two identical keyframes restarts the animation on every change.
+      quoteAnimClass: s.reducedMotion ? "" : (s.quote % 2 ? "q-in-b" : "q-in-a"),
+      quoteBarClass: s.reducedMotion ? "" : (s.quote % 2 ? "q-run-b" : "q-run-a"),
+      quoteBarStyle: {
+        animationDuration: this.quoteSeconds(QUOTES[s.quote]) + "s",
+        ...(s.coach || s.lightbox !== null || hasOpenWin ? { animationPlayState: "paused" } : {}),
+      },
+      quoteTick: (e) => {
+        if (e && e.target !== e.currentTarget) return;
+        if (this.quotesLive()) this.nextQuote();
+      },
       nextQuote: () => this.nextQuote(),
-      holdQuotes: () => { this._quotesHeld = true; },
-      releaseQuotes: (e) => { if (!e || !e.currentTarget.contains(e.relatedTarget)) this._quotesHeld = false; },
       themeAria: dark ? "Switch to light appearance" : "Switch to dark appearance",
       vpLabel: vp.label || "desktop",
       hasWinFlag: hasOpenWin ? "1" : "0",
@@ -2183,6 +2263,9 @@ class Component extends DCLogic {
         this.setState({ dockX: null });
       },
       showProjects: () => this.showFolder("projects"),
+      showResume: () => this.showFolder("resume"),
+      showPhotos: () => this.open(APPS.find((a) => a.id === "images")),
+      liveCount: PROJECTS.filter((p) => p.live).length,
       showOss: () => this.showFolder("oss"),
       windows, dock, folders, atRoot, notRoot: !atRoot,
       splitStyle: {
@@ -2200,8 +2283,10 @@ class Component extends DCLogic {
       },
       folderTitle: meta.title, folderCount: meta.count,
       goRoot: () => {
-        this.setState({ folder: null });
-        this.patch("work", { ...this.launcherGeom(vp), maximized: false });
+        this.morph("work", (done) => this.setState((st) => ({
+          folder: null,
+          windows: { ...st.windows, work: { ...st.windows.work, ...this.launcherGeom(vp), maximized: false } },
+        }), done));
         window.history.pushState(null, "", window.location.pathname + window.location.search);
       },
       backStyle: {
