@@ -22,10 +22,10 @@
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&family=Geist+Mono:wght@400;500;600;700&family=Grand+Hotel&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&family=Geist+Mono:wght@400;500;600;700&family=Grand+Hotel&family=Newsreader:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 <style>
   html, body { margin:0; padding:0; width:100%; height:100%; overflow:hidden; }
-  body { font-family:'Geist', -apple-system, ui-sans-serif, system-ui, sans-serif; -webkit-font-smoothing:antialiased; background:#dfeaf6; }
+  body { font-family:'Geist', -apple-system, ui-sans-serif, system-ui, sans-serif; font-size:16px; -webkit-font-smoothing:antialiased; background:#dfeaf6; }
   * { box-sizing:border-box; }
   button { font:inherit; cursor:default; }
   img { user-select:none; -webkit-user-drag:none; }
@@ -232,6 +232,8 @@
   }
   .os-win-frame {
     z-index: 200;
+  }
+  .os-win-shell {
     animation: win-open 260ms cubic-bezier(0.22, 1, 0.36, 1);
   }
   @keyframes win-open {
@@ -239,7 +241,8 @@
     to   { opacity: 1; transform: translateY(0) scale(1); }
   }
   @media (prefers-reduced-motion: reduce) {
-    .os-win-frame { animation: none; }
+    .os-win-shell { animation: none; }
+    .os-root *, .os-root *::before, .os-root *::after { transition: none !important; }
   }
   .os-win-titlebar {
     position: relative;
@@ -763,6 +766,35 @@
   .os-resume-shortcut { z-index: 100; top: max(12px, var(--safe-t)); left: max(66px, var(--safe-l)); }
   @media (max-width: 699px) { .os-resume-shortcut { left: max(16px, var(--safe-l)); } }
   .os-root[data-has-win="1"] .os-resume-shortcut { visibility: hidden; }
+  .os-quote { position: absolute; z-index: 3; left: clamp(20px, 4vw, 64px); bottom: 112px; width: min(310px, 28vw); padding: 18px 20px; border: 1px solid var(--glass-line); border-radius: 18px; background: var(--glass); color: var(--ink); backdrop-filter: blur(20px); }
+  .os-root[data-has-win="1"] .os-quote { visibility: hidden; }
+  .os-quote-label { margin: 0 0 10px; color: var(--ink-soft); font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .os-quote blockquote { margin: 0; min-height: 4.05em; font-family: 'Newsreader', Georgia, serif; font-size: 21px; line-height: 1.35; letter-spacing: -0.01em; text-wrap: pretty; }
+  .os-quote-credit { display: block; margin-top: 10px; font-size: 13px; font-weight: 600; line-height: 1.5; }
+  .os-quote-credit span { display: block; color: var(--ink-soft); font-size: 12px; font-weight: 400; }
+  .os-quote-credit:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .os-quote-controls { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 8px; }
+  .os-quote-controls button { min-height: 40px; padding: 6px 12px; border: 1px solid var(--hair); border-radius: 8px; background: var(--chip); color: var(--ink); font-size: 13px; cursor: pointer; }
+  .os-quote-count { color: var(--ink-soft); font-size: 12px; }
+  .os-quote button:focus-visible, .os-quote a:focus-visible, .os-win-shell a:focus-visible, .os-sidebar button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .os-sidebar button { min-height: 36px !important; }
+  .os-btn-ghost, .os-btn-solid { min-height: 44px; font-size: 14px; }
+  .os-folder-label { font-size: 14px; }
+  .os-resume-preview { display: block; overflow: hidden; border: 1px solid var(--hair); border-radius: 12px; background: #fff; }
+  .os-resume-preview img { display: block; width: 100%; height: auto; }
+  @media (max-height: 620px) and (min-width: 700px) {
+    .os-hero { padding-right: 300px; }
+    .os-quote { left: auto; right: 20px; bottom: 100px; width: 240px; padding: 12px 16px; }
+    .os-quote blockquote { font-size: 18px; }
+  }
+  @media (max-width: 699px) {
+    .os-root { overflow-y: auto !important; }
+    .os-hero { position: relative !important; inset: auto !important; padding: 84px 18px 0; align-content: start !important; }
+    .os-quote { position: relative; left: auto; bottom: auto; width: calc(100% - 32px); max-width: 360px; margin: 24px auto 110px; padding: 14px 16px; }
+    .os-quote-label { margin-bottom: 6px; }
+    .os-quote blockquote { min-height: 2.7em; font-size: 19px; }
+    .os-quote-controls { margin-top: 4px; }
+  }
   @media (prefers-reduced-motion: reduce) { .os-coach, .os-coach-card { animation: none; } }
 </style>
 </helmet>
@@ -777,12 +809,23 @@
   <main><section data-screen-label="Desktop hero" class="os-hero" style="position:absolute;z-index:2;inset:0;display:grid;align-content:center;justify-content:stretch;justify-items:stretch;pointer-events:none">
     <div style="display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;container-type:inline-size">
       <h1 data-wm="true" class="os-hero-title" style="display:block;width:100%;margin:0;font-family:'Grand Hotel',cursive;text-align:center;font-weight:400;letter-spacing:0.006em;line-height:1;color:var(--wordmark);-webkit-mask-image:linear-gradient(90deg,#000 0%,#000 28%,rgba(0,0,0,0.55) 36%,rgba(0,0,0,0.18) 43%,transparent 50%);mask-image:linear-gradient(90deg,#000 0%,#000 28%,rgba(0,0,0,0.55) 36%,rgba(0,0,0,0.18) 43%,transparent 50%);-webkit-mask-size:300% 100%;mask-size:300% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;animation:wm-draw 1.9s cubic-bezier(0.32,0.02,0.18,1) 0.4s both">Thribhuvan</h1>
-      <p class="os-hero-role">Full-stack developer · Bengaluru</p>
-      <p class="os-hero-intro">I build web products and contribute fixes to open source.</p>
+      <p class="os-hero-role">Software engineer · Bengaluru</p>
+      <p class="os-hero-intro">I build web products, Python tools and LLM workflows.</p>
       <p class="os-hero-availability">Open to software engineering roles and internships.</p>
     </div>
     <span></span>
   </section></main>
+
+  <aside class="os-quote" aria-label="Rotating thoughts" onMouseEnter="{{ holdQuotes }}" onMouseLeave="{{ releaseQuotes }}" onFocusCapture="{{ holdQuotes }}" onBlurCapture="{{ releaseQuotes }}">
+    <p class="os-quote-label">Words to build by</p>
+    <blockquote aria-live="off">“{{ quoteText }}”</blockquote>
+    <a class="os-quote-credit" href="{{ quoteSource }}" target="_blank" rel="noreferrer" aria-label="{{ quoteSourceAria }}">{{ quoteAuthor }}<span>{{ quoteWork }}</span></a>
+    <div class="os-quote-controls">
+      <button type="button" onClick="{{ toggleQuotes }}" aria-label="{{ quotePauseAria }}">{{ quotePauseLabel }}</button>
+      <span class="os-quote-count">{{ quotePosition }}</span>
+      <button type="button" onClick="{{ nextQuote }}" aria-label="Next quote">Next</button>
+    </div>
+  </aside>
 
   <div class="os-hero-subject" aria-hidden="true">
     <img src="assets/profile/paint-1-sketch.jpg" alt="" decoding="async" fetchpriority="high" style="--i:0">
@@ -790,7 +833,7 @@
   </div>
 
   <a class="os-chrome-spotify" href="{{ spotifyUrl }}" target="_blank" rel="noreferrer" style="position:absolute;display:block;border:1px solid var(--glass-line);border-radius:20px;background:var(--glass);box-shadow:var(--shadow);-webkit-backdrop-filter:blur(30px) saturate(170%);backdrop-filter:blur(30px) saturate(170%);padding:14px;color:inherit">
-    <p class="os-sp-label" style="display:flex;align-items:center;gap:6px;margin:0 0 11px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:0.17em;text-transform:uppercase"><sc-if value="{{ spIsPlaying }}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="width:6px;height:6px;border-radius:999px;background:#1DB954;box-shadow:0 0 0 3px rgba(29,185,84,0.20);animation:sp-pulse 1.8s ease-in-out infinite"></span></sc-if>{{ spLabel }}</p>
+    <p class="os-sp-label" style="display:flex;align-items:center;gap:6px;margin:0 0 11px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.17em;text-transform:uppercase"><sc-if value="{{ spIsPlaying }}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="width:6px;height:6px;border-radius:999px;background:#1DB954;box-shadow:0 0 0 3px rgba(29,185,84,0.20);animation:sp-pulse 1.8s ease-in-out infinite"></span></sc-if>{{ spLabel }}</p>
     <div class="os-sp-art" style="position:relative;display:grid;place-items:center;aspect-ratio:1;overflow:hidden;border:1px solid var(--hair);border-radius:13px;background:var(--chip)">
       <sc-if value="{{ spNoArt }}" hint-placeholder-val="{{ true }}">
       <svg width="44" height="44" viewBox="0 0 24 24" aria-hidden="true" style="opacity:0.22"><path fill="currentColor" d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
@@ -801,7 +844,7 @@
     </div>
     <div class="os-sp-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
     <p class="os-sp-title" style="margin:12px 0 0;color:var(--ink);font-size:13px;font-weight:620;line-height:1.3;letter-spacing:-0.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ spTitle }}</p>
-    <p class="os-sp-sub" style="margin:4px 0 0;color:var(--ink-faint);font-size:11.5px;line-height:1.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ spArtist }}</p>
+    <p class="os-sp-sub" style="margin:4px 0 0;color:var(--ink-faint);font-size:13px;line-height:1.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ spArtist }}</p>
   </a>
 
   <button type="button" class="os-chrome-theme" onClick="{{ toggleTheme }}" aria-label="{{ themeAria }}" title="{{ themeAria }}">
@@ -821,9 +864,9 @@
   </div>
 
 
-  <sc-for list="{{ windows }}" as="win" hint-placeholder-count="0">
-  <div class="os-win-frame" style="{{ win.frame }}">
-    <section data-screen-label="{{ win.label }}" aria-label="{{ win.label }}" tabindex="-1" onMouseDown="{{ win.focus }}" style="{{ win.shellStyle }}">
+  <sc-for list="{{ windows }}" as="win" key="{{ win.id }}" hint-placeholder-count="0">
+  <div class="os-win-frame" data-window-id="{{ win.id }}" style="{{ win.frame }}">
+    <section class="os-win-shell" data-screen-label="{{ win.label }}" aria-label="{{ win.label }}" tabindex="-1" onMouseDown="{{ win.focus }}" style="{{ win.shellStyle }}">
       <div class="os-win-titlebar {{ win.barClass }}" onPointerDown="{{ win.dragStart }}" onDoubleClick="{{ win.zoom }}" style="{{ win.barStyle }}">
         <div class="os-traffic-row" onPointerDown="{{ win.stopDrag }}">
           <button type="button" class="os-traffic close" aria-label="Close" onClick="{{ win.close }}" onPointerDown="{{ win.stopDrag }}"></button>
@@ -867,7 +910,7 @@
               <sc-if value="{{ atRoot }}" hint-placeholder-val="{{ true }}">
                 <div class="os-folder-grid">
                   <sc-for list="{{ folders }}" as="folder" hint-placeholder-count="4">
-                    <button type="button" class="os-folder-tile" onDoubleClick="{{ folder.select }}" onClick="{{ folder.select }}">
+                    <button type="button" class="os-folder-tile" onClick="{{ folder.select }}">
                       <span class="os-folder-icon" aria-hidden="true">
                         <svg viewBox="0 0 96 78" width="84" height="84" style="width:100%;height:100%;display:block;pointer-events:none;overflow:visible" aria-hidden="true">
                           <defs>
@@ -898,19 +941,19 @@
                       </sc-if>
                       <div style="display:flex;flex-direction:column;gap:12px;flex:1;padding:15px">
                         <div>
-                          <p style="margin:0 0 6px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:0.17em;text-transform:uppercase">{{ p.name }}</p>
+                          <p style="margin:0 0 6px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.17em;text-transform:uppercase">{{ p.name }}</p>
                           <h3 style="margin:0;color:var(--ink);font-size:16px;font-weight:640;line-height:1.25;letter-spacing:-0.012em">{{ p.summary }}</h3>
-                          <p style="margin:7px 0 0;color:var(--ink-soft);font-size:12.5px;line-height:1.5">{{ p.detail }}</p>
+                          <p style="margin:7px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.5">{{ p.detail }}</p>
                         </div>
                         <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:auto">
                           <sc-if value="{{ p.live }}" hint-placeholder-val="{{ true }}">
-                            <a href="{{ p.live }}" target="_blank" rel="noreferrer" style="display:inline-flex;align-items:center;gap:6px;min-height:32px;border:1px solid var(--hair);border-radius:999px;background:var(--chip);padding:7px 13px;color:var(--ink);font-size:11.5px;font-weight:620">Live <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a>
+                            <a href="{{ p.live }}" target="_blank" rel="noreferrer" style="display:inline-flex;align-items:center;gap:6px;min-height:32px;border:1px solid var(--hair);border-radius:999px;background:var(--chip);padding:7px 13px;color:var(--ink);font-size:13px;font-weight:620">Live <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a>
                           </sc-if>
                           <sc-if value="{{ p.repo }}" hint-placeholder-val="{{ true }}">
-                          <a href="{{ p.repo }}" target="_blank" rel="noreferrer" style="display:inline-flex;align-items:center;gap:6px;min-height:32px;border:1px solid var(--hair);border-radius:999px;background:var(--chip);padding:7px 13px;color:var(--ink);font-size:11.5px;font-weight:620">Code <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .8a11.2 11.2 0 0 0-3.54 21.82c.56.1.76-.24.76-.54v-2.1c-3.1.68-3.75-1.32-3.75-1.32-.5-1.28-1.24-1.62-1.24-1.62-1.02-.7.08-.69.08-.69 1.12.08 1.7 1.16 1.7 1.16 1 .1.55 2.62 3.16 1.86.1-.73.39-1.23.71-1.51-2.47-.28-5.06-1.24-5.06-5.5 0-1.22.43-2.21 1.15-2.99-.12-.28-.5-1.42.1-2.95 0 0 .95-.3 3.08 1.14a10.6 10.6 0 0 1 5.6 0c2.13-1.44 3.07-1.14 3.07-1.14.6 1.53.22 2.67.11 2.95.72.78 1.15 1.77 1.15 2.99 0 4.27-2.6 5.21-5.08 5.49.4.34.76 1.02.76 2.06v3.06c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"></path></svg></a>
+                          <a href="{{ p.repo }}" target="_blank" rel="noreferrer" style="display:inline-flex;align-items:center;gap:6px;min-height:32px;border:1px solid var(--hair);border-radius:999px;background:var(--chip);padding:7px 13px;color:var(--ink);font-size:13px;font-weight:620">Code <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .8a11.2 11.2 0 0 0-3.54 21.82c.56.1.76-.24.76-.54v-2.1c-3.1.68-3.75-1.32-3.75-1.32-.5-1.28-1.24-1.62-1.24-1.62-1.02-.7.08-.69.08-.69 1.12.08 1.7 1.16 1.7 1.16 1 .1.55 2.62 3.16 1.86.1-.73.39-1.23.71-1.51-2.47-.28-5.06-1.24-5.06-5.5 0-1.22.43-2.21 1.15-2.99-.12-.28-.5-1.42.1-2.95 0 0 .95-.3 3.08 1.14a10.6 10.6 0 0 1 5.6 0c2.13-1.44 3.07-1.14 3.07-1.14.6 1.53.22 2.67.11 2.95.72.78 1.15 1.77 1.15 2.99 0 4.27-2.6 5.21-5.08 5.49.4.34.76 1.02.76 2.06v3.06c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"></path></svg></a>
                           </sc-if>
                           <sc-if value="{{ p.repoNote }}" hint-placeholder-val="{{ false }}">
-                            <span style="display:inline-flex;align-items:center;gap:6px;min-height:32px;border:1px solid var(--hair);border-radius:999px;background:var(--chip);padding:7px 13px;color:var(--ink-faint);font-size:11.5px;font-weight:620">{{ p.repoNote }}</span>
+                            <span style="display:inline-flex;align-items:center;gap:6px;min-height:32px;border:1px solid var(--hair);border-radius:999px;background:var(--chip);padding:7px 13px;color:var(--ink-faint);font-size:13px;font-weight:620">{{ p.repoNote }}</span>
                           </sc-if>
                         </div>
                       </div>
@@ -928,7 +971,7 @@
                     <div style="min-width:0">
                       <p class="os-eyebrow">About Me</p>
                       <h3 class="os-about-title">I build full-stack products and contribute to open source.</h3>
-                      <p class="os-about-p">I’m Thribhuvan, a developer based in Bengaluru. I work with TypeScript, React, Node.js and PostgreSQL, from the interface to payments, background jobs and deployment.</p>
+                      <p class="os-about-p">I’m Thribhuvan, a software engineer based in Bengaluru. I work with Python, SQL and TypeScript, building telemetry tools, LLM workflows and web products.</p>
                       <p class="os-about-p">I’ve also contributed {{ ossCount }} merged patches across {{ ossRepoCount }} open-source repositories, including Svelte, Prisma and Supabase.</p>
                     </div>
                   </section>
@@ -936,7 +979,7 @@
                   <div class="os-fact-grid">
                     <div class="os-fact"><span class="os-fact-k">Based in</span><span class="os-fact-v">Bengaluru, India</span></div>
                     <div class="os-fact"><span class="os-fact-k">Education</span><span class="os-fact-v">B.Tech CSE · JNTUA</span></div>
-                    <div class="os-fact"><span class="os-fact-k">Class of</span><span class="os-fact-v">2026 · CGPA 7.5</span></div>
+                    <div class="os-fact"><span class="os-fact-k">Class of</span><span class="os-fact-v">2026 · CGPA 7.6</span></div>
                     <div class="os-fact"><span class="os-fact-k">Shipped</span><span class="os-fact-v">4 live projects</span></div>
                   </div>
 
@@ -1018,22 +1061,22 @@
                       <sc-for list="{{ featuredOss }}" as="o" hint-placeholder-count="13">
                         <a href="{{ o.url }}" target="_blank" rel="noreferrer" style="{{ o.rowStyle }}">
                           <span style="display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 9px;min-width:0">
-                            <strong style="color:var(--ink);font-size:12.5px;font-weight:680;letter-spacing:-0.01em">{{ o.repo }}</strong>
+                            <strong style="color:var(--ink);font-size:14px;font-weight:680;letter-spacing:-0.01em">{{ o.repo }}</strong>
                             <span style="color:var(--ink-faint);font-size:11px">{{ o.what }}</span>
 
                           </span>
-                          <span style="flex:0 0 auto;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10.5px;font-weight:600">{{ o.num }}</span>
+                          <span style="flex:0 0 auto;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:12px;font-weight:600">{{ o.num }}</span>
                           <span style="grid-column:1 / -1;min-width:0;color:var(--ink-soft);font-size:12px;line-height:1.55">{{ o.did }}</span>
                         </a>
                       </sc-for>
 <details><summary style="cursor:pointer;padding:16px 0;font-size:14px;color:var(--accent)">View all {{ ossCount }} merged contributions</summary>                      <sc-for list="{{ remainingOss }}" as="o" hint-placeholder-count="13">
                         <a href="{{ o.url }}" target="_blank" rel="noreferrer" style="{{ o.rowStyle }}">
                           <span style="display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 9px;min-width:0">
-                            <strong style="color:var(--ink);font-size:12.5px;font-weight:680;letter-spacing:-0.01em">{{ o.repo }}</strong>
+                            <strong style="color:var(--ink);font-size:14px;font-weight:680;letter-spacing:-0.01em">{{ o.repo }}</strong>
                             <span style="color:var(--ink-faint);font-size:11px">{{ o.what }}</span>
 
                           </span>
-                          <span style="flex:0 0 auto;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10.5px;font-weight:600">{{ o.num }}</span>
+                          <span style="flex:0 0 auto;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:12px;font-weight:600">{{ o.num }}</span>
                           <span style="grid-column:1 / -1;min-width:0;color:var(--ink-soft);font-size:12px;line-height:1.55">{{ o.did }}</span>
                         </a>
                       </sc-for></details>
@@ -1047,79 +1090,18 @@
                   <header class="os-cv-head">
                     <div>
                       <h3 class="os-cv-name">Thribhuvan P</h3>
-                      <p class="os-cv-role">Full-stack developer</p>
-                      <p class="os-cv-contact">Bengaluru, India · <a href="mailto:thribhuvan003@gmail.com">thribhuvan003@gmail.com</a> · <a href="https://github.com/thribhuvan003" target="_blank" rel="noreferrer">github.com/thribhuvan003</a> · <a href="https://www.linkedin.com/in/thribhuvan003/" target="_blank" rel="noreferrer">linkedin.com/in/thribhuvan003</a></p>
+                      <p class="os-cv-role">Software Engineer · Python, LLM Agents &amp; API Integration</p>
+                      <p class="os-cv-contact">Bengaluru, India · <a href="mailto:thribhuvan003@gmail.com">thribhuvan003@gmail.com</a></p>
                     </div>
                     <div class="os-cv-actions">
-                      <a href="{{ resumePdf }}" target="_blank" rel="noreferrer" class="os-btn-ghost">
-                        Open PDF
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
-                      </a>
-                      <a href="{{ resumePdf }}" download="Thribhuvan-P-Resume.pdf" class="os-btn-solid">
-                        Download
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"></path><path d="m7 12 5 5 5-5"></path><path d="M5 21h14"></path></svg>
-                      </a>
+                      <a href="{{ resumePdf }}" target="_blank" rel="noreferrer" class="os-btn-ghost">Open PDF</a>
+                      <a href="{{ resumePdf }}" download="Thribhuvan-P-Resume.pdf" class="os-btn-solid">Download resume</a>
                     </div>
                   </header>
-
-                  <section class="os-cv-sec">
-                    <h4 class="os-cv-h">Open Source Contributions</h4>
-                    <sc-for list="{{ ossGroups }}" as="grp" hint-placeholder-count="5">
-                      <article class="os-cv-item">
-                        <div class="os-cv-item-top">
-                          <strong>{{ grp.repo }}</strong>
-                          <span class="os-cv-meta">{{ grp.prs }}</span>
-                        </div>
-                        <p class="os-cv-note">{{ grp.note }}</p>
-                      </article>
-                    </sc-for>
-                  </section>
-
-                  <section class="os-cv-sec">
-                    <h4 class="os-cv-h">Projects</h4>
-                    <sc-for list="{{ cvProjects }}" as="p" hint-placeholder-count="4">
-                      <article class="os-cv-item">
-                        <div class="os-cv-item-top">
-                          <strong>{{ p.name }} — {{ p.summary }}</strong>
-                          <span class="os-cv-meta">
-                            <sc-if value="{{ p.repo }}" hint-placeholder-val="{{ true }}"><a href="{{ p.repo }}" target="_blank" rel="noreferrer">GitHub</a></sc-if>
-                            <sc-if value="{{ p.live }}" hint-placeholder-val="{{ true }}"><a href="{{ p.live }}" target="_blank" rel="noreferrer">Live</a></sc-if>
-                          </span>
-                        </div>
-                        <sc-if value="{{ p.hasBullets }}" hint-placeholder-val="{{ true }}">
-                          <ul class="os-cv-list">
-                            <sc-for list="{{ p.bulletList }}" as="b" hint-placeholder-count="3"><li>{{ b.text }}</li></sc-for>
-                          </ul>
-                        </sc-if>
-                        <p class="os-cv-stack"><span>Stack:</span> {{ p.stack }}</p>
-                      </article>
-                    </sc-for>
-                  </section>
-
-                  <section class="os-cv-sec">
-                    <h4 class="os-cv-h">Skills</h4>
-                    <div class="os-cv-skills">
-                      <sc-for list="{{ toolGroups }}" as="g" hint-placeholder-count="5">
-                        <div class="os-cv-skillrow">
-                          <span class="os-cv-skilllabel">{{ g.label }}</span>
-                          <span class="os-cv-skillvals">{{ g.names }}</span>
-                        </div>
-                      </sc-for>
-                    </div>
-                  </section>
-
-                  <section class="os-cv-sec">
-                    <h4 class="os-cv-h">Education</h4>
-                    <sc-for list="{{ education }}" as="e" hint-placeholder-count="1">
-                      <article class="os-cv-item">
-                        <div class="os-cv-item-top">
-                          <strong>{{ e.org }}</strong>
-                          <span class="os-cv-meta">{{ e.when }}</span>
-                        </div>
-                        <p class="os-cv-note">{{ e.title }} · CGPA 7.5/10.0</p>
-                      </article>
-                    </sc-for>
-                  </section>
+                  <p class="os-about-p">Computer Science graduate and software engineering intern building Python/SQL telemetry tooling and AI agents.</p>
+                  <a class="os-resume-preview" href="{{ resumePdf }}" target="_blank" rel="noreferrer" aria-label="Open the full resume as a PDF">
+                    <img src="assets/docs/Thribhuvan-P-Resume-preview.png" alt="One-page resume for Thribhuvan P. Open the PDF for selectable text, experience, projects and contact details." width="1191" height="1684" loading="lazy" decoding="async">
+                  </a>
                 </div>
               </sc-if>
             </section>
@@ -1173,7 +1155,7 @@
               <section class="os-card">
                 <div class="os-card-head">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2"></rect><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path></svg>
-                  <h3>Open Source</h3>
+                  <h3>Experience</h3>
                 </div>
                 <sc-if value="{{ hasExperience }}" hint-placeholder-val="{{ false }}">
                   <div style="display:grid;gap:10px">
@@ -1210,8 +1192,8 @@
                       </sc-if>
                     </span>
                     <div style="min-width:0">
-                      <strong style="display:block;margin-bottom:2px;color:var(--ink);font-size:12.5px;font-weight:660;letter-spacing:-0.01em">{{ l.title }}</strong>
-                      <p style="margin:0;color:var(--ink-soft);font-size:11.5px;line-height:1.5">{{ l.note }}</p>
+                      <strong style="display:block;margin-bottom:2px;color:var(--ink);font-size:14px;font-weight:660;letter-spacing:-0.01em">{{ l.title }}</strong>
+                      <p style="margin:0;color:var(--ink-soft);font-size:13px;line-height:1.5">{{ l.note }}</p>
                     </div>
                   </div>
                 </sc-for>
@@ -1226,7 +1208,7 @@
               <div style="display:grid;gap:13px">
                 <sc-for list="{{ toolGroups }}" as="g" hint-placeholder-count="7">
                   <section aria-label="{{ g.label }}">
-                    <h5 style="margin:0;color:var(--ink-soft);font-size:10.5px;font-weight:700;letter-spacing:0.04em">{{ g.label }}</h5>
+                    <h5 style="margin:0;color:var(--ink-soft);font-size:12px;font-weight:700;letter-spacing:0.04em">{{ g.label }}</h5>
                     <ul style="display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0;padding:0;list-style:none">
                       <sc-for list="{{ g.tools }}" as="t" hint-placeholder-count="6">
                         <li class="os-skill-chip">
@@ -1249,7 +1231,7 @@
             <div>
               <p style="margin:0 0 8px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">Photos</p>
               <h2 style="margin:0;color:var(--ink);font-size:clamp(22px,4vw,26px);font-weight:700;line-height:1.1;letter-spacing:-0.028em">Gallery</h2>
-              <p style="margin:8px 0 0;color:var(--ink-soft);font-size:13.5px;line-height:1.55">Temples, hills, and things I’ve saved. Shot on a phone, mostly around South India.</p>
+              <p style="margin:8px 0 0;color:var(--ink-soft);font-size:15px;line-height:1.55">Temples, hills, and things I’ve saved. Shot on a phone, mostly around South India.</p>
             </div>
             <sc-if value="{{ hasGallery }}" hint-placeholder-val="{{ false }}">
               <div class="os-gallery-grid">
@@ -1262,7 +1244,7 @@
                       </span>
                     </sc-if>
                     <span style="{{ g.captionStyle }}">
-                      <span style="color:rgba(255,255,255,0.68);font-family:'Geist Mono',monospace;font-size:9.5px;letter-spacing:0.12em;text-transform:uppercase">{{ g.kind }}</span>
+                      <span style="color:rgba(255,255,255,0.68);font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase">{{ g.kind }}</span>
                       <strong style="font-weight:620">{{ g.title }}</strong>
                     </span>
                   </button>
@@ -1277,7 +1259,7 @@
             <div>
               <p style="margin:0 0 8px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">Music</p>
               <h2 style="margin:0;color:var(--ink);font-size:19px;font-weight:700;line-height:1.15;letter-spacing:-0.024em">What&#8217;s usually playing while I work.</h2>
-              <p style="margin:9px 0 0;color:var(--ink-soft);font-size:12.5px;line-height:1.55">Mostly Mozart. The late symphonies get the most replays.</p>
+              <p style="margin:9px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.55">Mostly Mozart. The late symphonies get the most replays.</p>
             </div>
 
             <!-- Spotify's official embed. It plays a preview for anyone, and the full
@@ -1299,7 +1281,7 @@
             <div>
               <p style="margin:0 0 8px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">Contact</p>
               <h2 style="margin:0;color:var(--ink);font-size:31px;font-weight:700;line-height:1.06;letter-spacing:-0.03em">Let’s talk.</h2>
-              <p style="margin:12px 0 0;color:var(--ink-soft);font-size:13.5px;line-height:1.55">I’m open to software engineering roles and internships. Email me with the role or project you have in mind.</p>
+              <p style="margin:12px 0 0;color:var(--ink-soft);font-size:15px;line-height:1.55">I’m open to software engineering roles and internships. Email me with the role or project you have in mind.</p>
             </div>
             <a href="mailto:thribhuvan003@gmail.com" style="display:grid;grid-template-columns:20px 1fr 15px;align-items:center;gap:12px;border:1px solid var(--hair);border-radius:12px;background:var(--glass);padding:14px;color:var(--ink);font-size:13px;font-weight:560">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
@@ -1432,6 +1414,13 @@ const L = {
 
 const SQUIRCLE = 13;
 
+const QUOTES = [
+  { text: "There are no accidents.", author: "Master Oogway", work: "Kung Fu Panda · 2008", source: "https://clip.cafe/kung-fu-panda-2008/there-are-no-accidents-s2/" },
+  { text: "If that’s what you want, I think you should do it. I’ll help you.", author: "Monkey D. Luffy", work: "ONE PIECE · live-action, episode 1", source: "https://jwlfyc-public-us-east-1.s3.amazonaws.com/1708659155016-One%20Piece%20Ep.%20101%20Script.pdf#page=40" },
+  { text: "Ponder and deliberate before you make a move.", author: "Sun Tzu", work: "The Art of War · Lionel Giles translation", source: "https://www.gutenberg.org/cache/epub/17405/pg17405-images.html" },
+  { text: "Do not faint now, but finish the journey", author: "Alexander the Great", work: "As recorded in Plutarch’s Life of Alexander", source: "https://www.yorku.ca/pswarney/Texts/alexander.htm" },
+];
+
 
 const APPS = [
   { id: "about", folder: "about", label: "About Me", artwork: "assets/profile/thribhuvan.png", plate: "#e9dfd2" },
@@ -1535,9 +1524,9 @@ const EDUCATION = [
   {
     title: "B.Tech, Computer Science and Engineering",
     org: "Jawaharlal Nehru Technological University Anantapur (JNTUA)",
-    when: "Aug 2022 – 2026",
+    when: "Aug 2022 – Jun 2026",
     notes: [
-      "Class of 2026 · CGPA 7.5/10.",
+      "Class of 2026 · CGPA 7.6/10.",
       "Coursework includes data structures, databases, operating systems and computer networks.",
       
     ],
@@ -1545,6 +1534,15 @@ const EDUCATION = [
 ];
 
 const EXPERIENCE = [
+  {
+    title: "Software Engineering Intern",
+    org: "Rhino Stream Technologies",
+    when: "Oct 2026 – Present",
+    notes: [
+      "Build Python and SQL telemetry tooling for GameArena, working with founders to clarify requirements and present engineering findings.",
+      "Analyze CockroachDB records to classify WebRTC, ICE and WebSocket failures, reconnect patterns, latency, jitter and FPS.",
+    ],
+  },
   {
     title: "Open-source contributor",
     org: "Svelte · Prisma · Supabase · SolidJS · Nitro · WXT",
@@ -1577,7 +1575,7 @@ const FOLDERS = [
   { id: "resume", label: "Resume", note: "One page, PDF" },
 ];
 
-const RESUME_PDF = "assets/docs/Thribhuvan-P-Resume.pdf";
+const RESUME_PDF = "assets/docs/Thribhuvan-P-Resume.pdf?v=20261122";
 
 // Plays without any credentials. Once the now-playing endpoint is configured,
 // the embed switches to whatever track is actually playing.
@@ -1662,9 +1660,11 @@ class Component extends DCLogic {
     const w = {};
     Object.keys(GEOM).forEach((id, i) => { w[id] = { ...GEOM[id], open: false, minimized: false, maximized: false, z: 200 + i }; });
     const vp = this.viewport();
-    this.state = { theme: initialTheme(props), windows: w, folder: null, zTop: 220, vp, dockX: null, dockCenters: null, lightbox: null, np: null, coach: firstVisit() };
+    this._motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    this.state = { theme: initialTheme(props), windows: w, folder: null, zTop: 220, vp, dockX: null, dockCenters: null, lightbox: null, np: null, coach: firstVisit(), quote: 0, quotesPaused: this._motion.matches, reducedMotion: this._motion.matches };
     this._dockRaf = 0;
     this._returnFocus = null;
+    this._quotesHeld = false;
   }
 
   viewport() {
@@ -1683,6 +1683,14 @@ class Component extends DCLogic {
   }
 
   componentDidMount() {
+    this._onMotion = (e) => this.setState({ reducedMotion: e.matches, ...(e.matches ? { quotesPaused: true, dockX: null } : {}) });
+    this._motion.addEventListener("change", this._onMotion);
+    this._quoteTimer = setInterval(() => {
+      const s = this.state;
+      if (document.hidden || s.coach || s.lightbox !== null || s.quotesPaused || this._quotesHeld || document.querySelector('.os-quote')?.contains(document.activeElement)) return;
+      if (Object.values(s.windows).some((w) => w.open && !w.minimized)) return;
+      this.nextQuote();
+    }, 10000);
     if (this.state.coach) {
       const button = document.querySelector('.os-coach-btn');
       if (button) button.focus();
@@ -1764,6 +1772,9 @@ class Component extends DCLogic {
   }
 
   componentWillUnmount() {
+    if (this._endDrag) this._endDrag();
+    this._motion.removeEventListener("change", this._onMotion);
+    clearInterval(this._quoteTimer);
     if (this._onHash) window.removeEventListener("hashchange", this._onHash);
     if (this._dockRaf) cancelAnimationFrame(this._dockRaf);
     if (this._onResize) window.removeEventListener("resize", this._onResize);
@@ -1791,6 +1802,14 @@ class Component extends DCLogic {
     return { w, h, x, y };
   }
 
+  launcherGeom(vp) {
+    const w = Math.min(340, vp.w - 32);
+    const h = Math.min(vp.phone ? 356 : 336, Math.max(200, vp.h - 116));
+    return { w, h, x: Math.round((vp.w - w) / 2), y: Math.max(36, Math.round((vp.h - h) / 2) - 18) };
+  }
+
+  nextQuote() { this.setState((s) => ({ quote: (s.quote + 1) % QUOTES.length })); }
+
   open(app) {
     if (app.folder) { this.showFolder(app.folder); return; }
     if (app.external) { window.open(app.external, "_blank", "noopener,noreferrer"); return; }
@@ -1798,29 +1817,33 @@ class Component extends DCLogic {
     const vp = this.viewport();
     this.setState((s) => {
       const z = s.zTop + 1;
-      const fit = this.fitGeom(app.id, vp);
+      const previous = s.windows[app.id];
+      const fit = app.id === "work" && s.folder === null ? this.launcherGeom(vp) : this.fitGeom(app.id, vp);
       const next = {
         ...s.windows[app.id],
         open: true,
         minimized: false,
         z,
         // Keep Workspace root as Miller glass card (not a full sheet) on all sizes
-        maximized: !!vp.phone && app.id !== "work",
-        ...(vp.phone && app.id === "work" ? fit : (vp.phone ? {} : fit)),
+        maximized: previous.open ? previous.maximized : !!vp.phone && app.id !== "work",
+        ...(!previous.open ? fit : {}),
       };
       return { zTop: z, windows: { ...s.windows, [app.id]: next } };
     });
   }
 
   focusWindow() {
-    const panels = document.querySelectorAll(".os-win-frame section[data-screen-label]");
-    if (panels.length) panels[panels.length - 1].focus({ preventScroll: true });
+    document.querySelector('.os-win-frame[data-window-id="work"] section[data-screen-label]')?.focus({ preventScroll: true });
   }
 
   showFolder(folder, updateUrl = true) {
-    this.open({ id: "work" });
-    this.setState({ folder }, () => this.focusWindow());
-    if (this.viewport().phone) this.patch("work", { maximized: true });
+    const vp = this.viewport();
+    this.setState((s) => {
+      const previous = s.windows.work;
+      const z = s.zTop + 1;
+      const fit = !previous.open || s.folder === null ? this.fitGeom("work", vp) : {};
+      return { folder, zTop: z, windows: { ...s.windows, work: { ...previous, ...fit, open: true, minimized: false, maximized: vp.phone || (previous.open && previous.maximized), z } } };
+    }, () => this.focusWindow());
     if (updateUrl && window.location.hash !== "#" + folder) {
       window.history.pushState(null, "", "#" + folder);
     }
@@ -1849,26 +1872,40 @@ class Component extends DCLogic {
   }
 
   drag(id, event, mode) {
+    if (event.button !== undefined && event.button !== 0) return;
     if (mode === "move" && event.target.closest("button, a, .os-traffic, .os-traffic-row")) return;
     const w = this.state.windows[id];
     if (w.maximized) return;
     const vp = this.viewport();
     if (vp.phone) return;
+    if (this._endDrag) this._endDrag();
+    event.preventDefault();
     if (mode === "resize") event.stopPropagation();
     this.focus(id);
+    this.patch(id, { interacting: true });
     const sx = event.clientX, sy = event.clientY, ox = w.x, oy = w.y, ow = w.w, oh = w.h;
     const H = () => ({ w: window.innerWidth, h: window.innerHeight });
     const move = (e) => {
       const host = H();
       if (mode === "move") {
-        this.patch(id, { x: Math.max(8, Math.min(ox + e.clientX - sx, host.w - ow - 8)), y: Math.max(30, Math.min(oy + e.clientY - sy, host.h - oh - 84)) });
+        this.patch(id, { x: Math.max(8, Math.min(ox + e.clientX - sx, host.w - ow - 8)), y: Math.max(36, Math.min(oy + e.clientY - sy, host.h - oh - 84)) });
       } else {
         this.patch(id, { w: Math.max(300, Math.min(ow + e.clientX - sx, host.w - ox - 8)), h: Math.max(280, Math.min(oh + e.clientY - sy, host.h - oy - 84)) });
       }
     };
-    const up = () => { window.removeEventListener("pointermove", move); window.removeEventListener("pointerup", up); };
+    const up = () => {
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", up);
+      window.removeEventListener("pointercancel", up);
+      window.removeEventListener("blur", up);
+      this._endDrag = null;
+      this.patch(id, { interacting: false });
+    };
+    this._endDrag = up;
     window.addEventListener("pointermove", move);
     window.addEventListener("pointerup", up);
+    window.addEventListener("pointercancel", up);
+    window.addEventListener("blur", up);
   }
 
   renderVals() {
@@ -1893,11 +1930,9 @@ class Component extends DCLogic {
     };
 
     const windows = Object.keys(s.windows).map((id) => ({ id, ...s.windows[id] })).filter((w) => w.open && !w.minimized)
-      .sort((a, b) => a.z - b.z).map((w) => {
+      .map((w) => {
         // Miller glass card: root Workspace only (folder drill-in uses standard window chrome)
         const launcher = w.id === "work" && s.folder === null && !w.maximized;
-        const lw = Math.min(340, Math.max(292, vp.w - 32));
-        const lh = phone ? Math.min(356, Math.max(316, vp.h - 140)) : 336;
         const sheet = !!w.maximized;
         return {
         // Finder shows the open folder’s name in the title bar, not the app’s.
@@ -1908,22 +1943,13 @@ class Component extends DCLogic {
           position: "absolute",
           // Always above desktop chrome (theme/spotify z:40) so red/yellow/green stay clickable
           zIndex: Math.max(200, w.z),
-          left: sheet ? 8 : (launcher ? "50%" : w.x),
+          left: sheet ? 8 : w.x,
           // Leave room under top chrome on desktop; on phone top-left is free (theme moved to right)
-          top: sheet ? (phone ? 8 : 36) : (launcher ? "50%" : Math.max(w.y, phone ? 8 : 48)),
-          width: sheet ? (phone ? "calc(100% - 16px)" : "calc(100% - 16px)") : (launcher ? lw : w.w),
-          height: sheet ? (phone ? "calc(100% - 86px)" : "calc(100% - 120px)") : (launcher ? lh : w.h),
-          maxWidth: launcher && !sheet ? 340 : undefined,
-          opacity: w.minimized ? 0 : 1,
-          // The launcher is centred with a transform, so the minimize transform
-          // has to be composed onto it rather than replacing it.
-          transform: (launcher && !sheet)
-            ? (w.minimized
-                ? "translate(-50%, calc(-50% - 18px)) translateY(280px) scale(0.8)"
-                : "translate(-50%, calc(-50% - 18px))")
-            : (w.minimized ? "translateY(280px) scale(0.8)" : "none"),
-          pointerEvents: w.minimized ? "none" : "auto",
-          transition: "opacity 220ms ease, transform 260ms cubic-bezier(0.22,1,0.36,1), width 320ms cubic-bezier(0.22,1,0.36,1), height 320ms cubic-bezier(0.22,1,0.36,1), left 320ms cubic-bezier(0.22,1,0.36,1), top 320ms cubic-bezier(0.22,1,0.36,1)",
+          top: sheet ? (phone ? 8 : 36) : Math.max(w.y, phone ? 8 : 36),
+          width: sheet ? "calc(100% - 16px)" : w.w,
+          height: sheet ? (phone ? "calc(100% - 86px)" : "calc(100% - 120px)") : w.h,
+          transform: "none",
+          transition: w.interacting || s.reducedMotion ? "none" : "width 260ms cubic-bezier(0.22,1,0.36,1), height 260ms cubic-bezier(0.22,1,0.36,1), left 260ms cubic-bezier(0.22,1,0.36,1), top 260ms cubic-bezier(0.22,1,0.36,1)",
         },
         shellStyle: launcher ? {
           position: "relative", display: "flex", flexDirection: "column", gap: 16,
@@ -2008,7 +2034,7 @@ class Component extends DCLogic {
       const st = s.windows[app.id];
       let scale = 1;
       let lift = 0;
-      if (!phone && s.dockX !== null && centers && centers[i] !== undefined) {
+      if (!phone && !s.reducedMotion && s.dockX !== null && centers && centers[i] !== undefined) {
         const dx = (s.dockX - centers[i]) / SIGMA;
         scale = 1 + AMP * Math.exp(-dx * dx);
         lift = -(scale - 1) * 30;
@@ -2118,11 +2144,21 @@ class Component extends DCLogic {
     const hasOpenWin = Object.keys(s.windows).some((id) => s.windows[id].open && !s.windows[id].minimized);
     return {
       theme: s.theme, isDark: dark, isLight: !dark, wallpaper, wallpaperWave,
+      quoteText: QUOTES[s.quote].text, quotePosition: (s.quote + 1) + " / " + QUOTES.length,
+      quoteAuthor: QUOTES[s.quote].author, quoteWork: QUOTES[s.quote].work, quoteSource: QUOTES[s.quote].source,
+      quoteSourceAria: "Read the source for the quote by " + QUOTES[s.quote].author,
+      quotesPaused: s.quotesPaused,
+      quotePauseLabel: s.quotesPaused ? "Play" : "Pause",
+      quotePauseAria: s.quotesPaused ? "Resume automatic quotes" : "Pause automatic quotes",
+      toggleQuotes: () => this.setState((st) => ({ quotesPaused: !st.quotesPaused })),
+      nextQuote: () => this.nextQuote(),
+      holdQuotes: () => { this._quotesHeld = true; },
+      releaseQuotes: (e) => { if (!e || !e.currentTarget.contains(e.relatedTarget)) this._quotesHeld = false; },
       themeAria: dark ? "Switch to light appearance" : "Switch to dark appearance",
       vpLabel: vp.label || "desktop",
       hasWinFlag: hasOpenWin ? "1" : "0",
       dockMove: (e) => {
-        if (phone) return;
+        if (phone || s.reducedMotion) return;
         const shell = e.currentTarget;
         const rect = shell.getBoundingClientRect();
         // Measure resting centres once, while every icon is still at scale 1
@@ -2165,7 +2201,7 @@ class Component extends DCLogic {
       folderTitle: meta.title, folderCount: meta.count,
       goRoot: () => {
         this.setState({ folder: null });
-        this.patch("work", { maximized: false });
+        this.patch("work", { ...this.launcherGeom(vp), maximized: false });
         window.history.pushState(null, "", window.location.pathname + window.location.search);
       },
       backStyle: {
