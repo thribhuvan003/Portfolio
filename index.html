@@ -34,7 +34,7 @@
   [data-os-theme="light"] {
     /* macOS light: labelColor 85%, secondaryLabel 55%, tertiaryLabel 25% on a
        neutral ground; separator 10%; systemBlue #007AFF. */
-    --ink:rgba(0,0,0,0.85); --ink-soft:rgba(0,0,0,0.55); --ink-faint:rgba(0,0,0,0.55); --wordmark:#5b544c; --wm-glow:rgba(146,128,102,0.62); --wm-rest:rgba(150,132,104,0.34);
+    --ink:rgba(0,0,0,0.85); --ink-soft:rgba(0,0,0,0.62); --ink-faint:rgba(0,0,0,0.55); --wordmark:#5b544c; --wm-glow:rgba(146,128,102,0.62); --wm-rest:rgba(150,132,104,0.34);
     --hair:rgba(0,0,0,0.10); --glass:rgba(246,246,246,0.72); --glass-2:rgba(255,255,255,0.80);
     --glass-line:rgba(255,255,255,0.70); --titlebar:rgba(236,236,236,0.82); --pane:rgba(246,246,246,0.66);
     --sheet:rgba(255,255,255,0.78); --chip:rgba(0,0,0,0.05); --btn-face:rgba(255,255,255,0.92); --btn-face-hover:#ffffff; --btn-line:rgba(0,0,0,0.12);
@@ -326,7 +326,7 @@
   @keyframes lb-pop { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
   .os-lb-media { max-width: min(1100px, 100%); max-height: 74vh; width: auto; height: auto; border-radius: 14px; box-shadow: 0 40px 90px rgba(0,0,0,0.55); background: #000; display: block; }
   .os-lb-caption { display: flex; align-items: baseline; gap: 12px; color: rgba(255,255,255,0.92); font-size: 13px; }
-  .os-lb-caption span { color: rgba(255,255,255,0.55); font-family: 'Geist Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
+  .os-lb-caption > span { color: rgba(255,255,255,0.55); font-family: 'Geist Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
   .os-lb-caption strong { font-weight: 620; }
   .os-lb-close, .os-lb-nav { position: absolute; display: grid; place-items: center; border: 1px solid rgba(255,255,255,0.16); border-radius: 999px; background: rgba(255,255,255,0.10); color: #fff; cursor: pointer; -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); transition: background 140ms ease, transform 140ms ease; }
   .os-lb-close:hover, .os-lb-nav:hover { background: rgba(255,255,255,0.20); }
@@ -353,7 +353,8 @@
   .os-btn-ghost, .os-btn-solid { display: inline-flex; align-items: center; gap: 7px; min-height: 34px; border-radius: 999px; padding: 8px 14px; font-size: 12px; font-weight: 640; white-space: nowrap; }
   .os-btn-ghost { border: 1px solid var(--btn-line); background: var(--btn-face); color: var(--ink); box-shadow: 0 1px 2px rgba(12,28,50,0.06); }
   .os-btn-ghost:hover { background: var(--btn-face-hover); }
-  .os-btn-solid { border: 1px solid transparent; background: var(--accent); color: #fff; }
+  .os-btn-solid { border: 1px solid transparent; background: var(--accent-solid); color: #fff; }
+  .os-btn-solid:hover { color: #fff; filter: brightness(1.07); }
   .os-cv-sec { display: grid; gap: 11px; }
   .os-cv-h { margin: 0; color: var(--ink-faint); font-family: 'Geist Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
   .os-cv-item { display: grid; gap: 6px; border-left: 2px solid var(--hair); padding-left: 13px; }
@@ -440,9 +441,9 @@
     border: 1px solid var(--hair); background: var(--chip); color: var(--ink-faint);
   }
   .os-skill-chip {
-    display: inline-flex; min-height: 30px; align-items: center; gap: 6px;
+    display: inline-flex; min-height: 32px; align-items: center; gap: 6px;
     border: 1px solid var(--hair); border-radius: 999px; background: var(--chip);
-    color: var(--ink-soft); padding: 5px 12px 5px 8px; font-size: 10.5px; font-weight: 620;
+    color: var(--ink); padding: 5px 13px 5px 9px; font-size: 12.5px; font-weight: 520;
   }
   .os-skill-chip img { width: 14px; height: 14px; object-fit: contain; flex: 0 0 14px; }
 
@@ -576,6 +577,8 @@
     .os-win-frame[data-window-id="work"] .os-win-body-pad { padding: 0 !important; }
     .os-project-row { grid-template-columns: 1fr; gap: 8px; }
     .os-sidebar { display: none !important; }
+    button[aria-label="Back to Workspace"] { width: 44px !important; height: 44px !important; }
+    .os-finder-fwd, .os-finder-status { display: none !important; }
   }
 
   /* Narrow phones: the top row carries both the action chips (left) and the
@@ -616,9 +619,11 @@
     .os-primary-nav .os-chip-btn { justify-content: center; }
     .os-chrome-email { display: none !important; }
     .os-hero-subject { height: min(29vh, 230px); width: min(29vh, 230px); }
-    .os-traffic-row { gap: 8px; }
-    .os-traffic { width: 32px; height: 32px; flex-basis: 32px; border: 9px solid var(--titlebar); }
-    .os-traffic::before, .os-traffic::after { display: none; }
+    /* Real-size dots with a 40px invisible hit area each, instead of big haloed discs. */
+    .os-traffic-row { gap: 22px; padding-left: 6px; }
+    .os-traffic { width: 14px; height: 14px; flex: 0 0 14px; }
+    .os-traffic::before { display: none; }
+    .os-traffic::after { width: 40px; height: 40px; }
     .os-win-titlebar:not(.is-launcher) { grid-template-columns: 112px 1fr 0 !important; }
   }
   @media (max-height: 620px) {
@@ -690,7 +695,7 @@
   .os-resume-preview img { display: block; width: 100%; height: auto; }
   @media (max-width: 699px) {
     .os-root { overflow-y: auto !important; }
-    .os-hero { position: relative !important; inset: auto !important; padding: 84px 18px 0; align-content: start !important; }
+    .os-hero { position: relative !important; inset: auto !important; padding: 84px 18px calc(min(29vh, 230px) + 96px); align-content: start !important; }
   }
   @media (prefers-reduced-motion: reduce) { .os-coach, .os-coach-card { animation: none; } }
 
@@ -706,7 +711,7 @@
     border: 1px solid var(--glass-line); border-radius: 20px;
     background: var(--glass); box-shadow: var(--shadow);
     -webkit-backdrop-filter: blur(30px) saturate(170%); backdrop-filter: blur(30px) saturate(170%);
-    color: var(--ink);
+    color: var(--ink); text-align: left; pointer-events: auto;
     transition: opacity 200ms ease;
   }
   .os-root[data-has-win="1"] .os-quote { opacity: 0; pointer-events: none; }
@@ -717,13 +722,14 @@
     font-size: 20px; line-height: 1.32; letter-spacing: -0.01em; text-wrap: balance;
   }
   .os-quote-credit { display: grid; gap: 2px; margin: 12px 0 0; }
-  .os-quote-credit strong { font-size: 13.5px; font-weight: 600; letter-spacing: -0.01em; }
-  .os-quote-credit span { color: var(--ink-soft); font-family: 'Geist Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.02em; }
+  .os-quote-credit .q-who { font-family: 'Geist', sans-serif; font-size: 13.5px; font-weight: 600; letter-spacing: -0.01em; }
+  .os-quote-credit .q-src { font-style: normal; color: var(--ink-soft); font-family: 'Geist Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.02em; }
   .os-quote-track { position: relative; display: block; height: 2px; margin-top: 14px; overflow: hidden; border-radius: 2px; background: var(--hair); }
   .os-quote-track > span { position: absolute; inset: 0; transform-origin: 0 50%; transform: scaleX(0); background: var(--ink-soft); opacity: 0.55; }
   .os-quote-track > .q-run-a { animation: q-fill-a var(--q-dur) linear forwards; }
   .os-quote-track > .q-run-b { animation: q-fill-b var(--q-dur) linear forwards; }
-  .os-quote:hover .os-quote-track > span { animation-play-state: paused; }
+  .os-quote:hover .os-quote-track > span, .os-quote:focus-within .os-quote-track > span { animation-play-state: paused; }
+  .os-quote:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
   @keyframes q-fill-a { from { transform: scaleX(0); } to { transform: scaleX(1); } }
   @keyframes q-fill-b { from { transform: scaleX(0); } to { transform: scaleX(1); } }
   .os-quote-body.q-in-a { animation: q-in-a 620ms cubic-bezier(0.2, 0.8, 0.2, 1) both; }
@@ -732,13 +738,21 @@
   @keyframes q-in-b { from { opacity: 0; transform: translateY(6px); filter: blur(3px); } to { opacity: 1; transform: none; filter: none; } }
   /* Below ~1180px the wordmark reaches the top-right corner, so the card moves to the
      free space at the bottom-left, above the dock. */
+  /* Below ~1180px the wordmark reaches the top-right corner, so the card joins the
+     hero column and sits under the intro instead. */
   @media (max-width: 1180px) and (min-width: 700px) {
-    .os-quote { top: auto; right: auto; left: max(16px, var(--safe-l)); bottom: calc(var(--dock-h) + 30px + var(--safe-b)); width: min(270px, 29vw); min-width: 220px; padding: 15px 17px 14px; }
-    .os-quote blockquote { font-size: 18px; min-height: 0; }
+    .os-quote { position: relative; top: auto; right: auto; width: min(420px, 100%); min-width: 0; margin-top: 6px; padding: 14px 18px 13px; }
+    .os-quote-mark { display: none; }
+    .os-quote blockquote { font-size: 17px; min-height: 2.64em; }
+    .os-hero { padding-bottom: calc(min(40vh, 400px) + 24px); }
+    .os-root .os-hero-subject { height: min(40vh, 400px); width: min(40vh, 400px); }
+    .os-hero-title { font-size: min(15cqw, 14vh, 150px) !important; }
+    .os-hero > div { gap: 12px !important; }
   }
   @media (max-width: 699px) {
-    .os-quote { position: relative; top: auto; right: auto; width: calc(100% - 36px); max-width: 380px; margin: 22px auto 118px; }
-    .os-quote blockquote { min-height: 2.7em; font-size: 19px; }
+    .os-quote { position: relative; top: auto; right: auto; width: 100%; max-width: 380px; min-width: 0; margin: 8px auto 0; padding: 14px 16px 12px; border-radius: 18px; }
+    .os-quote-mark { display: none; }
+    .os-quote blockquote { min-height: 0; font-size: 17px; }
   }
   @media (max-height: 620px) and (min-width: 700px) {
     .os-quote { width: 250px; padding: 12px 15px; }
@@ -749,6 +763,13 @@
     .os-quote-body { animation: none !important; }
     .os-quote-track { display: none; }
   }
+
+
+  /* —— Peach blossoms ——
+     A nod to Oogway's peach tree. Behind the hero and windows, never interactive. */
+  .os-petals { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; pointer-events: none; transition: opacity 400ms ease; }
+  .os-root[data-has-win="1"] .os-petals { opacity: 0.35; }
+  @media (prefers-reduced-motion: reduce) { .os-petals { display: none; } }
 
   /* —— Window morph —— */
   .os-win-shell { transition: box-shadow 220ms ease; }
@@ -828,24 +849,25 @@
   <div aria-hidden="true" style="{{ wallpaperWave }}"></div>
   <div aria-hidden="true" style="position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0.035;mix-blend-mode:overlay;background-image:url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;);background-size:180px 180px"></div>
   <div aria-hidden="true" class="os-dotgrid"></div>
+  <canvas aria-hidden="true" class="os-petals"></canvas>
 
   <main><section data-screen-label="Desktop hero" class="os-hero" style="position:absolute;z-index:2;inset:0;display:grid;align-content:center;justify-content:stretch;justify-items:stretch;pointer-events:none">
     <div style="display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;container-type:inline-size">
       <h1 data-wm="true" class="os-hero-title" style="display:block;width:100%;margin:0;font-family:'Grand Hotel',cursive;text-align:center;font-weight:400;letter-spacing:0.006em;line-height:1;color:var(--wordmark);-webkit-mask-image:linear-gradient(90deg,#000 0%,#000 28%,rgba(0,0,0,0.55) 36%,rgba(0,0,0,0.18) 43%,transparent 50%);mask-image:linear-gradient(90deg,#000 0%,#000 28%,rgba(0,0,0,0.55) 36%,rgba(0,0,0,0.18) 43%,transparent 50%);-webkit-mask-size:300% 100%;mask-size:300% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;animation:wm-draw 1.9s cubic-bezier(0.32,0.02,0.18,1) 0.4s both">Thribhuvan</h1>
       <p class="os-hero-role">Software Engineering Intern at Rhino Stream Technologies</p>
       <p class="os-hero-intro">{{ ossCount }} fixes merged into Svelte, Prisma, SolidJS and Supabase.<br>{{ projectCount }} products of my own, {{ liveCount }} live.</p>
+      <aside class="os-quote" aria-label="Quotes I keep near. Focus or tap to pause." tabindex="0">
+        <div class="os-quote-body {{ quoteAnimClass }}" aria-live="off">
+          <svg class="os-quote-mark" width="26" height="20" viewBox="0 0 26 20" aria-hidden="true"><path fill="currentColor" d="M0 20V12.2C0 5.6 3.2 1.5 9.6 0l1.3 2.6C7.6 3.8 6 6 5.8 9.4H10.6V20H0Zm15.2 0V12.2C15.2 5.6 18.4 1.5 24.8 0l1.2 2.6c-3.3 1.2-4.9 3.4-5.1 6.8h4.8V20H15.2Z"/></svg>
+          <blockquote>{{ quoteText }}</blockquote>
+          <p class="os-quote-credit"><strong class="q-who">{{ quoteAuthor }}</strong><em class="q-src">{{ quoteWork }}</em></p>
+        </div>
+        <span class="os-quote-track" aria-hidden="true"><span class="{{ quoteBarClass }}" style="{{ quoteBarStyle }}" onAnimationEnd="{{ quoteTick }}"></span></span>
+      </aside>
     </div>
     <span></span>
   </section></main>
 
-  <aside class="os-quote" aria-label="Quotes I keep near">
-    <div class="os-quote-body {{ quoteAnimClass }}" aria-live="off">
-      <svg class="os-quote-mark" width="26" height="20" viewBox="0 0 26 20" aria-hidden="true"><path fill="currentColor" d="M0 20V12.2C0 5.6 3.2 1.5 9.6 0l1.3 2.6C7.6 3.8 6 6 5.8 9.4H10.6V20H0Zm15.2 0V12.2C15.2 5.6 18.4 1.5 24.8 0l1.2 2.6c-3.3 1.2-4.9 3.4-5.1 6.8h4.8V20H15.2Z"/></svg>
-      <blockquote>{{ quoteText }}</blockquote>
-      <p class="os-quote-credit"><strong>{{ quoteAuthor }}</strong><span>{{ quoteWork }}</span></p>
-    </div>
-    <span class="os-quote-track" aria-hidden="true"><span class="{{ quoteBarClass }}" style="{{ quoteBarStyle }}" onAnimationEnd="{{ quoteTick }}"></span></span>
-  </aside>
 
   <div class="os-hero-subject" aria-hidden="true">
     <img src="assets/profile/paint-1-sketch.jpg" alt="" decoding="async" fetchpriority="high" style="--i:0">
@@ -889,7 +911,7 @@
             <div style="flex:0 0 39px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:0 12px;border-bottom:1px solid var(--hair);background:var(--titlebar)">
               <div style="display:flex;align-items:center;gap:2px;color:var(--ink-faint)">
                 <button type="button" aria-label="Back to Workspace" onClick="{{ goRoot }}" style="{{ backStyle }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg></button>
-                <span style="display:grid;place-items:center;width:26px;height:24px;border-radius:6px;opacity:0.45"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg></span>
+                <span class="os-finder-fwd" aria-hidden="true" style="display:grid;place-items:center;width:26px;height:24px;border-radius:6px;opacity:0.45"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg></span>
               </div>
               <div style="display:flex;align-items:center;gap:7px;min-width:0;color:var(--ink);font-size:13px;font-weight:600;letter-spacing:-0.01em">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
@@ -959,7 +981,7 @@
                           <a href="{{ p.repo }}" target="_blank" rel="noreferrer" style="display:inline-flex;align-items:center;gap:6px;min-height:32px;border:1px solid var(--hair);border-radius:999px;background:var(--chip);padding:7px 13px;color:var(--ink);font-size:13px;font-weight:620">Code <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .8a11.2 11.2 0 0 0-3.54 21.82c.56.1.76-.24.76-.54v-2.1c-3.1.68-3.75-1.32-3.75-1.32-.5-1.28-1.24-1.62-1.24-1.62-1.02-.7.08-.69.08-.69 1.12.08 1.7 1.16 1.7 1.16 1 .1.55 2.62 3.16 1.86.1-.73.39-1.23.71-1.51-2.47-.28-5.06-1.24-5.06-5.5 0-1.22.43-2.21 1.15-2.99-.12-.28-.5-1.42.1-2.95 0 0 .95-.3 3.08 1.14a10.6 10.6 0 0 1 5.6 0c2.13-1.44 3.07-1.14 3.07-1.14.6 1.53.22 2.67.11 2.95.72.78 1.15 1.77 1.15 2.99 0 4.27-2.6 5.21-5.08 5.49.4.34.76 1.02.76 2.06v3.06c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z"></path></svg></a>
                           </sc-if>
                           <sc-if value="{{ p.repoNote }}" hint-placeholder-val="{{ false }}">
-                            <span style="display:inline-flex;align-items:center;gap:6px;min-height:32px;border:1px solid var(--hair);border-radius:999px;background:var(--chip);padding:7px 13px;color:var(--ink-faint);font-size:13px;font-weight:620">{{ p.repoNote }}</span>
+                            <span style="display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:7px 4px;color:var(--ink-soft);font-size:13px;font-weight:500"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="10" x="4" y="11" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>{{ p.repoNote }}</span>
                           </sc-if>
                         </div>
                       </div>
@@ -1010,7 +1032,7 @@
                     <ol class="os-ab-timeline">
                       <li>
                         <span class="os-ab-when">Oct 2026 – now</span>
-                        <div><strong>Software Engineering Intern, Rhino Stream Technologies</strong><p>Python and SQL telemetry tooling for GameArena: classifying WebRTC and WebSocket failures, latency, jitter and FPS.</p></div>
+                        <div><strong>Software Engineering Intern, Rhino Stream Technologies</strong><p>Investigating connectivity and performance across ~410K CockroachDB telemetry records, and building a restartable 200-session enrichment pipeline with concurrency-safe job claims.</p></div>
                       </li>
                       <li>
                         <span class="os-ab-when">2026</span>
@@ -1026,7 +1048,7 @@
                   <section class="os-ab-sec" aria-labelledby="ab-stack">
                     <h4 id="ab-stack" class="os-ab-h">What I reach for</h4>
                     <ul class="os-ab-chips">
-                      <li>TypeScript</li><li>React · Next.js</li><li>Node.js</li><li>PostgreSQL + RLS</li><li>Supabase</li><li>Python</li><li>Docker</li><li>System design</li>
+                      <li>TypeScript</li><li>React · Next.js</li><li>Node.js</li><li>PostgreSQL + RLS</li><li>Supabase</li><li>Python</li><li>CockroachDB</li><li>Docker</li>
                     </ul>
                   </section>
 
@@ -1053,7 +1075,7 @@
               <sc-if value="{{ folderIsOss }}" hint-placeholder-val="{{ false }}">
                 <div style="display:grid;gap:16px">
                   <div>
-                    <p style="margin:0 0 10px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">Open Source</p>
+                    <p style="margin:0 0 10px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase">Open Source</p>
                     <h3 style="margin:0;max-width:26ch;color:var(--ink);font-size:clamp(22px,3.2vw,29px);font-weight:700;line-height:1.1;letter-spacing:-0.03em;text-wrap:pretty">Fixes I sent back to the tools I build on.</h3>
                     <p style="max-width:58ch;margin:14px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.65">Merged fixes for compiler behavior, data handling and authentication. Each entry links to the patch and maintainer review.</p>
                   </div>
@@ -1096,7 +1118,7 @@
                   <header class="os-cv-head">
                     <div>
                       <h3 class="os-cv-name">Thribhuvan P</h3>
-                      <p class="os-cv-role">Software Engineer · Application Development, Cloud &amp; IT Systems</p>
+                      <p class="os-cv-role">Software Engineering Intern · Rhino Stream Technologies</p>
                       <p class="os-cv-contact">Hyderabad, India · Open to Bengaluru · <a href="mailto:thribhuvan003@gmail.com">thribhuvan003@gmail.com</a></p>
                     </div>
                     <div class="os-cv-actions">
@@ -1113,7 +1135,7 @@
             </section>
             </div>
             <sc-if value="{{ notRoot }}" hint-placeholder-val="{{ false }}">
-            <div style="flex:0 0 25px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 12px;border-top:1px solid var(--hair);background:var(--titlebar);color:var(--ink-faint);font-size:11px;font-weight:500">
+            <div class="os-finder-status" style="flex:0 0 26px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 12px;border-top:1px solid var(--hair);background:var(--titlebar);color:var(--ink-soft);font-size:11.5px;font-weight:500">
               <span style="display:flex;align-items:center;gap:5px">
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
                 Workspace
@@ -1128,7 +1150,7 @@
         <sc-if value="{{ win.isSkills }}" hint-placeholder-val="{{ false }}">
           <div style="display:grid;gap:18px;align-content:start">
             <div>
-              <p style="margin:0 0 8px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">Education &amp; Experience</p>
+              <p style="margin:0 0 8px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase">Education &amp; Experience</p>
               <h2 style="margin:0;color:var(--ink);font-size:clamp(22px,3.4vw,30px);font-weight:700;line-height:1.1;letter-spacing:-0.03em">Education and experience</h2>
             </div>
 
@@ -1235,7 +1257,7 @@
         <sc-if value="{{ win.isImages }}" hint-placeholder-val="{{ false }}">
           <div style="display:grid;gap:18px;height:100%;align-content:start">
             <div>
-              <p style="margin:0 0 8px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">Photos</p>
+              <p style="margin:0 0 8px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase">Photos</p>
               <h2 style="margin:0;color:var(--ink);font-size:clamp(22px,4vw,26px);font-weight:700;line-height:1.1;letter-spacing:-0.028em">Gallery</h2>
               <p style="margin:8px 0 0;color:var(--ink-soft);font-size:15px;line-height:1.55">Temples, hills, and things I’ve saved. Shot on a phone, mostly around South India.</p>
             </div>
@@ -1263,7 +1285,7 @@
         <sc-if value="{{ win.isSpotify }}" hint-placeholder-val="{{ false }}">
           <div style="display:flex;flex-direction:column;gap:15px;min-height:100%">
             <div>
-              <p style="margin:0 0 8px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">Music</p>
+              <p style="margin:0 0 8px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase">Music</p>
               <h2 style="margin:0;color:var(--ink);font-size:19px;font-weight:700;line-height:1.15;letter-spacing:-0.024em">What&#8217;s usually playing while I work.</h2>
               <p style="margin:9px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.55">Mostly Mozart. The late symphonies get the most replays.</p>
             </div>
@@ -1285,7 +1307,7 @@
         <sc-if value="{{ win.isContact }}" hint-placeholder-val="{{ false }}">
           <div style="display:grid;gap:14px">
             <div>
-              <p style="margin:0 0 8px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">Contact</p>
+              <p style="margin:0 0 8px;color:var(--ink-faint);font-family:'Geist Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase">Contact</p>
               <h2 style="margin:0;color:var(--ink);font-size:31px;font-weight:700;line-height:1.06;letter-spacing:-0.03em">Let’s talk.</h2>
               <p style="margin:12px 0 0;color:var(--ink-soft);font-size:15px;line-height:1.55">Email me with the role or project you have in mind.</p>
             </div>
@@ -1434,8 +1456,6 @@ const QUOTES = [
   { text: "I’m not a big fat panda. I’m THE big fat panda.", author: "Po", work: "Kung Fu Panda · 2008", source: "https://www.imdb.com/title/tt0441773/quotes/?item=qt0448705" },
   { text: "Do nothing which is of no use.", author: "Miyamoto Musashi", work: "The Book of Five Rings", source: "https://www.columbia.edu/~hds2/chushinguranew/Bushido/gorin-no-sho.htm" },
   { text: "One often meets his destiny on the road he takes to avoid it.", author: "Master Oogway", work: "Kung Fu Panda · 2008", source: "https://www.imdb.com/title/tt0441773/characters/nm0453641/" },
-  { text: "I know I need help from others to survive!", author: "Monkey D. Luffy", work: "One Piece · ch. 90", source: "https://onepiece.fandom.com/wiki/Chapter_90" },
-  { text: "The general who wins a battle makes many calculations in his temple ere the battle is fought.", author: "Sun Tzu", work: "The Art of War · I.26", source: "https://classics.mit.edu/Tzu/artwar.html" },
   { text: "There are no accidents.", author: "Master Oogway", work: "Kung Fu Panda · 2008", source: "https://clip.cafe/kung-fu-panda-2008/there-are-no-accidents-s2/" },
 ];
 
@@ -1496,7 +1516,7 @@ const PROJECTS = [
   },
   {
     name: "AquaVision", summary: "Underwater image restoration that runs on CPU alone.",
-    detail: "A Python service that routes nine types of image degradation through restoration pipelines. CPU processing takes about 0.8 seconds per image; the screenshot shows sample results.",
+    detail: "A Python service that routes nine types of image degradation through restoration pipelines. Restores an image in about 0.8 seconds on CPU alone, with no GPU.",
     image: "assets/shots/aqua-grid.png", live: L.aquaLive, repo: L.aquaRepo,
     bullets: [
       "Deployed a CPU-only enhancement service with Flask, PyTorch and OpenCV, processing images in about 0.8 s without GPU or paid inference cost.",
@@ -1557,8 +1577,8 @@ const EXPERIENCE = [
     org: "Rhino Stream Technologies",
     when: "Oct 2026 – Present",
     notes: [
-      "Build Python and SQL telemetry tooling for GameArena, working with founders to clarify requirements and present engineering findings.",
-      "Analyze CockroachDB records to classify WebRTC, ICE and WebSocket failures, reconnect patterns, latency, jitter and FPS.",
+      "Investigate connectivity and performance issues across ~410K CockroachDB telemetry records: session outcomes, reconnects, latency, jitter and frame rate, using Python, SQL and logs.",
+      "Design a restartable 200-session enrichment pipeline with concurrency-safe job claims and failure tags; evaluate query plans, indexing and memory cost.",
     ],
   },
   {
@@ -1679,7 +1699,7 @@ class Component extends DCLogic {
     Object.keys(GEOM).forEach((id, i) => { w[id] = { ...GEOM[id], open: false, minimized: false, maximized: false, z: 200 + i }; });
     const vp = this.viewport();
     this._motion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    this.state = { theme: initialTheme(props), windows: w, folder: null, zTop: 220, vp, dockX: null, dockCenters: null, lightbox: null, np: null, coach: firstVisit(), quote: 0, reducedMotion: this._motion.matches };
+    this.state = { theme: initialTheme(props), windows: w, folder: null, zTop: 220, vp, dockX: null, dockCenters: null, lightbox: null, np: null, coach: firstVisit(), quote: Math.floor(Math.random() * QUOTES.length), reducedMotion: this._motion.matches };
     this._dockRaf = 0;
     this._returnFocus = null;
   }
@@ -1706,7 +1726,7 @@ class Component extends DCLogic {
     // With reduced motion there is no line, so a plain timer swaps them without animation.
     this._quoteTimer = setInterval(() => {
       if (!this.state.reducedMotion || !this.quotesLive()) return;
-      if (document.querySelector('.os-quote:hover')) return;
+      if (document.querySelector('.os-quote:hover, .os-quote:focus-within')) return;
       this.nextQuote();
     }, 12000);
     if (this.state.coach) {
@@ -1772,6 +1792,7 @@ class Component extends DCLogic {
       else if (e.key === "ArrowRight") this.setState((st) => ({ lightbox: (st.lightbox + 1) % GALLERY.length }));
     };
     window.addEventListener("keydown", this._onKey);
+    this.startPetals();
 
     // Now playing. The card is inside the component tree, so this has to flow
     // through state — mutating the DOM directly gets overwritten on re-render.
@@ -1797,6 +1818,7 @@ class Component extends DCLogic {
     if (this._dockRaf) cancelAnimationFrame(this._dockRaf);
     if (this._onResize) window.removeEventListener("resize", this._onResize);
     if (this._onKey) window.removeEventListener("keydown", this._onKey);
+    if (this._stopPetals) this._stopPetals();
     if (this._npTimer) clearInterval(this._npTimer);
     if (this._onVis) document.removeEventListener("visibilitychange", this._onVis);
   }
@@ -1860,6 +1882,73 @@ class Component extends DCLogic {
       };
       return { zTop: z, windows: { ...s.windows, [app.id]: next } };
     });
+  }
+
+  // Peach blossom petals drifting across the desktop. Plain canvas, ~20 petals, one rAF
+  // loop that idles while the tab is hidden; nothing runs for reduced-motion visitors.
+  startPetals() {
+    const canvas = document.querySelector && document.querySelector(".os-petals");
+    if (!canvas || !canvas.getContext || this.state.reducedMotion) return;
+    const ctx = canvas.getContext("2d");
+    let w = 0, h = 0, dpr = 1, raf = 0, last = 0, petals = [];
+    const rnd = (a, b) => a + Math.random() * (b - a);
+    const make = (anywhere) => ({
+      x: rnd(-40, w + 40), y: anywhere ? rnd(-h * 0.1, h) : rnd(-60, -20),
+      size: rnd(7, 13), vy: rnd(14, 30), vx: rnd(4, 16),
+      sway: rnd(0.6, 1.4), phase: rnd(0, Math.PI * 2),
+      rot: rnd(0, Math.PI * 2), spin: rnd(-0.9, 0.9),
+      flip: rnd(0, Math.PI * 2), flipSpeed: rnd(1.2, 2.6),
+      hue: rnd(340, 358), light: rnd(82, 90),
+    });
+    const size = () => {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = canvas.clientWidth; h = canvas.clientHeight;
+      canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
+      const count = w < 700 ? 9 : w < 1100 ? 14 : 20;
+      while (petals.length < count) petals.push(make(true));
+      petals.length = count;
+    };
+    // A five-petal blossom is too busy at this size; a single notched petal reads better.
+    const draw = (p, dark) => {
+      ctx.save();
+      ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+      ctx.scale(Math.max(0.18, Math.abs(Math.cos(p.flip))), 1);
+      const s = p.size;
+      ctx.beginPath();
+      ctx.moveTo(0, s);
+      ctx.bezierCurveTo(-s * 0.95, s * 0.35, -s * 0.7, -s * 0.75, -s * 0.12, -s * 0.9);
+      ctx.lineTo(0, -s * 0.62);
+      ctx.lineTo(s * 0.12, -s * 0.9);
+      ctx.bezierCurveTo(s * 0.7, -s * 0.75, s * 0.95, s * 0.35, 0, s);
+      const g = ctx.createLinearGradient(0, s, 0, -s);
+      g.addColorStop(0, "hsla(" + p.hue + ",70%," + (p.light - 8) + "%," + (dark ? 0.55 : 0.85) + ")");
+      g.addColorStop(1, "hsla(" + p.hue + ",80%," + Math.min(97, p.light + 6) + "%," + (dark ? 0.45 : 0.75) + ")");
+      ctx.fillStyle = g; ctx.fill();
+      ctx.restore();
+    };
+    const tick = (t) => {
+      raf = requestAnimationFrame(tick);
+      const dt = Math.min(0.05, last ? (t - last) / 1000 : 0); last = t;
+      if (document.hidden) return;
+      const dark = this.state.theme === "dark";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, w, h);
+      for (let i = 0; i < petals.length; i++) {
+        const p = petals[i];
+        p.phase += dt * p.sway;
+        p.x += (p.vx + Math.sin(p.phase) * 22) * dt;
+        p.y += p.vy * dt;
+        p.rot += p.spin * dt; p.flip += p.flipSpeed * dt;
+        if (p.y > h + 30 || p.x > w + 60) petals[i] = make(false);
+        draw(p, dark);
+      }
+    };
+    size();
+    window.addEventListener("resize", size);
+    raf = requestAnimationFrame(tick);
+    this._stopPetals = () => { cancelAnimationFrame(raf); window.removeEventListener("resize", size); ctx.clearRect(0, 0, canvas.width, canvas.height); };
+    this._onMotionPetals = (e) => { if (e.matches && this._stopPetals) this._stopPetals(); };
+    this._motion.addEventListener("change", this._onMotionPetals);
   }
 
   frameEl(id) {
