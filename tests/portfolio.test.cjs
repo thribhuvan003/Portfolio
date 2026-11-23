@@ -21,7 +21,7 @@ function setup(width = 1366, storage = new Map(), reducedMotion = false) {
     constructor(props) { this.props = props; }
     setState(patch, cb) { Object.assign(this.state, typeof patch === 'function' ? patch(this.state) : patch); cb?.(); }
   }
-  const ctx = vm.createContext({ window, document, DCLogic, setInterval(fn, ms) { timers.set(ms, fn); return ms; }, clearInterval(id) { timers.delete(id); }, cancelAnimationFrame() {}, fetch: async () => ({ ok: true, json: async () => ({ ok: false }) }) });
+  const ctx = vm.createContext({ window, document, DCLogic, setInterval(fn, ms) { timers.set(ms, fn); return ms; }, clearInterval(id) { timers.delete(id); }, setTimeout(fn, ms) { timers.set('t' + ms, fn); return 't' + ms; }, clearTimeout(id) { timers.delete(id); }, cancelAnimationFrame() {}, fetch: async () => ({ ok: true, json: async () => ({ ok: false }) }) });
   vm.runInContext(code + '\nthis.App = Component;', ctx);
   return { app: new ctx.App({}), window, document, events, timers };
 }
@@ -176,4 +176,17 @@ test('all quotes have distinct text, clear attribution and a source', () => {
   assert.ok(quotes.length >= 12);
   assert.equal(new Set(quotes).size, quotes.length);
   assert.ok(quotes.includes('As long as I’m alive, there are infinite chances.'));
+});
+
+test('typing skadoosh on the desktop shows the Po toast, but not inside a text field', () => {
+  const { app, events, timers } = setup();
+  app.componentDidMount();
+  app.setState({ coach: false });
+  const type = (word, target) => [...word].forEach((key) => events.keydown({ key, target, preventDefault() {} }));
+  type('skadoo', { tagName: 'INPUT' }); type('sh');
+  assert.equal(app.renderVals().toastOpen, false);
+  type('xSKADOOSH');
+  assert.equal(app.renderVals().toastOpen, true);
+  timers.get('t2800')();
+  assert.equal(app.renderVals().toastOpen, false);
 });

@@ -767,6 +767,23 @@
 
   /* —— Peach blossoms ——
      A nod to Oogway's peach tree. Behind the hero and windows, never interactive. */
+  .os-dotglow {
+    position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: 0; transition: opacity 600ms ease;
+    background-image: radial-gradient(currentColor 1.5px, transparent 1.8px);
+    background-size: 22px 22px; background-position: -1px -1px;
+    -webkit-mask-image: radial-gradient(190px circle at var(--mx, -400px) var(--my, -400px), #000 0%, rgba(0,0,0,0.4) 45%, transparent 100%);
+    mask-image: radial-gradient(190px circle at var(--mx, -400px) var(--my, -400px), #000 0%, rgba(0,0,0,0.4) 45%, transparent 100%);
+  }
+  [data-os-theme="light"] .os-dotglow { color: rgba(214, 87, 127, 0.5); }
+  [data-os-theme="dark"]  .os-dotglow { color: rgba(255, 210, 120, 0.36); }
+  .os-root[data-has-win="1"] .os-dotglow { opacity: 0 !important; }
+  @media (hover: none), (prefers-reduced-motion: reduce) { .os-dotglow { display: none; } }
+  .os-toast-slot { position: fixed; z-index: 6500; left: 0; right: 0; bottom: calc(var(--dock-h) + 34px + var(--safe-b)); display: flex; justify-content: center; pointer-events: none; }
+  .os-toast { display: flex; align-items: baseline; gap: 12px; margin: 0; padding: 10px 20px 11px; border: 1px solid var(--dock-line); border-radius: 999px; background: var(--dock); color: var(--ink); box-shadow: 0 18px 44px rgba(6,20,40,0.22); -webkit-backdrop-filter: blur(26px) saturate(180%); backdrop-filter: blur(26px) saturate(180%); animation: toast-life 2.8s cubic-bezier(0.2, 0.9, 0.25, 1) both; }
+  .os-toast .t-main { font-family: 'Grand Hotel', cursive; font-size: 30px; font-weight: 400; line-height: 1; color: var(--wordmark); }
+  .os-toast .t-sub { font-family: 'Geist Mono', ui-monospace, monospace; font-size: 11px; font-style: normal; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+  @keyframes toast-life { 0% { opacity: 0; transform: translateY(14px) scale(0.86); } 12% { opacity: 1; transform: none; } 82% { opacity: 1; transform: none; } 100% { opacity: 0; transform: translateY(-6px); } }
+  @media (prefers-reduced-motion: reduce) { .os-toast { animation: none; } }
   .os-petals { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; pointer-events: none; transition: opacity 400ms ease; }
   .os-root[data-has-win="1"] .os-petals { opacity: 0.35; }
   @media (prefers-reduced-motion: reduce) { .os-petals { display: none; } }
@@ -849,6 +866,7 @@
   <div aria-hidden="true" style="{{ wallpaperWave }}"></div>
   <div aria-hidden="true" style="position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0.035;mix-blend-mode:overlay;background-image:url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;);background-size:180px 180px"></div>
   <div aria-hidden="true" class="os-dotgrid"></div>
+  <div aria-hidden="true" class="os-dotglow"></div>
   <canvas aria-hidden="true" class="os-petals"></canvas>
 
   <main><section data-screen-label="Desktop hero" class="os-hero" style="position:absolute;z-index:2;inset:0;display:grid;align-content:center;justify-content:stretch;justify-items:stretch;pointer-events:none">
@@ -1387,6 +1405,12 @@
   </div>
   </sc-if>
 
+  <div class="os-toast-slot" role="status" aria-live="polite">
+    <sc-if value="{{ toastOpen }}" hint-placeholder-val="{{ false }}">
+    <p class="os-toast"><strong class="t-main">Skadoosh!</strong><em class="t-sub">Po, Kung Fu Panda</em></p>
+    </sc-if>
+  </div>
+
   <nav class="os-dock-nav" aria-label="Dock" style="position:fixed;z-index:6000;left:0;right:0;display:flex;justify-content:center;pointer-events:none">
     <div class="os-dock-shell" onPointerMove="{{ dockMove }}" onMouseLeave="{{ dockLeave }}" style="position:relative;display:flex;align-items:flex-end;gap:6px;border:1px solid var(--dock-line);border-radius:24px;background:var(--dock);box-shadow:0 24px 60px rgba(6,20,40,0.30), 0 6px 18px rgba(6,20,40,0.14), 0 1px 0 rgba(255,255,255,0.55) inset, 0 -1px 0 rgba(0,0,0,0.06) inset;-webkit-backdrop-filter:blur(34px) saturate(190%);backdrop-filter:blur(34px) saturate(190%);pointer-events:auto">
       <sc-for list="{{ dock }}" as="item" hint-placeholder-count="8">
@@ -1699,7 +1723,7 @@ class Component extends DCLogic {
     Object.keys(GEOM).forEach((id, i) => { w[id] = { ...GEOM[id], open: false, minimized: false, maximized: false, z: 200 + i }; });
     const vp = this.viewport();
     this._motion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    this.state = { theme: initialTheme(props), windows: w, folder: null, zTop: 220, vp, dockX: null, dockCenters: null, lightbox: null, np: null, coach: firstVisit(), quote: Math.floor(Math.random() * QUOTES.length), reducedMotion: this._motion.matches };
+    this.state = { theme: initialTheme(props), windows: w, folder: null, zTop: 220, vp, dockX: null, dockCenters: null, lightbox: null, np: null, coach: firstVisit(), quote: Math.floor(Math.random() * QUOTES.length), reducedMotion: this._motion.matches, toast: false };
     this._dockRaf = 0;
     this._returnFocus = null;
   }
@@ -1765,7 +1789,9 @@ class Component extends DCLogic {
       });
     };
     window.addEventListener("resize", this._onResize);
+    this._egg = "";
     this._onKey = (e) => {
+      if (!this.state.coach && this.state.lightbox === null) this.watchEgg(e);
       if (this.state.coach) {
         if (e.key === "Escape") this.dismissCoach();
         if (e.key === "Tab") {
@@ -1793,6 +1819,7 @@ class Component extends DCLogic {
     };
     window.addEventListener("keydown", this._onKey);
     this.startPetals();
+    if (typeof console !== "undefined" && console.log) console.log("%cThere is no secret ingredient. Try typing \"skadoosh\" on the desktop.", "font: 600 13px/1.5 Geist, system-ui, sans-serif; color: #d6577f");
 
     // Now playing. The card is inside the component tree, so this has to flow
     // through state — mutating the DOM directly gets overwritten on re-render.
@@ -1819,6 +1846,7 @@ class Component extends DCLogic {
     if (this._onResize) window.removeEventListener("resize", this._onResize);
     if (this._onKey) window.removeEventListener("keydown", this._onKey);
     if (this._stopPetals) this._stopPetals();
+    if (this._toastTimer) clearTimeout(this._toastTimer);
     if (this._npTimer) clearInterval(this._npTimer);
     if (this._onVis) document.removeEventListener("visibilitychange", this._onVis);
   }
@@ -1884,22 +1912,46 @@ class Component extends DCLogic {
     });
   }
 
-  // Peach blossom petals drifting across the desktop. Plain canvas, ~20 petals, one rAF
-  // loop that idles while the tab is hidden; nothing runs for reduced-motion visitors.
+  // Ambient layer: peach blossoms by day, fireflies by night, crossfading on theme change.
+  // Plain canvas, one rAF loop that idles while the tab is hidden. The cursor stirs the
+  // air: petals ride its wake, fireflies scatter from a fast cursor and drift in when it
+  // rests. A tap on empty desktop shakes loose a small bloom, and `skadoosh()` spins
+  // everything into a spiral. Nothing runs for reduced-motion visitors.
   startPetals() {
     const canvas = document.querySelector && document.querySelector(".os-petals");
     if (!canvas || !canvas.getContext || this.state.reducedMotion) return;
+    const root = canvas.closest ? canvas.closest(".os-root") : null;
+    const glow = document.querySelector(".os-dotglow");
     const ctx = canvas.getContext("2d");
-    let w = 0, h = 0, dpr = 1, raf = 0, last = 0, petals = [];
+    let w = 0, h = 0, dpr = 1, raf = 0, last = 0, petals = [], blooms = [], flies = [];
+    let day = this.state.theme === "dark" ? 0 : 1; // 1 shows petals, 0 shows fireflies
+    let swirl = 0, glowX = null, glowY = null, glowOn = false, glowShown = null;
+    const SWIRL = 2.6;
+    const ptr = { x: -9999, y: -9999, vx: 0, vy: 0, t: 0, on: false };
     const rnd = (a, b) => a + Math.random() * (b - a);
     const make = (anywhere) => ({
       x: rnd(-40, w + 40), y: anywhere ? rnd(-h * 0.1, h) : rnd(-60, -20),
-      size: rnd(7, 13), vy: rnd(14, 30), vx: rnd(4, 16),
+      size: rnd(7, 13), vy: rnd(14, 30), vx: rnd(4, 16), ox: 0, oy: 0,
       sway: rnd(0.6, 1.4), phase: rnd(0, Math.PI * 2),
       rot: rnd(0, Math.PI * 2), spin: rnd(-0.9, 0.9),
       flip: rnd(0, Math.PI * 2), flipSpeed: rnd(1.2, 2.6),
-      hue: rnd(340, 358), light: rnd(82, 90),
+      hue: rnd(340, 358), light: rnd(82, 90), life: 0,
     });
+    const makeFly = () => ({
+      x: rnd(0, w), y: rnd(h * 0.12, h * 0.92), vx: rnd(-10, 10), vy: rnd(-10, 10),
+      heading: rnd(0, Math.PI * 2), pulse: rnd(0, Math.PI * 2), pulseSpeed: rnd(0.9, 2.1), r: rnd(1.9, 3.2),
+    });
+    // One soft glow, rendered once and stamped per firefly; far cheaper than a gradient each frame.
+    const sprite = document.createElement("canvas");
+    sprite.width = sprite.height = 64;
+    const sg = sprite.getContext("2d");
+    const rg = sg.createRadialGradient(32, 32, 0, 32, 32, 32);
+    rg.addColorStop(0, "rgba(255,250,215,1)");
+    rg.addColorStop(0.12, "rgba(255,226,130,0.9)");
+    rg.addColorStop(0.35, "rgba(240,196,90,0.28)");
+    rg.addColorStop(1, "rgba(240,190,80,0)");
+    sg.fillStyle = rg; sg.fillRect(0, 0, 64, 64);
+
     const size = () => {
       dpr = Math.min(window.devicePixelRatio || 1, 2);
       w = canvas.clientWidth; h = canvas.clientHeight;
@@ -1907,10 +1959,14 @@ class Component extends DCLogic {
       const count = w < 700 ? 9 : w < 1100 ? 14 : 20;
       while (petals.length < count) petals.push(make(true));
       petals.length = count;
+      const nf = w < 700 ? 12 : w < 1100 ? 18 : 26;
+      while (flies.length < nf) flies.push(makeFly());
+      flies.length = nf;
     };
     // A five-petal blossom is too busy at this size; a single notched petal reads better.
-    const draw = (p, dark) => {
+    const draw = (p, alpha) => {
       ctx.save();
+      ctx.globalAlpha = alpha;
       ctx.translate(p.x, p.y); ctx.rotate(p.rot);
       ctx.scale(Math.max(0.18, Math.abs(Math.cos(p.flip))), 1);
       const s = p.size;
@@ -1921,34 +1977,189 @@ class Component extends DCLogic {
       ctx.lineTo(s * 0.12, -s * 0.9);
       ctx.bezierCurveTo(s * 0.7, -s * 0.75, s * 0.95, s * 0.35, 0, s);
       const g = ctx.createLinearGradient(0, s, 0, -s);
-      g.addColorStop(0, "hsla(" + p.hue + ",70%," + (p.light - 8) + "%," + (dark ? 0.55 : 0.85) + ")");
-      g.addColorStop(1, "hsla(" + p.hue + ",80%," + Math.min(97, p.light + 6) + "%," + (dark ? 0.45 : 0.75) + ")");
+      g.addColorStop(0, "hsla(" + p.hue + ",70%," + (p.light - 8) + "%,0.85)");
+      g.addColorStop(1, "hsla(" + p.hue + ",80%," + Math.min(97, p.light + 6) + "%,0.75)");
       ctx.fillStyle = g; ctx.fill();
       ctx.restore();
     };
+    // Shared forces: the cursor's wake and the skadoosh spiral, applied as a velocity offset.
+    const stir = (p, dt, reach, carry, push) => {
+      if (ptr.on) {
+        const dx = p.x - ptr.x, dy = p.y - ptr.y, d2 = dx * dx + dy * dy;
+        if (d2 < reach * reach) {
+          const d = Math.sqrt(d2) || 1, f = 1 - d / reach;
+          const speed = Math.min(1, Math.hypot(ptr.vx, ptr.vy) / 900);
+          p.ox += (ptr.vx * carry + (dx / d) * push * speed) * f * dt;
+          p.oy += (ptr.vy * carry + (dy / d) * push * speed) * f * dt;
+        }
+      }
+      if (swirl > 0) {
+        const cx = w / 2, cy = h * 0.45, dx = p.x - cx, dy = p.y - cy, d = Math.hypot(dx, dy) || 1;
+        const env = Math.sin(Math.PI * (1 - swirl / SWIRL)); // eases in and back out
+        const k = env * Math.min(1, 260 / d + 0.35);
+        p.ox += (-dy / d * 900 - dx / d * 160) * k * dt;
+        p.oy += (dx / d * 900 - dy / d * 160) * k * dt;
+      }
+      const cap = 720, m = Math.hypot(p.ox, p.oy);
+      if (m > cap) { p.ox *= cap / m; p.oy *= cap / m; }
+    };
+    const stepPetal = (p, dt) => {
+      stir(p, dt, 150, 2.4, 300);
+      const drag = Math.exp(-dt * 1.5);
+      p.ox *= drag; p.oy *= drag;
+      p.phase += dt * p.sway;
+      p.x += (p.vx + Math.sin(p.phase) * 22 + p.ox) * dt;
+      p.y += (p.vy + p.oy) * dt;
+      const gust = Math.min(4, Math.hypot(p.ox, p.oy) / 120);
+      p.rot += (p.spin * (1 + gust)) * dt; p.flip += p.flipSpeed * (1 + gust) * dt;
+    };
+    const offscreen = (p) => p.y > h + 30 || p.x > w + 60 || p.x < -90 || p.y < -140;
+
     const tick = (t) => {
       raf = requestAnimationFrame(tick);
       const dt = Math.min(0.05, last ? (t - last) / 1000 : 0); last = t;
       if (document.hidden) return;
-      const dark = this.state.theme === "dark";
+      day += ((this.state.theme === "dark" ? 0 : 1) - day) * Math.min(1, dt * 2.5);
+      const decay = Math.exp(-dt * 5);
+      ptr.vx *= decay; ptr.vy *= decay;
+      if (swirl > 0) swirl = Math.max(0, swirl - dt);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, w, h);
-      for (let i = 0; i < petals.length; i++) {
-        const p = petals[i];
-        p.phase += dt * p.sway;
-        p.x += (p.vx + Math.sin(p.phase) * 22) * dt;
-        p.y += p.vy * dt;
-        p.rot += p.spin * dt; p.flip += p.flipSpeed * dt;
-        if (p.y > h + 30 || p.x > w + 60) petals[i] = make(false);
-        draw(p, dark);
+
+      if (day > 0.01) {
+        for (let i = 0; i < petals.length; i++) {
+          const p = petals[i];
+          stepPetal(p, dt);
+          if (offscreen(p)) petals[i] = make(false);
+          draw(p, day);
+        }
+        for (let i = blooms.length - 1; i >= 0; i--) {
+          const p = blooms[i];
+          p.life += dt;
+          stepPetal(p, dt);
+          const fade = Math.min(1, Math.max(0, (9 - p.life) / 1.5));
+          if (offscreen(p) || fade <= 0) { blooms.splice(i, 1); continue; }
+          draw(p, day * fade);
+        }
       }
+      if (day < 0.99) {
+        const idle = ptr.on && t - ptr.t > 650;
+        ctx.globalCompositeOperation = "lighter";
+        for (let i = 0; i < flies.length; i++) {
+          const f = flies[i];
+          f.ox = f.ox || 0; f.oy = f.oy || 0;
+          stir(f, dt, 210, 0.6, 520);
+          f.heading += rnd(-1, 1) * dt * 2.4;
+          f.vx += Math.cos(f.heading) * 16 * dt; f.vy += Math.sin(f.heading) * 16 * dt;
+          if (idle) { // drift in towards a resting cursor, but keep a little distance
+            const dx = ptr.x - f.x, dy = ptr.y - f.y, d = Math.hypot(dx, dy) || 1;
+            if (d < 340 && d > 46) { f.vx += dx / d * 26 * dt; f.vy += dy / d * 26 * dt; }
+          }
+          const drag = Math.exp(-dt * 0.9);
+          f.vx *= drag; f.vy *= drag;
+          const sp = Math.hypot(f.vx, f.vy); if (sp > 42) { f.vx *= 42 / sp; f.vy *= 42 / sp; }
+          const od = Math.exp(-dt * 1.8); f.ox *= od; f.oy *= od;
+          f.x += (f.vx + f.ox) * dt; f.y += (f.vy + f.oy) * dt;
+          if (f.x < -30) f.x = w + 30; else if (f.x > w + 30) f.x = -30;
+          if (f.y < -30) f.y = h + 30; else if (f.y > h + 30) f.y = -30;
+          f.pulse += f.pulseSpeed * dt;
+          const lit = 0.25 + 0.75 * Math.pow(0.5 + 0.5 * Math.sin(f.pulse), 2);
+          const s = f.r * 9;
+          ctx.globalAlpha = lit * (1 - day);
+          ctx.drawImage(sprite, f.x - s / 2, f.y - s / 2, s, s);
+        }
+        ctx.globalCompositeOperation = "source-over";
+        ctx.globalAlpha = 1;
+      }
+      if (glow && (glowX !== null)) {
+        glow.style.setProperty("--mx", glowX + "px");
+        glow.style.setProperty("--my", glowY + "px");
+        glowX = null;
+      }
+      if (glow && glowShown !== glowOn) { glow.style.opacity = glowOn ? "1" : "0"; glowShown = glowOn; }
     };
+
+    const local = (e) => {
+      const r = canvas.getBoundingClientRect();
+      return [e.clientX - r.left, e.clientY - r.top];
+    };
+    const onMove = (e) => {
+      const [x, y] = local(e), now = performance.now();
+      if (ptr.on && now > ptr.t) {
+        const s = Math.max(0.008, (now - ptr.t) / 1000);
+        ptr.vx = ptr.vx * 0.4 + ((x - ptr.x) / s) * 0.6;
+        ptr.vy = ptr.vy * 0.4 + ((y - ptr.y) / s) * 0.6;
+      }
+      ptr.x = x; ptr.y = y; ptr.t = now; ptr.on = true;
+      if (e.pointerType === "mouse") { glowX = x; glowY = y; glowOn = true; }
+    };
+    const onLeave = (e) => { if (!e.relatedTarget) { ptr.on = false; ptr.vx = ptr.vy = 0; glowOn = false; } };
+    const onUp = (e) => { if (e.pointerType !== "mouse") { ptr.on = false; ptr.vx = ptr.vy = 0; } };
+    const bloom = (x, y, n, power) => {
+      for (let i = 0; i < n; i++) {
+        const p = make(false), a = rnd(0, Math.PI * 2), v = rnd(0.45, 1) * power;
+        p.x = x; p.y = y; p.ox = Math.cos(a) * v; p.oy = Math.sin(a) * v - power * 0.35;
+        p.size = rnd(6, 11); p.vy = rnd(18, 34); p.vx = rnd(-4, 8);
+        blooms.push(p);
+      }
+      if (blooms.length > 90) blooms.splice(0, blooms.length - 90);
+    };
+    // Only a tap on bare desktop counts: nothing interactive, no window, no dock.
+    const onDown = (e) => {
+      if (e.button !== 0 || !root || !e.target || !root.contains(e.target) || !e.target.closest) return;
+      if (e.target.closest('button, a, input, textarea, select, label, video, [role="dialog"], [tabindex], .os-win-frame, .os-dock-nav, .os-quote')) return;
+      const [x, y] = local(e);
+      if (day > 0.5) bloom(x, y, 11, 300);
+      else flies.forEach((f) => {
+        const dx = f.x - x, dy = f.y - y, d = Math.hypot(dx, dy) || 1;
+        if (d < 260) { f.ox = (f.ox || 0) + dx / d * 380 * (1 - d / 260); f.oy = (f.oy || 0) + dy / d * 380 * (1 - d / 260); }
+      });
+    };
+    this._ambientSwirl = () => {
+      swirl = SWIRL;
+      if (day > 0.5) bloom(w / 2, h * 0.45, 26, 420);
+    };
+
     size();
     window.addEventListener("resize", size);
+    window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("pointerdown", onDown, { passive: true });
+    window.addEventListener("pointerup", onUp, { passive: true });
+    window.addEventListener("pointercancel", onUp, { passive: true });
+    document.addEventListener("pointerout", onLeave, { passive: true });
     raf = requestAnimationFrame(tick);
-    this._stopPetals = () => { cancelAnimationFrame(raf); window.removeEventListener("resize", size); ctx.clearRect(0, 0, canvas.width, canvas.height); };
+    this._stopPetals = () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", size);
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerdown", onDown);
+      window.removeEventListener("pointerup", onUp);
+      window.removeEventListener("pointercancel", onUp);
+      document.removeEventListener("pointerout", onLeave);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (glow) glow.style.opacity = "0";
+      this._ambientSwirl = null;
+    };
     this._onMotionPetals = (e) => { if (e.matches && this._stopPetals) this._stopPetals(); };
     this._motion.addEventListener("change", this._onMotionPetals);
+  }
+
+  // Type "skadoosh" anywhere (outside a text field). Po's word; petals or fireflies spiral.
+  watchEgg(e) {
+    if (e.ctrlKey || e.metaKey || e.altKey || !e.key || e.key.length !== 1) return;
+    const t = e.target;
+    if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName || ""))) return;
+    this._egg = (this._egg + e.key.toLowerCase()).slice(-8);
+    if (this._egg === "skadoosh") { this._egg = ""; this.skadoosh(); }
+  }
+
+  skadoosh() {
+    if (this._toastTimer) clearTimeout(this._toastTimer);
+    this.setState({ toast: false }, () => {
+      this.setState({ toast: true });
+      this._toastTimer = setTimeout(() => this.setState({ toast: false }), 2800);
+    });
+    if (this._ambientSwirl) this._ambientSwirl();
   }
 
   frameEl(id) {
@@ -2465,6 +2676,7 @@ class Component extends DCLogic {
         },
       })),
       coachOpen: !!s.coach,
+      toastOpen: !!s.toast,
       coachItems: [
         { id: "about",   label: "About Me",   note: " — who I am, in one screen." },
         { id: "skills",  label: "Background", note: " — education, open source, the stack I use." },
